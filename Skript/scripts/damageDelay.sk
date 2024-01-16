@@ -53,9 +53,9 @@ function noDmgDelay(mob: object):
 	wait 1 tick 							#crucial for this to work
 	set {_mob}'s invulnerability ticks to 0 #the victim will be able to be hit once per tick
 
+# 공격자 -> 피해자에 대한 피해로부터 무적 시간을 생성하고 싶지 않을 때 사용.
 function noDmgPass(attacker: number, victim: number):
 	set {damageDelayPass.%{_attacker}%::%{_victim}%} to true
-	#wait "%{_time}% ticks" parsed as timespan
 
 #-----------------------------------------------
 on damage:
@@ -63,13 +63,15 @@ on damage:
 
 	# 임시 샷건 코드
 	if event-damagecause is projectile:
-		stop trigger
-
-	if {damageDelayPass.%attacker's uuid%::%victim's uuid%} is true:
-		broadcast "pass test"
-		set {damageDelayPass.%attacker's uuid%::%victim's uuid%} to false
 		wait 1 tick #crucial for this to work
 		set victim's invulnerability ticks to 0 #the victim will be able to be hit once per tick
+		stop trigger
+
+	# 데미지 딜레이 무시 공격 (해당 공격은 무적 시간을 생성하지 않음)
+	if {damageDelayPass.%attacker's uuid%::%victim's uuid%} is true:
+		set {damageDelayPass.%attacker's uuid%::%victim's uuid%} to false
+		wait 1 tick
+		set victim's invulnerability ticks to 0
 		stop trigger
 
 

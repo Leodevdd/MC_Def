@@ -58,7 +58,7 @@ on place:
 
 on place:
 	if event-block is black banner:
-		drawRings particle "redstone", RGB 80, 255, 255, center player, id "%player%", rainbowMode true, randomRotation true, animated true, radius 10, ringCount 4, ringDensity 10, visibleRange 32, pulseDelay 2
+		#drawRings particle "redstone", RGB 80, 255, 255, center player, id "%player%", rainbowMode true, randomRotation true, animated true, radius 10, ringCount 4, ringDensity 10, visibleRange 32, pulseDelay 2
 		#drawRings particle "redstone", RGB 80, 255, 255, center player, id "%player%", randomRotation true, animated true, radius 4, ringCount 1, ringDensity 10, visibleRange 32, pulseDelay 2
 		#drawSimpleHalo particle "redstone", center player, id "bd1", rainbowmode false, solid true, visibleRange 30, tps 0.1, second 1
 		#drawWarpRings style 1, particle "redstone", RGB 80, 255, 255, center location of block at player, id "%player%", rainbowMode false, scan true, height 2, radius 2, ringCount 40, ringDensity 20, visibleRange 32, pulseDelay 2 
