@@ -1,0 +1,103 @@
+#1| zombie, spider, skeleton
+#2| husk, drowned, stray
+#3| vindicator, piglin, pillager, cave spider, witch, drowned(lancer)
+#4| zombified piglin, piglin brute, wither skeleton, hoglin
+#5| ravager, Zoglin, blaze, evoker
+#boss | wither, warden, elder guardian
+
+
+options:
+	waveTime : 30
+	#호출은 {@waveTime} 이렇게
+
+on load:
+	set {_mobs::*} to 10 zombie
+
+	set {_mobs::a} to 3
+
+	set {waves::*} to {_mobs::*}
+
+	broadcast "waves : %{waves::*}%"
+	broadcast "waves num : %{this.number}%"
+
+	set {_mobs::*} to 10 skeleton and 5 spider
+	add {_mobs::*} to {waves::*}
+
+	broadcast "waves : %{waves::*}%"
+
+	set {_num} to 30
+	broadcast "%{_num}%"
+	set {_num} to round down 17 / 6
+	broadcast "%{_num}%"
+
+function spawnMobs(mobs: entities, loc: location):
+	spawn {_mobs::*} at {_loc}
+	broadcast "function spawnMobs A : %{_mobs}%" # 배열 변수가 안받아와짐 !
+	#broadcast "function spawnMobs B : %{_mobs::*}%"
+	#set {_wave} to {_mobs}
+	#broadcast "function spawnMobs C : %{_wave::*}%"
+	broadcast "function location : %{_loc}%"
+
+# 지정된 시간의 웨이브 동안 일정하게 나눠서 소환하는 함수
+# ex) sMR(zombie, 10) : 30초 동안 10마리 일정하게 소환(3초마다)
+function spawnMobsRegular(mob: entity, num: number):
+	set {_eachTime} to round down 30 / {_num}
+
+	loop {_num} time:
+
+		#broadcast "%{_num}%"
+
+		#wait {_eachTime} ticks
+		#wait {_num} seconds
+
+function wave(waveCount : number):
+	loop 1 time: # every wave takes 10 sec each
+
+		set {_rand} to zeroToThree()
+		add {_rand} to {spawnPointA}'s z-coordinate
+		add {_rand} to {spawnPointB}'s z-coordinate
+
+		#set {waves::*} to 10 zombie
+		#spawnMobs({waves:1}, {spawnPointA})
+		#set {zom::*} to zombie
+		#add skeleton to {zom::*}
+		#spawnMobs({zom::*}, {spawnPointA})
+
+
+		#if {_i} is 1:
+		if {_waveCount} is 1:
+			# 엔티티 배열 변수를 받아와서 스폰 시키는 함수를 만들 것
+			# why? 엔티티 배열 변수로 소환 시키면 첫 인덱스 값만 소환함
+			# 각 엔티티 소환시 z 좌표를 달리 해주어야 함
+			
+			set {_testmob} to zombie
+
+			spawnMobsRegular({_testmob}, 10)
+
+			spawn {waves::%{_waveCount}%} at {spawnPointA}
+			spawn {waves::%{_waveCount}%} at {spawnPointB}
+			
+
+		#if {_i} is 2:
+		else if {_waveCount} is 2:
+			spawn {waves::%{_waveCount}%} at {spawnPointA}
+			spawn {waves::%{_waveCount}%} at {spawnPointB}
+
+		else if {_waveCount} is 3:
+			spawn {waves::%{_waveCount}%} at {spawnPointA}
+			spawn {waves::%{_waveCount}%} at {spawnPointB}
+
+		else:
+
+		#if {_i} is 3:
+			spawn drowned at {spawnPointA}
+			spawn drowned at {spawnPointB}
+
+
+		#set last spawned entity's knockback resistance attribute to 1
+
+		#set name of last spawned entity to "&2Zombie"
+		#add "{HandItems:[{id:stick,Count:1,tag:{Enchantments:[{id:sharpness,lvl:10},{id:fire_aspect,lvl:1},{id:knockback,lvl:100}]}}]}" to last spawned entity's nbt
+
+		subtract {_rand} from {spawnPoint}'s z-coordinate
+		wait 10 ticks #(seconds)#default

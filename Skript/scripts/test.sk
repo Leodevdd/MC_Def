@@ -1,0 +1,20 @@
+
+command /pathfind:
+	trigger:
+		loop all entities in radius 50 of player:
+			make loop-entity pathfind to location 0.5, 100, 13.5 at speed 2
+			#set path target with speed 1.0 of loop-entity to location 413, 115, 34 #라이프
+			#set path target with speed 1.0 of loop-entity to player
+
+command /changeName:
+	trigger:
+		if name of tool of player contains "검":
+			set name of player's tool to "test"
+			broadcast "changed"
+		else:
+			broadcast "nope: %name of tool of player%"
+
+
+command /witch:
+	trigger:
+		spawn a witch at player

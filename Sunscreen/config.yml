@@ -1,0 +1,16 @@
+# If true the plugin treats the worlds as a whitelist instead of a blacklist.
+whitelist: false
+
+# The worlds affected by this plugin
+worlds:
+- example_world
+
+# Uses entity types to prevent burning.
+# Use types listed in hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html
+mobs:
+- DROWNED
+- PHANTOM
+- SKELETON
+- STRAY
+- ZOMBIE
+- ZOMBIE_VILLAGER

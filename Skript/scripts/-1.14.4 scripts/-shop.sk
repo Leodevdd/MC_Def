@@ -1,0 +1,25 @@
+
+
+
+command /money:
+	trigger:
+		if {money::%player%} is not set:
+			set {money::%player%} to 0
+		else:
+			add 100 to {money::%player%}
+		
+		send "money : %{money::%player%}%"
+
+
+command /shop:
+	trigger:
+		set {locShop} to location at -900, 62, -890
+
+		if distance between location of player and {locShop} is smaller than 16:
+			open chest with 1 row named "shop test" to player
+			format slot 0 of player with gray stained glass pane named "&7" to be unstealable
+			format slot 7 of player with stone named "&7name Stone" with lore "&7lore test" to run [make player execute command "/money"]
+			format slot 8 of player with barrier named "&4Quit" with lore "&7quit the shop" to close
+		else:
+			send "you are too far from the shop"
+

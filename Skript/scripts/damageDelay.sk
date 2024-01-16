@@ -1,0 +1,104 @@
+#github test.
+
+#on load:
+#	set {damageDelay.%player%} to false
+
+#on quit:
+#	set {damageDelay.%player%} to false
+
+#플레이어 피격 무적 시간 초기화 (직접 control 하기 위함)
+on join:
+	#set {damageDelay.%player%} to false
+	set {damageDelay.%player's uuid%.tick} to 10 #default 무적 시간
+
+#몹 피격 무적 시간 초기화 (직접 control 하기 위함)
+on spawn:
+	set {damageDelay.%event-entity's uuid%.tick} to 10 # default 무적 시간
+
+
+#플레이어 대상
+on damage:
+# 각종 도트 데미지는 추가 체력 무시 ---------------------
+	victim is a player # 플레이어면 계속.
+
+	#broadcast "damagecause: %event-damagecause%"
+
+	if event-damagecause is poison:
+		set {_dotDamage} to true
+	else if event-damagecause is fire:
+		set {_dotDamage} to true
+	else if event-damagecause is burning:
+		set {_dotDamage} to true
+	else if event-damagecause is wither effect:
+		set {_dotDamage} to true
+	else if event-damagecause is freeze:
+		set {_dotDamage} to true
+	else:
+		set {_dotDamage} to false
+
+	if {perks.%victim%::shield} is true:
+		if {_dotDamage} is true:
+			set {_damage} to damage
+			set damage to 0
+			set victim's health to victim's health - {_damage}
+
+	# 회피 기능
+	if attacker is a entity: # 각종 환경 데미지 예외처리
+		if chance of 10%:
+			cancel event
+			push victim in direction of attacker at speed 0.6
+			execute console command "execute at @e[x=%victim's x-coordinate%, y=%victim's y-coordinate%, z=%victim's z-coordinate%, dx=0] run playsound minecraft:entity.player.attack.sweep master @a"
+
+function noDmgDelay(mob: object):
+	wait 1 tick 							#crucial for this to work
+	set {_mob}'s invulnerability ticks to 0 #the victim will be able to be hit once per tick
+
+function noDmgPass(attacker: number, victim: number):
+	set {damageDelayPass.%{_attacker}%::%{_victim}%} to true
+	#wait "%{_time}% ticks" parsed as timespan
+
+#-----------------------------------------------
+on damage:
+	victim is not a wolf
+
+	# 임시 샷건 코드
+	if event-damagecause is projectile:
+		stop trigger
+
+	if {damageDelayPass.%attacker's uuid%::%victim's uuid%} is true:
+		broadcast "pass test"
+		set {damageDelayPass.%attacker's uuid%::%victim's uuid%} to false
+		wait 1 tick #crucial for this to work
+		set victim's invulnerability ticks to 0 #the victim will be able to be hit once per tick
+		stop trigger
+
+
+	# 개체별 피격 무적 시간은 그대로 놔두고 다른 개체가 무적이 된 개체를 때릴 수 있게
+	# 즉, 동시에 때릴 수 있게 함
+
+	# 공격자:피해자 최초 설정
+	if {damageDelay.%attacker's uuid%::%victim's uuid%} is not set:
+		set {damageDelay.%attacker's uuid%::%victim's uuid%} to false
+
+	# 공격자:피해자 공격 ok면
+	if {damageDelay.%attacker's uuid%::%victim's uuid%} is false:
+		wait 1 tick
+		set victim's invulnerability ticks to 0
+
+		set {damageDelay.%attacker's uuid%::%victim's uuid%} to true
+
+		# 피해자 피격시간 최초 설정
+		if {damageDelay.%victim's uuid%.tick} is not set:
+			set {damageDelay.%victim's uuid%.tick} to 10 # default 무적시간
+
+		# 피격시간 만큼 기다리고 = 개체당 무적시간
+		wait "%{damageDelay.%victim's uuid%.tick}% ticks" parsed as timespan
+
+		# 공격자->피해자 다시 때릴 수 있음
+		set {damageDelay.%attacker's uuid%::%victim's uuid%} to false
+
+	# 공격자->피해자 때릴 수 없음
+	else if {damageDelay.%attacker's uuid%::%victim's uuid%} is true:
+		cancel event
+
+#-----------------------------------------------

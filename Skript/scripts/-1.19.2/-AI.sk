@@ -1,0 +1,60 @@
+#Made by TheDarkBatman
+
+options:
+    prefix : [&5&lAI&r]
+on script load:
+        #Must be long enough to avoid repeating letters!
+        set {_learn} to "Hello"
+        add "I'm a Bot to defense this village from monsters" to {_learn}
+        #
+        generateTable({_learn})
+        convertFreqIntoProb()
+
+function generateTable(data : text , k : integer = 4):
+    clear {ai::*}
+    loop (length of {_data})-{_k}+1 times:
+        set {_x} to subtext of {_data} from characters loop-value to {_k}+(loop-value)-1
+        set {_y} to character at {_k}+loop-value in {_data}
+        if {ai::%{_x}%::*} is set:
+            if {ai::%{_x}%::%{_y}%::count} is set:
+                add 1 to {ai::%{_x}%::%{_y}%::count}
+            else:
+                set {ai::%{_x}%::%{_y}%::count} to 1 
+        else:
+            set {ai::%{_x}%::%{_y}%::count} to 1
+    # loop indices of {ai::*}:
+    #     loop indices of {ai::%loop-value-1%::*}:
+    #         broadcast "&b%loop-value-1% : &a%loop-value-2% &c: %{ai::%loop-value-1%::%loop-value-2%::count}%"
+function convertFreqIntoProb():
+    loop indices of {ai::*}:
+        set {_sum} to 0
+        loop indices of {ai::%loop-value-1%::*}:
+            add {ai::%loop-value-1%::%loop-value-2%::count} to {_sum}
+        loop indices of {ai::%loop-value-1%::*}:
+            # broadcast "&a%loop-value-2% &c: %{ai::%loop-value-1%::%loop-value-2%::count}/{_sum}%"
+            set {ai::%loop-value-1%::%loop-value-2%::count} to {ai::%loop-value-1%::%loop-value-2%::count}/{_sum}
+function sample_next(ctx : text,  k : integer = 4) :: text:
+    set {_ctx} to last {_k} characters of {_ctx}
+    if {ai::%{_ctx}%::*} is set:
+        set {_temp} to ""
+        loop indices of {ai::%{_ctx}%::*}:
+            loop round({ai::%{_ctx}%::%loop-value%::count}*100) times: 
+                set {_temp} to "%{_temp}%%loop-value-1%"
+        set {_temp2} to random integer between 1 and (length of {_temp})
+        return "%(character at {_temp2} in {_temp})%"
+function generateText(starting_sent : text , k : integer = 4, maxLen : integer = 100) :: text:
+    set {_sent} to {_starting_sent}
+    set {_ctx} to last {_k} characters of {_starting_sent}
+    loop {_maxLen} times:
+        set {_next_prediction} to sample_next({_ctx} ,{_k})
+        set {_sent} to "%{_sent}%%{_next_prediction}%"
+        set {_ctx} to last {_k} characters of {_sent}
+    if {_sent} contains "<none>":
+        return "&cI couldn't generate any text :("
+    return {_sent}
+
+command /ai [<text>]:
+    trigger:
+        wait 5 tick
+        set {_temp} to generateText(arg-1,4,100)
+        send "{@prefix} &b%{_temp}%" to player 

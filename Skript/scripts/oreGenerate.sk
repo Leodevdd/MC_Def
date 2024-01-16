@@ -1,0 +1,72 @@
+on load:
+	set {loc_ore} to location 12, 93, 2 in "world_lemonfox"
+	set {coal_ore} to deepslate coal ore
+	set {iron_ore} to deepslate iron ore
+	#set {copper_ore} to deepslate copper ore
+	set {gold_ore} to deepslate gold ore
+	set {diamond_ore} to deepslate diamond ore
+
+	set {loc_station} to location 13, 93, -1 in "world_lemonfox"
+	set {loc_station_fence} to location 11, 93, -1 in "world_lemonfox"
+
+command /og:
+	trigger:
+		loop 10 times:
+			set {_loc_tmp} to {loc_ore}
+			add random integer between -3 and 3 to {_loc_tmp}'s x-coordinate
+			add random integer between -1 and 0 to {_loc_tmp}'s z-coordinate
+
+			set {_random} to random integer between 1 and 100
+			
+			#if {_random} is between 1 and 64:
+			if {_random} is between 1 and 64:
+				set block at {_loc_tmp} to {coal_ore}
+			#else if {_random} is between 65 and 94:
+			else if {_random} is between 65 and 94:
+				set block at {_loc_tmp} to {iron_ore}
+			else if {_random} is between 95 and 99:
+				set block at {_loc_tmp} to {gold_ore}
+			else if {_random} is 100:
+				set block at {_loc_tmp} to {diamond_ore}
+				
+
+			# ore sound
+
+			set {_random} to random integer between 1 and 2
+			if {_random} is 1:
+				#execute console command "execute at @a run playsound block.deepslate.place master @a ~ ~ ~ 10 1 1"
+				play sound "block.deepslate.place" with volume 1 at {loc_ore}
+			else:
+				#execute console command "execute at @a run playsound block.stone.place master @a ~ ~ ~ 10 1 1"
+				play sound "minecraft:block.deepslate.place" with volume 1 at {loc_ore}
+
+			#play sound "ENTITY_PLAYER_LEVELUP" at {_location} in {_world} with volume 1.0 and pitch 1.0
+
+			wait 2 tick
+			
+			#broadcast "set block"
+
+command /cart:
+	trigger:
+		#execute console command "execute at @a run playsound block.piston.contract master @a ~ ~ ~ 100 1 1"
+		play sound "minecraft:block.piston.contract" with volume 1 at {loc_station_fence}
+		set block at {loc_station_fence} to deepslate_tile_wall
+		wait 1 seconds
+		execute console command "/og"
+		wait 1.5 seconds
+		set block at {loc_station} to rail
+		#execute console command "execute at @a run playsound block.piston.contract master @a ~ ~ ~ 100 1 1"
+		#execute console command "execute at @a run playsound block.piston.extend master @a ~ ~ ~ 100 1 1"
+		play sound "minecraft:block.piston.extend" with volume 1 at {loc_station}
+		wait 1 seconds
+		set block at {loc_station} to deepslate_tile_wall
+		set block at {loc_station_fence} to rail
+		play sound "minecraft:block.deepslate.place" with volume 1 at {loc_station}
+		play sound "minecraft:block.deepslate.place" with volume 1 at {loc_station_fence}
+		
+
+
+#execute console command "/summon minecraft:furnace_minecart -8.50 100 19.5 {PushZ: -10.0d, Motion: [0.0d, 0.0d, 0.0d], Fuel: 9999s, Invulnerable: 1b}"
+
+
+

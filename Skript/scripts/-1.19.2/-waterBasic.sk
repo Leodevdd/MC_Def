@@ -1,0 +1,196 @@
+#Copyright 2021.이병훈 all rights reserved.
+#제작자: 이병훈(걀달, ㅇㅂㅎ)
+#2차 배포 및 수정을 금지합니다.
+
+#애드온------------
+#ExtrasSk
+#InvSk
+#MorkazSk
+#MundoSk
+#QuarSk
+#SkBee
+#SkChoke
+#SkDragon
+#Skellett
+#SkJade
+#SkQuery
+#SkRayFall
+#skript-yaml
+#SkUtilities
+#TuSke
+#WilldSk
+
+#Skript-2.6beta3 버전으로 제작했습니다
+#2.6beta 버전으로 사용하실 경우 애드온 패치가 필요합니다.
+#(아래의 영상을 확인해주세요)
+# https://youtu.be/K6UyeDJYo1c
+
+
+function RightdrawHorizontalCircle(l:location, p:player, r:number, red:integer = 255, green:integer = 255, blue:integer = 255, list:integer):
+    set {_loc.p} to {_l}
+    loop 30 time:
+        
+        #sin----
+        set {_v1} to vector({_r}*sin(3*(90 - (loop-value - 1))), (loop-value - 1)/12, {_r}*cos(3* (90 - (loop-value-1))))
+        rotate {_v1} around y-axis by -(yaw of {_p} - 135)
+        set {_loc1} to {_loc.p} ~ {_v1}
+        drawDot particle "redstone", RGB {_red}, {_green}, {_blue}, center {_loc1}, id "drawVcircle%{_list}%%loop-value%", visibleRange 30
+        
+    wait 1 tick
+    loop 30 time:
+        stopEffect id "drawVcircle%{_list}%%loop-value%"
+
+function drawHorizontalCircle(l:location, p:player, r:number, red:integer = 255, green:integer = 255, blue:integer = 255, list:integer):
+    set {_loc.p} to {_l}
+    loop 30 time:
+        
+        #sin----
+        set {_v1} to vector({_r}*sin(3*(90 - (loop-value - 1))), 1.16, {_r}*cos(3* (90 - (loop-value-1))))
+        rotate {_v1} around y-axis by -(yaw of {_p} - 135)
+        set {_loc1} to {_loc.p} ~ {_v1}
+        drawDot particle "redstone", RGB {_red}, {_green}, {_blue}, center {_loc1}, id "drawVcircle%{_list}%%loop-value%", visibleRange 30
+        
+    wait 1 tick
+    loop 30 time:
+        stopEffect id "drawVcircle%{_list}%%loop-value%"
+
+function LeftdrawHorizontalCircle(l:location, p:player, r:number, red:integer = 255, green:integer = 255, blue:integer = 255, list:integer):
+    set {_loc.p} to {_l}
+    loop 30 time:
+        
+        #sin----
+        set {_v1} to vector(-1*{_r}*sin(3*(-0 - (loop-value - 1))), (loop-value - 1)/12, -1*{_r}*cos(3* (-0 - (loop-value-1))))
+        rotate {_v1} around y-axis by -(yaw of {_p} - 135)
+        set {_loc1} to {_loc.p} ~ {_v1}
+        drawDot particle "redstone", RGB {_red}, {_green}, {_blue}, center {_loc1}, id "drawVcircle%{_list}%%loop-value%", visibleRange 30
+        
+    wait 1 tick
+    loop 30 time:
+        stopEffect id "drawVcircle%{_list}%%loop-value%"
+
+function drawHorizontalCircleCloud(l:location, p:player, r:number, list:integer):
+    set {_loc.p} to {_l}
+    add 2 to y of {_loc.p}
+    loop 10 time:
+        
+        #sin----
+        set {_v1} to vector({_r}*sin(9*(90 - (loop-value - 1))), 1.16, {_r}*cos(9* (90 - (loop-value-1))))
+        rotate {_v1} around y-axis by -(yaw of {_p} + 45)
+        set {_loc1} to {_loc.p} ~ {_v1}
+        add 1.5 to y of {_loc1}
+        drawDot particle "cloud", center {_loc1}, id "drawVcircle.Cloud%{_list}%%loop-value%", visibleRange 30
+        
+    wait 1 tick
+    loop 30 time:
+        stopEffect id "drawVcircle.Cloud%{_list}%%loop-value%"
+        
+function RightdrawHorizontalCircleCloud(l:location, p:player, r:number, list:integer):
+    set {_loc.p} to {_l}
+    add 2 to y of {_loc.p}
+    loop 10 time:
+        
+        #sin----
+        set {_v1} to vector({_r}*sin(9*(90 - (loop-value - 1))), (loop-value - 1)/4, {_r}*cos(9* (90 - (loop-value-1))))
+        rotate {_v1} around y-axis by -(yaw of {_p} + 45)
+        set {_loc1} to {_loc.p} ~ {_v1}
+        add 1.5 to y of {_loc1}
+        drawDot particle "cloud", center {_loc1}, id "drawVcircle.Cloud%{_list}%%loop-value%", visibleRange 30
+        
+    wait 1 tick
+    loop 30 time:
+        stopEffect id "drawVcircle.Cloud%{_list}%%loop-value%"
+
+function LeftdrawHorizontalCircleCloud(l:location, p:player, r:number, list:integer):
+    set {_loc.p} to {_l}
+    add 2 to y of {_loc.p}
+    loop 10 time:
+        
+        #sin----
+        set {_v1} to vector({_r}*sin(9*(-0 - (loop-value - 1))), (loop-value - 1)/4, {_r}*cos(9* (-0 - (loop-value-1))))
+        rotate {_v1} around y-axis by -(yaw of {_p} + 45)
+        set {_loc1} to {_loc.p} ~ {_v1}
+        add 1.5 to y of {_loc1}
+        drawDot particle "cloud", center {_loc1}, id "drawVcircle.Cloud%{_list}%%loop-value%", visibleRange 30
+        
+    wait 1 tick
+    loop 30 time:
+        stopEffect id "drawVcircle.Cloud%{_list}%%loop-value%"
+        
+        
+on left click holding iron sword:
+    if name of tool of player is "&1[&9&l水&1] &8일륜도":
+        if {water.Basic.%player%.now} is not set:
+            set {water.Basic.%player%.now} to now
+            RightdrawHorizontalCircle(location of player, player, 3.15, 48, 233, 255, 6)
+            RightdrawHorizontalCircle(location of player, player, 3.3, 48, 233, 255, 1)
+            RightdrawHorizontalCircle(location of player, player, 3, 78, 138, 255, 2)
+            RightdrawHorizontalCircleCloud(location of player, player, 3.55, 1)
+            play sound "AMBIENT_UNDERWATER_ENTER" with volume 0.3 and pitch 1.6 for player
+            set {water.Basic.%player%} to 1
+                
+        if difference between now and {water.Basic.%player%.now} > 0.4 second:
+            if {water.Basic.%player%} is 1:
+                set {water.Basic.%player%.now} to now
+                
+                set {_block} to targeted entity
+                if distance between player and {_block} <= 2.6:
+                    loop all entities in radius 1.8 of {_block}:
+                        if loop-value is not player:
+                            make player damage loop-value by 5
+                        
+                LeftdrawHorizontalCircle(location of player, player, 3.15, 48, 233, 255, 5)
+                LeftdrawHorizontalCircle(location of player, player, 3.3, 48, 233, 255, 3)
+                LeftdrawHorizontalCircle(location of player, player, 3, 78, 138, 255, 4)
+                LeftdrawHorizontalCircleCloud(location of player, player, 3.55, 2)
+                play sound "AMBIENT_UNDERWATER_EXIT" with volume 0.3 and pitch 1.4 for player
+                set {water.Basic.%player%} to 2
+            
+            else if {water.Basic.%player%} is 0:
+                set {water.Basic.%player%.now} to now
+                
+                set {_block} to targeted entity
+                if distance between player and {_block} <= 2.6:
+                    loop all entities in radius 1.8 of {_block}:
+                        if loop-value is not player:
+                            make player damage loop-value by 5
+                    
+                        
+                RightdrawHorizontalCircle(location of player, player, 3.15, 48, 233, 255, 6)
+                RightdrawHorizontalCircle(location of player, player, 3.3, 48, 233, 255, 1)
+                RightdrawHorizontalCircle(location of player, player, 3, 78, 138, 255, 2)
+                RightdrawHorizontalCircleCloud(location of player, player, 3.55, 1)
+                play sound "AMBIENT_UNDERWATER_ENTER" with volume 0.3 and pitch 1.6 for player
+                set {water.Basic.%player%} to 1
+
+            else if {water.Basic.%player%} is 2:
+                set {water.Basic.%player%.now} to now
+                
+                set {_block} to targeted entity
+                if distance between player and {_block} <= 2.6:
+                    loop all entities in radius 1.8 of {_block}:
+                        if loop-value is not player:
+                            make player damage loop-value by 5
+                    
+                drawHorizontalCircle(location of player, player, 3.15, 48, 233, 255, 66)
+                drawHorizontalCircle(location of player, player, 3.3, 48, 233, 255, 11)
+                drawHorizontalCircle(location of player, player, 3, 78, 138, 255, 22)
+                drawHorizontalCircleCloud(location of player, player, 3.55, 3)
+                play sound "AMBIENT_UNDERWATER_ENTER" with volume 0.3 and pitch 1.6 for player
+                set {water.Basic.%player%} to 0
+
+on left click holding iron sword:
+    if name of player's tool is "&1[&9&l水&1] &8일륜도":
+        if player is sneaking:
+            if {water.mill.%player%.now} is not set:
+                execute player command "/water.mill 2"
+                set {water.mill.%player%.now} to now
+                
+            if difference between now and {water.mill.%player%.now} > 7 second:
+                set {water.mill.%player%.now} to now
+                execute player command "/water.mill 2"
+            else:
+                set {_sec} to difference between {water.mill.%player%.now} and now
+                set {_sec} to difference between 7 seconds and {_sec}
+                set {_sec} to "%{_sec}%"
+                replace all "seconds" with "초" in {_sec}
+                send "&3[&b&l물방아&3] &f%{_sec}% 남음"

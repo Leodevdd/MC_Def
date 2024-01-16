@@ -1,0 +1,6 @@
+on every 5 second:
+	loop all witches:
+		loop all zombies in radius 10 of loop-value:
+			apply swiftness to loop-value-2 for 5 second
+			apply strength to loop-value-2 for 5 second
+			apply instant damage to loop-value-2 for 0.1 second

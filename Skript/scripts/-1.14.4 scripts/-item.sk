@@ -1,0 +1,35 @@
+command /rand:
+	trigger:
+		give 1 diamond sword named "Test" with lore "description test" to player
+
+		
+		
+
+
+#speed slowness haste(mining faster) strength nausea(mulmea) regeneration resistance absorption(goldHeath)
+#levitation luck invisibillity blindness hunger weakness poison wither glowing
+#mining fatigue
+#instant health / damage
+#jump boost
+#fire resistance
+#water breathing
+#night vision
+#health boost
+#bad luck
+
+every 3 second in "world":
+	loop all husks:
+		apply potion of instant damage of tier 0 to loop-value for 1 second
+
+every 1 second in "world":
+	loop all husks:
+		heal loop-value by 1 heart
+
+command /po:
+	trigger:
+		apply potion of levitation of tier 1 to player for 60 second
+
+command /respawn:
+	trigger:
+		set the spawn point of "world" to the player's location
+		send "reset spawn point"

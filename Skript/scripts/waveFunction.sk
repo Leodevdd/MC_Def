@@ -1,0 +1,26 @@
+#===============================================================================
+
+# -4 ~ 4 소숫점 포함 랜덤 수 반환
+function randomNum() :: number:
+	return a random number between -4 and 4
+	broadcast "Error: waveFunction_randomNum()"
+
+# spawnMobs(zombie, 10) 좀비 10마리를 30초 동안 나눠서 소환
+function spawnMobs(mob: object, mobNum: number): 
+	#waveTime(60)초 동안 일정한 간격으로 보내기 위한 과정: waveTime(60) / 몹 수
+	set {_eachTime} to round down {waveTime} / {_mobNum}
+
+	loop {_mobNum} times:
+		if {stopWave} is true:
+			#set {stopWave} to false
+			#broadcast "stopping wave.."
+			stop trigger
+		
+		set {_tmpSPA} to {spA}
+		add randomNum() to {_tmpSPA}'s x-coordinate
+		spawn {_mob} at {_tmpSPA}
+
+		wait "%{_eachTime}% seconds" parsed as timespan
+
+
+#===============================================================================

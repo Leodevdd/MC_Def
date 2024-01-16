@@ -1,0 +1,136 @@
+#Copyright 2021.이병훈 all rights reserved.
+#제작자: 이병훈(걀달, ㅇㅂㅎ)
+#2차 배포 및 수정을 금지합니다.
+
+#애드온------------
+#ExtrasSk
+#InvSk
+#MorkazSk
+#MundoSk
+#QuarSk
+#SkBee
+#SkChoke
+#SkDragon
+#Skellett
+#SkJade
+#SkQuery
+#SkRayFall
+#skript-yaml
+#SkUtilities
+#TuSke
+#WilldSk
+
+#Skript-2.6beta3 버전으로 제작했습니다
+#2.6beta 버전으로 사용하실 경우 애드온 패치가 필요합니다.
+#(아래의 영상을 확인해주세요)
+# https://youtu.be/K6UyeDJYo1c
+
+function drawVerticalCircle(l:location, p:player, r:number, red:integer = 255, green:integer = 255, blue:integer = 255, list:integer):
+    set {_loc.p} to {_l}
+    loop 30 time:
+        
+        
+        #sin----
+        set {_v1} to vector({_r}*sin(3*(90 - (loop-value - 1))), {_r}*cos(3* (90 - (loop-value-1))), 0)
+        rotate {_v1} around y-axis by -(yaw of {_p} - 90)
+        set {_loc1} to {_loc.p} ~ {_v1}
+        drawDot particle "redstone", RGB {_red}, {_green}, {_blue}, center {_loc1}, id "drawVcircle%{_list}%%loop-value%", visibleRange 30
+        
+        set {_v2} to vector(-1*{_r}*sin(3*(90 - (loop-value - 1))), -1*{_r}*cos(3*(90 - (loop-value-1))), 0)
+        rotate {_v2} around y-axis by -(yaw of {_p} - 90)
+        set {_loc2} to {_loc.p} ~ {_v2}
+        drawDot particle "redstone", RGB {_red}, {_green}, {_blue}, center {_loc2}, id "drawVcircle%{_list}%%loop-value + 30%", visibleRange 30
+        
+        #cos----
+        set {_v3} to vector({_r}*cos(3*(-0.5 + (loop-value - 1))), {_r}*sin(3*(-0.5 + (loop-value - 1))), 0)
+        rotate {_v3} around y-axis by -(yaw of {_p} - 90)
+        set {_loc3} to {_loc.p} ~ {_v3}
+        drawDot particle "redstone", RGB {_red}, {_green}, {_blue}, center {_loc3}, id "drawVcircle%{_list}%%loop-value + 60%", visibleRange 30
+        
+        set {_v4} to vector(-1*{_r}*cos(3*(-0.5 + (loop-value - 1))), -1*{_r}*sin(3*(-0.5 + (loop-value - 1))), 0)
+        rotate {_v4} around y-axis by -(yaw of {_p} - 90)
+        set {_loc4} to {_loc.p} ~ {_v4}
+        drawDot particle "redstone", RGB {_red}, {_green}, {_blue}, center {_loc4}, id "drawVcircle%{_list}%%loop-value + 90%", visibleRange 30
+        
+    wait 1 tick
+    loop 120 time:
+        stopEffect id "drawVcircle%{_list}%%loop-value%"
+        
+function drawVerticalCircleCloud(l:location, p:player, r:number, list:integer):
+    set {_loc.p} to {_l}
+    loop 10 time:
+        
+        
+        #sin----
+        set {_v1} to vector({_r}*sin(9*(90 - (loop-value - 1))), {_r}*cos(9* (90 - (loop-value-1))), 0)
+        rotate {_v1} around y-axis by -(yaw of {_p} - 90)
+        set {_loc1} to {_loc.p} ~ {_v1}
+        drawDot particle "cloud", center {_loc1}, id "drawVcircle.Cloud%{_list}%%loop-value%", visibleRange 30
+        
+        set {_v2} to vector(-1*{_r}*sin(9*(90 - (loop-value - 1))), -1*{_r}*cos(9*(90 - (loop-value-1))), 0)
+        rotate {_v2} around y-axis by -(yaw of {_p} - 90)
+        set {_loc2} to {_loc.p} ~ {_v2}
+        drawDot particle "cloud", center {_loc2}, id "drawVcircle.Cloud%{_list}%%loop-value + 30%", visibleRange 30
+        
+        #cos----
+        set {_v3} to vector({_r}*cos(9* (-0.5 + (loop-value - 1))), {_r}*sin(9*(-0.5 + (loop-value - 1))), 0)
+        rotate {_v3} around y-axis by -(yaw of {_p} - 90)
+        set {_loc3} to {_loc.p} ~ {_v3}
+        drawDot particle "cloud", center {_loc3}, id "drawVcircle.Cloud%{_list}%%loop-value + 60%", visibleRange 30
+        
+        set {_v4} to vector(-1*{_r}*cos(9*(-0.5 + (loop-value - 1))), -1*{_r}*sin(9*(-0.5 + (loop-value - 1))), 0)
+        rotate {_v4} around y-axis by -(yaw of {_p} - 90)
+        set {_loc4} to {_loc.p} ~ {_v4}
+        drawDot particle "cloud", center {_loc4}, id "drawVcircle.Cloud%{_list}%%loop-value + 90%", visibleRange 30
+        
+    wait 1 tick
+    loop 120 time:
+        stopEffect id "drawVcircle.Cloud%{_list}%%loop-value%"
+        
+        
+command /water.mill <number=2>:
+    trigger:
+        set {water.mill.%player%} to 1
+        push player upward with speed 0.6
+        drawRings particle "redstone", RGB 78, 183, 255, center player, id "%player%", randomRotation true, animated false, radius 2, ringCount 3, ringDensity 20, visibleRange 32, pulseDelay 2
+        play sound "AMBIENT_UNDERWATER_ENTER" with volume 1.5 and pitch 1.3 for player
+        
+        set walk speed of player to 0.5
+        wait 10 tick
+        
+        set walk speed of player to 0.02
+        wait 1 tick
+        push player forward with speed 1.2
+        while true:
+            
+            play sound "BLOCK_WATER_AMBIENT" with volume 0.6 and pitch 1 for player
+            drawVerticalCircle(location 1.7 up location of player, player, arg-1, 78, 138, 255, 1)
+            drawVerticalCircle(location 1.7 up location of player, player, (arg-1 + 0.15), 48, 233, 255, 3)
+            drawVerticalCircle(location 1.7 up location of player, player, (arg-1 + 0.3), 48, 233, 255, 4)
+            drawVerticalCircleCloud(location 1.7 up location of player, player, (arg-1 + 0.6), 1)
+            set {_loc} to player's location
+            subtract 0.49 from y-coord of {_loc}
+            
+            if block at {_loc} is not air:
+                play sound "AMBIENT_UNDERWATER_EXIT" with volume 2 and pitch 1.1 for player
+                play sound "ITEM_BOTTLE_FILL_DRAGONBREATH" with volume 1 and pitch 1.3 for player
+                loop all entities in radius 12 of player:
+                    if loop-value is not player:
+                        make player damage loop-value by 15
+                play sound "AMBIENT_UNDERWATER_EXIT" with volume 2 and pitch 1.1 for player
+                stopEffect id "%player%"
+                set walk speed of player to 0.2
+                delete {water.mill.%player%}
+                stop all sections
+            wait 4 tick
+        
+command /get.sword [<text="물">]:
+    trigger:
+        if arg-1 is "물":
+            give 1 of iron sword named "&1[&9&l水&1] &8일륜도" to player
+
+
+on damage of player:
+    if damage cause is fall:
+        if {water.mill.%victim%} is set:
+            set damage to (damage/5)

@@ -1,0 +1,44 @@
+on load:
+	set {_colorCode} to "&1 &2 &3 &4 &5 &6 &7 &8 &9 &a &b &c &d &e &f"
+	set {_fontCode} to "&k난독화&r &l볼드&r &m취소선&r &n밑줄&r &o기울임&r (& r) &r색, 글씨체 초기화"
+	#broadcast "%{_fontCode}%"
+	set {_n} to nbt compound from "{HideFlags:255}"
+
+function starterKit(pl: player):
+	loop 7 times:
+		wait 1 second
+		give {_pl} 1 gold ingot
+		play sound "entity.item.pickup" with volume 1 at {_pl}
+
+command /gamestart:
+	trigger:
+		set {disableJump::%player%} to true
+		clear player's inventory
+		set player's gamemode to survival
+		starterKit(player)
+
+		execute console command "/stopwave"
+
+		loop all players:
+			set {perks.%loop-player%::shield} to false
+		heal player
+
+		teleport player to location 66, 96, -53 in "world_lemonfox"
+		apply blindness to player for 8.0 second
+		apply slowness 99 to player for 7.0 second
+		send title "&lThe Waves &ris coming." with subtitle "&cHave fun, &dStay safe!" to player for 5 seconds
+		wait 5 seconds
+		send title "" with subtitle "You have &l&4only 60 seconds &rnow." to player for 3 seconds
+		wait 3 seconds
+		set {disableJump::%player%} to false
+
+		
+		execute console command "/w 1"
+		set block at location -17, 91, 18 to redstone block
+		#wait 1 tick
+		set block at location -17, 91, 18 to air
+
+on jump:
+	{disableJump::%player%} is true
+	cancel event
+

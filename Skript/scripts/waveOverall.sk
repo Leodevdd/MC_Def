@@ -1,0 +1,81 @@
+options:
+	waveTime : 60
+	#호출은 {@waveTime} 이렇게
+
+on load:
+	set {waveTime} to {@waveTime}
+
+	#set {spawnPointA} to location at 98, 100, 94 in "world"
+	#set {spawnPointB} to location at 3, 100, 7 in "world"
+	
+	broadcast "&3waveOverall loaded"
+	set {spawnPointCave} to location at 304.5, 101, 66.5 in "world"
+	set {spawnPointCave}'s pitch to 0
+	set {spawnPointCave}'s yaw to 180
+
+	set {spawnPointForest} to location at 3, 100, 7 in "world"
+
+	set {spA} to location at {spawnPointCave}
+	set {spB} to location at {spawnPointForest}
+
+	set {stopWave} to true
+
+
+command /stopwave:
+	trigger:
+		set {stopWave} to true
+		broadcast "&4[STOP WAVE] &rrequested"
+		make player execute command "/killall"
+
+command /w [<integer>]:
+	trigger:
+		broadcast "&a&l== wave =="
+		set {coreLife} to 20
+		set {waveCount} to arg-1
+		if {waveCount} is not number:
+			#set {waveCount} to 1
+			broadcast "Error: /w [<integer>]"
+		set {stopWave} to false
+		
+		#set {spA} to location at {spawnPointCave}
+		set {spA} to location at -40, 93, 6 in "world_lemonfox"
+		#if arg-1 is 999:
+		#	broadcast "Warning: it's test wave!"
+			#set {spA} to location at 4, 0, 19.5 in "world_test"
+			
+
+		loop 6 times:
+			#if {stopWave} is true:
+			#	set {stopWave} to false
+			#	broadcast "stopped wave"
+			#	stop trigger
+
+			broadcast "[Wave] %{waveCount}%"
+			wave({waveCount})
+			add 1 to {waveCount}
+			
+			#wait 30 seconds
+			#빠른 반응의 stopwave를 위해 시간 쪼개서 검사
+			loop {waveTime} times:
+				wait 1 seconds
+				if {stopWave} is true:
+					#set {stopWave} to false
+					broadcast "stopped wave"
+					stop trigger	
+
+			
+
+		broadcast "== wave end =="
+
+		
+command /killall:
+	trigger:
+		set {_entityCount} to 0
+		loop all entities:
+			if loop-entity is not a player:
+				if loop-entity is not a wolf:
+					if loop-entity is not a villager:
+						if loop-entity is not glow item frame: #이유는 모르지만 이것만 추가했더니 기본 액자도 예외처리 되었음
+							delete loop-entity
+							add 1 to {_entityCount}
+		broadcast "%{_entityCount}% entities cleared"

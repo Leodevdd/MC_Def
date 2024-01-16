@@ -1,0 +1,138 @@
+options:
+	waveTime : 60
+	#호출은 {@waveTime} 이렇게
+
+on load:
+	set {spawnPointA} to location at 98, 100, 94 in "world"
+	set {spawnPointB} to location at 3, 100, 7 in "world"
+
+	set {spA} to location at {spawnPointA}
+	set {spB} to location at {spawnPointB}
+
+	add randomNum() to {_spA}'s z-coordinate
+	add randomNum() to {_spB}'s z-coordinate
+
+	set {zombie} to a zombie
+
+#===============================================================================
+
+# -4 ~ 4 소숫점 포함 랜덤 수 반환
+function randomNum() :: number:
+	return a random number between -4 and 4
+	broadcast "Error: waveOverall line4"
+
+# 허스크, 드라운드 강화
+function reinforceMob(mob: object):
+	if {_mob} is husk:
+		broadcast "super husk"
+		set last spawned entity's max health attribute to 100
+		heal last spawned entity
+		set last spawned entity's knockback resistance attribute to 0.8
+	else if {mob} is drowned:
+		broadcast "super drowned"
+
+
+# spawnMobs(zombie, 10) 좀비 10마리를 30초 동안 나눠서 소환
+function spawnMobs(mob: object, mobNum: number):
+	
+	#30초 동안 일정한 간격으로 보내기 위한 과정: 30 / 몹 수
+	set {_eachTime} to round down {@waveTime} / {_mobNum}
+
+	loop {_mobNum} times:
+		if {stopWave} is true:
+			#set {stopWave} to false
+			broadcast "stopping wave.."
+			stop trigger
+		
+		broadcast "test spawn in loop : %{_mob}%"
+
+		set {_tmpSPB} to {spB}
+		add randomNum() to {_tmpSPB}'s z-coordinate
+		spawn {_mob} at {_tmpSPB}
+
+		reinforceMob({_mob})
+
+		wait "%{_eachTime}% seconds" parsed as timespan
+
+
+#===============================================================================
+
+
+	
+
+
+#V1
+#1| silverfish endermite
+#2| zombie  husk zombie villager skeleton spider 
+#3| slime vex cave spider creeper zombie pigman 
+#4| drowned(lancer) witch(hero) vindicator pillager enderman stray(hero)
+#5| blaze(hero) ravager magma cube
+
+#V2
+#1| zombie, spider, skeleton
+#2| husk(high damage, health), drowned(high regeneration), stray
+#3| vindicator, piglin, pillager, cave spider, witch, drowned(lancer)
+#4| zombified piglin, piglin brute, wither skeleton, hoglin
+#5| ravager, Zoglin, blaze, evoker
+#boss | wither, warden, elder guardian
+
+#V2
+# 1 point| 10 zombie, 10 spider
+# 3 point| 10 husk, 10 drowned
+# 5 point| 10 skeleton
+# 6 point|
+# 7 point|
+
+function wave(waveCount : number):
+	if {_waveCount} is 1:
+		spawnMobs(a husk, 10)
+
+		#spawnMobs(zombie, 20) # 좀비가 3초마다 나옴, 총 20마리 60초
+		#spawnMobs(zombie, 14) # 좀비가 4초마다 나옴, 총 14마리 56초
+		#spawnMobs(zombie, 61) # 웨이브 타임을 넘기는 숫자는 한 번에 소환됨. 나중에 보완할 것.
+	else if {_waveCount} is 2:
+		set {stopWave} to true
+		#spawnMobs(spider, 10)
+		#spawnMobs({zombie}, 10)
+	else if {_waveCount} is 3:
+		#spawnMobs(skeleton, 3)
+		#spawnMobs(skeleton, 10)
+	else if {_waveCount} is 4:
+		#spawn
+	else if {_waveCount} is 5:
+
+	else if {_waveCount} is 6:
+
+	else if {_waveCount} is 7:
+
+	else if {_waveCount} is 8:
+
+	else if {_waveCount} is 9:
+
+	else if {_waveCount} is 10:
+
+	else if {_waveCount} is 11:
+	else if {_waveCount} is 12:
+	else if {_waveCount} is 13:
+	else if {_waveCount} is 14:
+	else if {_waveCount} is 15:
+	else if {_waveCount} is 16:
+	else if {_waveCount} is 17:
+	else if {_waveCount} is 18:
+	else if {_waveCount} is 19:
+	else if {_waveCount} is 20:
+	else if {_waveCount} is 21:
+	else if {_waveCount} is 22:
+	else if {_waveCount} is 23:
+	else if {_waveCount} is 24:
+	else if {_waveCount} is 25:
+	else if {_waveCount} is 26:
+	else if {_waveCount} is 27:
+	else if {_waveCount} is 28:
+	else if {_waveCount} is 29:
+	else if {_waveCount} is 30:
+	else:
+		broadcast "Error occured: waveFunction 'if waveCount is'"
+
+
+	wait 10 ticks #(30 seconds)#default

@@ -1,0 +1,137 @@
+# attributes:
+# generic max health, generic follow range, generic knockback resistance, 
+#generic movement speed, generic flying speed, generic attack damage, 
+#generic attack knockback, generic attack speed, generic armor, generic armor toughness, 
+#generic luck, horse jump strength, zombie spawn reinforcements
+
+
+every 10 ticks in "world":
+	loop all players:
+		dye loop-player's helmet ({a}, {b}, {c})
+
+command /particle:
+	trigger:
+		set {_loc} to location 1.7 up and 3 infront location of player
+		set {_pitch} to pitch of {_loc}
+		set {_yaw} to yaw of {_loc}
+
+		set {_vector.face} to vector from yaw {_yaw} and pitch {_pitch}
+		set {_vector.face} to vector from yaw {_yaw} and pitch {_pitch} - 90
+
+		loop 40 times:
+			add {_loc} ~ {_vector.vertical} to {_particle_loc::*}
+			rotate {_vector.vertical} around {_vector.face} by -9
+
+		set {_delay} to 0
+		while {_delay} < 100:
+			loop {_particle_loc::*}:
+				#make 3 of item particle using diamond at loop-value
+				#make 1 of block particle using dirt at loop-value
+				#make 1 of sculk_charge using 0.1 at loop-value with force
+				#draw 20 of dust using dustOption(blue, 10) at loop-value
+				make 10 of poof at loop-value with offset vector(2, 2, 2) with extra 0.5
+
+			add 1 to {_delay}
+			wait 1 tick
+
+on heal:
+	if heal reason is satiated:
+		cancel event
+
+on damage:
+	if attacker is not a player:
+		if victim is not a player:
+			cancel event
+
+on damage:
+	if attack cooldown of attacker < 1:
+		cancel event
+		send "not fully charged attack" to attacker
+
+
+command /test <integer>:
+	trigger:
+		#set {_i} to arg 1 / 100
+		set {_i} to 0.1
+		broadcast "&5<font:alt>speed : %{_i}%"
+		broadcast "&6<font:default>speed : %{_i}%"
+		broadcast "&3<font:uniform>speed : %{_i}%"
+
+		spawn zombie at player's location
+		set last spawned entity's attack speed attribute to 10
+		set last spawned entity's movement speed attribute to 0.3
+		set player's movement speed attribute to {_i}
+		broadcast "%last spawned entity's movement speed attribute%"
+		broadcast "%last spawned entity's attack knockback attribute%"
+		broadcast "%player's movement speed attribute%"
+		broadcast "%player's knockback resistance attribute%"
+
+command /attackspeed:
+	trigger:
+		set player's attack speed attribute to 6
+		broadcast "set attack speed to 6"
+
+command /das:
+	trigger:
+		set player's attack speed attribute to 4 #default
+		broadcast "set attack speed to 4 (default)"
+
+command /gm:
+	trigger:
+		if player's game mode is survival:
+			set the player's game mode to creative
+		else:
+			set the player's game mode to survival
+
+command /addhp:
+	trigger:
+		add 1 to player's max health
+		message "You have %player's health% HP left."
+
+command /dhp:
+	trigger:
+		set player's max health to 10
+
+		message "You have %player's health% HP left."
+
+
+#command /testsquare:
+#	trigger:
+		#kill nearest player in radius 10 around player
+
+#on every tick:
+#    loop all living entities:
+#        if name of loop-entity is "test":
+#        	broadcast "test"
+            #play flames on loop-entity
+
+function parseTextToEntity(text : text) :: object:
+	broadcast "text : %{_text}%"
+	if {_text} is "zombie":
+		return zombie
+	else if {_text} is "spider":
+		return spider
+	else if {_text} is "zombie":
+		return zombie
+	else if {_text} is "zombie":
+		return zombie
+	else if {_text} is "zombie":
+		return zombie
+	else if {_text} is "zombie":
+		return zombie
+	else if {_text} is "zombie":
+		return zombie
+	else if {_text} is "zombie":
+		return zombie
+	else:
+		broadcast "&4Exception : No matching entity type : %{_text}% (parseTextToEntity)"
+
+
+function nearPlayer(loc : location) :: entities:
+	loop all players in "world":
+		set {_nearest} to loop-entity
+		if distance between loop-entity and {_loc} is less than distance between {_loc} and {_nearest}:
+			set {_nearest} to loop-entity
+	return {_nearest}
+
+	#set {_nearPlayer::*} to nearPlayer(loop-entity's location)

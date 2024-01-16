@@ -1,0 +1,147 @@
+function drawCircle(loc:location, radius:number, r:integer, g:integer, b:integer):
+	set {_loc0} to {_loc}
+	set {_index} to 1
+	set {_loop} to {_radius}*24 #radius 뒤의 숫자로 밀도 조절, 밀도 올릴시 계산량 증가
+	set {_theta} to (360/{_loop})
+	set {_theta0} to {_theta}
+	loop {_loop} times:
+		set {_dx} to {_radius}*cos({_theta})
+		set {_dz} to {_radius}*sin({_theta})
+		add {_dx} to {_loc}'s x-coord
+		add {_dz} to {_loc}'s z-coord
+		set {_loc::%{_index}%} to {_loc}
+		set {_loc} to {_loc0}
+		add 1 to {_index}
+		set {_theta} to {_index}*{_theta0}
+	loop {_loc::*}:
+		draw 1 of dust using dustOption(rgb({_r}, {_g}, {_b}), 1) at loop-value	
+		#draw 1 dust_color_transition using dustTransition(red, green, 5) at {_loc} with force
+
+function drawSphere(loc:location, radius:number, r:integer, g:integer, b:integer):
+	set {_loc0} to {_loc}
+	set {_index} to 1
+	set {_index.theta} to 1
+	set {_index.phi} to 1
+	set {_loop} to {_radius}*24 #radius 뒤의 숫자로 밀도 조절, 밀도 올릴시 계산량 많이 증가
+	set {_theta} to (360/{_loop})
+	set {_theta0} to {_theta}
+	set {_phi} to (360/{_loop})
+	set {_phi0} to {_phi}
+	loop {_loop}/2 times:
+		loop {_loop} times:
+			set {_dx} to {_radius}*sin({_theta})*cos({_phi})
+			set {_dz} to {_radius}*sin({_theta})*sin({_phi})
+			set {_dy} to {_radius}*cos({_theta})
+			add {_dx} to {_loc}'s x-coord
+			add {_dz} to {_loc}'s z-coord
+			add {_dy} to {_loc}'s y-coord
+			set {_loc::%{_index}%} to {_loc}
+			set {_loc} to {_loc0}
+			add 1 to {_index}
+			add 1 to {_index.theta}
+			set {_theta} to {_index.theta}*{_theta0}
+		add 1 to {_index.phi}
+		set {_phi} to {_index.phi}*{_phi0}
+	wait 1 tick
+	loop {_loc::*}:
+		draw 1 of dust using dustOption(rgb({_r}, {_g}, {_b}), 1) at loop-value
+
+function drawParabola(loc:location, velocity:number, theta:number, phi:number, r:integer, g:integer, b:integer):
+	set {_loc0} to {_loc}
+	set {_index} to 1 
+	set {_time0} to 0.1 #시간에 관한 변수 / 기본은 1tick = 0.05초
+	set {_time} to {_time0}
+	set {_gravity.acc} to 1 #중력가속도 변수 (원하는 대로 조절해보세요!)
+	loop 100 times: #일단은 100번만 반복 (반복 횟수 조절 가능)
+		set {_dx} to {_velocity}*cos({_phi})*cos({_theta})*{_time}
+		set {_dy} to ({_velocity}*sin({_phi})*{_time})-(0.5*{_gravity.acc}*({_time}^2))
+		set {_dz} to {_velocity}*cos({_phi})*sin({_theta})*{_time}
+		add {_dx} to {_loc}'s x-coord
+		add {_dy} to {_loc}'s y-coord
+		add {_dz} to {_loc}'s z-coord
+		set {_loc::%{_index}%} to {_loc}
+		set {_loc} to {_loc0}
+		add 1 to {_index}
+		set {_time} to {_time0}*{_index}
+	wait 1 tick
+	loop {_loc::*}:
+		draw 1 of dust using dustOption(rgb({_r}, {_g}, {_b}), 1) at loop-value
+
+		
+#기본적으로 dx는 cos(θ)를 기준으로 삼음 dz는 sin(θ)
+function fixPitchVectorToAngle(x:number, z:number) :: number:
+	set {_length.xz} to sqrt((({_x})^2)+(({_z})^2))
+	set {_length.x} to abs({_x})
+	set {_theta} to acos((({_x})^2)/({_length.xz}*{_length.x}))
+	if {_x} > 0:
+		if {_z} > 0:
+			return {_theta} #x증 z증 east-south
+		else if {_z} < 0:
+			set {_theta} to abs(90-{_theta})
+			add 270 to {_theta} #x증 z감 east-north
+			return {_theta}
+		else:
+			set {_theta} to 0 #x증 z0 east
+			return {_theta}
+	else if {_x} < 0:
+		if {_z} > 0:
+			set {_theta} to abs(90-{_theta})
+			add 90 to {_theta} #x감 z증 west-south
+			return {_theta}
+		else if {_z} < 0:
+			add 180 to {_theta} #x감 z감 west-north
+			return {_theta}
+		else:
+			set {_theta} to 180 #x감 z0 west
+			return {_theta}
+	else:
+		if {_z} > 0:
+			set {_theta} to 90 #x0 z증 south
+			return {_theta}
+		else:
+			set {_theta} to 270 #x0 z감 north
+			return {_theta}
+
+
+command /drawCircle [<number>] [<integer>] [<integer>] [<integer>]:
+	trigger:
+		if player is op:
+			set {_loc} to player's location
+			set {_loc} to location 1 up {_loc}
+			set {_radius} to arg 1
+			set {_r} to arg 2
+			set {_g} to arg 3
+			set {_b} to arg 4
+			loop 3 times:
+				drawCircle( {_loc}, {_radius}, {_r}, {_g}, {_b})
+				
+
+command /drawSphere [<number>] [<integer>] [<integer>] [<integer>]:
+	trigger:
+		if player is op:
+			set {_loc} to player's location
+			set {_loc} to location 1 up {_loc}
+			set {_radius} to arg 1
+			set {_r} to arg 2
+			set {_g} to arg 3
+			set {_b} to arg 4
+			drawSphere( {_loc}, {_radius}, {_r}, {_g}, {_b})
+			
+command /drawParabola [<number>] [<number>] [<integer>] [<integer>] [<integer>]:
+	trigger:
+		if player is op:
+			set {_loc} to player's location
+			set {_loc} to location 1 up {_loc}
+			set {_velocity} to arg 1
+			set {_phi} to arg 2
+			set {_r} to arg 3
+			set {_g} to arg 4
+			set {_b} to arg 5
+			#set {_unitvector} to vector from yaw ( yaw of player ) and pitch (+0)
+			set {_unitvector} to "%{_unitvector}%"
+			replace all ":" and "x","y","z"," " with "" in {_unitvector}
+			set {_vector::*} to {_unitvector} split by ","
+			loop {_vector::*}:
+				set {_vector::%loop-index%} to {_vector::%loop-index%} parsed as number
+			set {_theta} to fixPitchVectorToAngle({_vector::1}, {_vector::3})
+			drawParabola({_loc}, {_velocity}, {_theta}, {_phi}, {_r}, {_g}, {_b})

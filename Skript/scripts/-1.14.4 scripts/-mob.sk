@@ -1,0 +1,177 @@
+
+
+function zeroToThree() :: number:
+	#set {_i} to arg 0
+	
+	if chance of 25%:
+		set {_i} to {_i} + 0
+	else if chance of 25%:
+		set {_i} to {_i} + 1
+	else if chance of 25%:
+		set {_i} to {_i} + 2
+	else:
+		set {_i} to {_i} + 3
+	return {_i}
+
+
+every 10 ticks in "world":
+	loop all mobs:
+		
+		set {pathPoint} to location at -746, 57, -862
+		#set {checkPoint} to location at -870, 58, -862
+
+		#if loop-value's name is "&2Zombie":
+		set path target with speed 1.0 of loop-value to {pathPoint}
+
+		if loop-value's name is "Phan":
+			broadcast "phan"
+
+every 1 ticks in "world":
+	loop all cows:
+		
+		set {pathPoint} to location at -746, 57, -862
+		#set {checkPoint} to location at -870, 58, -862
+
+		#if loop-value's name is "&2Zombie":
+		set path target with speed 2.0 of loop-value to {pathPoint}
+
+
+		if distance between loop-value and {pathPoint} is less than 5:
+			kill loop-value
+			add 1 to {life}
+			broadcast "%{life}%"
+
+
+			#if distance between {pathPoint} and loop-value is greater than 3:
+			#set path target with speed 1 of loop-value to {pathPoint}
+			#else:
+			#	delete path target of loop-value
+		#else if loop-value's name is "&2Zombie::ff":
+		#	set path target with speed 1.5 of loop-value to {pathPoint}
+		#else if loop-value's name is "&2Zombie::f":
+		#	set path target with speed 1.05 of loop-value to {pathPoint}
+		#else if loop-value's name is "&2Zombie::s":
+		#	set path target with speed 0.95 of loop-value to {pathPoint}
+		#else if loop-value's name is "&2Zombie::ss":
+		#	set path target with speed 0.9 of loop-value to {pathPoint}
+
+		#1| silverfish endermite
+		#2| zombie  husk zombie villager skeleton spider 
+		#3| slime vex cave spider creeper zombie pigman 
+		#4| drowned(lancer) witch(hero) vindicator pillager enderman stray(hero)
+		#5| blaze(hero) ravager magma cube
+
+		#build
+		#1 zombie
+		#2 zombie spider
+		#3 spider skeleton
+		#4 spider (all in)
+		#5 encounter - grave, prison, endermite rush, spider (all in)
+		#6 zombie skeleton spider
+		#7 silverfish skeleton
+		#8 husk
+		#9 
+		#10
+
+		#1| silverfish endermite
+		#2| zombie skeleton spider | drowned | husk | zombie villager 
+		#3| slime stray vex magma cube cave spider creeper zombie pigman 
+		#4| witch vindicator pillager enderman
+		#5| blaze ravager evoker illusioner
+
+		#etc| elder guardian phanntom
+
+command /cow:
+	trigger:
+		set {life} to 0
+		spawn cow at {spawnPoint}
+
+
+
+function wavestart(i : number):
+	loop 10+{_i} times:
+
+		set {_rand} to zeroToThree()
+		add {_rand} to {spawnPoint}'s z-coordinate
+		
+		
+		if {_i} is 1:
+			if chance of 100%:
+				spawn zombie at {spawnPoint}
+
+		if {_i} is 2:
+			if chance of 100%:
+				spawn zombie at {spawnPoint}
+
+		if {_i} is 3:
+			spawn spider at {spawnPoint}
+
+
+		set last spawned entity's knockback resistance attribute to 1
+
+		#set name of last spawned entity to "&2Zombie"
+		#add "{HandItems:[{id:stick,Count:1,tag:{Enchantments:[{id:sharpness,lvl:10},{id:fire_aspect,lvl:1},{id:knockback,lvl:100}]}}]}" to last spawned entity's nbt
+
+		subtract {_rand} from {spawnPoint}'s z-coordinate
+		wait 5 ticks
+
+
+
+command /w:
+	trigger:
+		broadcast "&a&l== wave =="
+		set {spawnPoint} to location at -1045, 60, -863
+		wavestart(1)
+		#wait 10 seconds
+		#wavestart(2)
+		#wait 10 seconds
+		#wavestart(3)
+		broadcast "== wave end =="
+ 
+
+command /killbb:
+	trigger:
+		loop all entities:
+			if loop-value's name is "&2Zombie":
+				kill loop-value
+			else if loop-value's name is "&2Zombie::ff":
+				kill loop-value
+			else if loop-value's name is "&2Zombie::f":
+				kill loop-value
+			else if loop-value's name is "&2Zombie::s":
+				kill loop-value
+			else if loop-value's name is "&2Zombie::ss":
+				kill loop-value
+
+
+command /bbb:
+	trigger:
+		kill last spawned zombie
+		set {testL} to location of target block of player
+
+		spawn zombie at player
+		set name of last spawned zombie to "&2Zombie"
+		set path target of last spawned entity to {testL}
+		#set path target with speed 1.5 to location of above player
+		#set path targets of all entities to location of player
+		#delete path target of event-entity
+
+command /bb:
+	trigger:
+		message "debug : HEllo"
+		kill last spawned zombie
+		set {testL} to location of target block
+		spawn zombie at player
+		set name of last spawned zombie to "&2Zombie"
+		#(-1113, 200, -746)
+
+		#set block at {testL} to stone
+
+		message "debug : %{testL}%"
+
+		#while spawned entity exists:
+		#	make last spawned zombie pathfind to {testL}
+		#	wait 1 tick
+		
+
+		

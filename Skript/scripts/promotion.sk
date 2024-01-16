@@ -1,0 +1,92 @@
+on load:
+	set {_colorCode} to "&1 &2 &3 &4 &5 &6 &7 &8 &9 &a &b &c &d &e &f"
+	set {_fontCode} to "&k난독화&r &l볼드&r &m취소선&r &n밑줄&r &o기울임&r (& r) &r색, 글씨체 초기화"
+	#broadcast "%{_fontCode}%"
+
+	set {novice} to "&lNovice&r"
+	set {warrior} to "&8&lWarrior&r"
+	set {ranger} to "&6&lRanger&r"
+	set {wizard} to "&9&lWizard&r"
+
+	set {wingman} to "&b&lWing Man&r"
+
+	#if {class.%player%} is not set:
+	set {class.%player%} to {novice}
+
+	#랜덤 요소 선택
+	#set {_loc} to a random element out of {CHESTS::*}
+
+#=============================================
+
+# changeClass(클래스명, 플레이어)
+# 해당 클래스로 변경시킴 
+function changeClass(className: text, pl: player):
+	if {class.%{_pl}%} is not {_className}:
+		broadcast "&7&l%{_pl}%&r &3became&r a %{_className}% from %{class.%{_pl}%}%"
+		set {class.%{_pl}%} to {_className}
+	else:
+		broadcast "&7&l%{_pl}%&r is &3already&r a %{_className}%"
+
+
+
+on inventory click:
+	if name of event-inventory contain "becoming":
+		cancel event
+		#if index of event-slot = 0:
+		#	send "You clicked on the slot 0"
+
+		# 전사 선택
+		if clicked item is iron sword:
+			changeClass({warrior}, player)
+
+
+		# 레인저 선택
+		else if clicked item is a bow:
+			changeClass({ranger}, player)
+
+		# 위자드 선택
+		else if clicked item is blaze rod:
+			changeClass({wizard}, player)
+
+		# 윙맨 선택
+		else if clicked item is feather:
+			changeClass({wingman}, player)
+
+		# 클래스 초기화
+		else if clicked item is wooden sword:
+			changeClass({novice}, player)
+
+#=============================================
+
+on rightclick:
+	if event-item is book:
+		set {_gui} to a new chest inventory with 3 row with name "&3&lYou can becoming a..&r"
+		
+		set {_n} to nbt compound from "{HideFlags:255}"
+		set slot 3 of {_gui} to iron sword named "%{warrior}% | &6&l7G" with nbt {_n}
+		set slot 4 of {_gui} to bow named "%{ranger}%" with nbt {_n}
+		set slot 5 of {_gui} to blaze rod named "%{wizard}%" with nbt {_n}
+
+		set slot 12 of {_gui} to feather named "%{wingman}%" with nbt {_n}
+
+
+		set slot 22 of {_gui} to wooden sword named "Back to &3&lNovice" with nbt {_n}
+
+		open {_gui} to player
+
+
+#on rightclick:
+#	if event-item is book:
+#		open chest with 3 row named "shop test" to player # 6 row is max
+		#format slot 0 of player with gray stained glass pane named "&7" to be unstealable
+		#format slot 4 of player with compass named "&7name 게임모드 변경" with lore "&7lore" to run [make player execute command "/gm"]
+		
+		#set {_n} to nbt compound from "{HideFlags:255}"
+		#format slot 8 of player with barrier named "&4Quit" with lore "&7quit the shop" with nbt {_n} to close
+		
+		#format slot 4 of player with 
+
+#		format slot 26 of player with barrier named "&4직업 선택 나가기" to close
+
+
+

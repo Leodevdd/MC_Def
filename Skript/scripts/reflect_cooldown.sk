@@ -1,0 +1,33 @@
+import:
+    java.lang.Integer
+
+expression:
+    patterns:
+        %itemtype% cooldown of %player%
+        %player%'s %itemtype% cooldown
+    return type: integer
+    get:
+        set {_expr::*} to ExprCooldown_expressions( expr-1 and expr-2 )
+        return {_expr::1}.getCooldown( {_expr::2}.getMaterial() )
+    set:
+        set {_expr::*} to ExprCooldown_expressions( expr-1 and expr-2 )
+        {_expr::1}.setCooldown( {_expr::2}.getMaterial(), change value.intValue() )
+    add:
+        set {_expr::*} to ExprCooldown_expressions( expr-1 and expr-2 )
+        set {_value} to {_expr::1}.getCooldown( {_expr::2}.getMaterial() ) + change value
+        {_expr::1}.setCooldown( {_expr::2}.getMaterial(), {_value}.intValue() )
+
+#> @invisible
+function ExprCooldown_expressions(obj:objects) :: objects:
+    if {_obj::1} is a player:
+        set {_expr::*} to {_obj::1} and {_obj::2}
+    else:
+        set {_expr::*} to {_obj::2} and {_obj::1}
+    return {_expr::*}
+
+command /cooldown:
+    trigger:
+        loop 30 times:
+            add 6 to tool cooldown of player
+            wait 5 tick
+            send "쿨다운: %tool cooldown of player%" to player

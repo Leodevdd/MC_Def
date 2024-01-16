@@ -1,0 +1,169 @@
+#on heal:
+#	if heal reason = satiated:
+#		cancel event
+
+command /tett:
+	trigger:
+		set the maximum health of the player to 40
+
+command /wtf:
+	trigger:
+		#set {loc1} to locaton at 1,1,1 #targeted block
+		set {loc1} to block 2 up player
+		#set targeted block to argument
+		spawn a skeleton at {loc1}
+		set {_entity} to last spawned entity
+		spawn a phantom at {loc1}
+		set name of last spawned phantom to "Phan"
+		leash {_entity} to last spawned entity
+		#set path target with speed 2.0 of last spawned entity to player
+		#leash player to last spawned entity
+		message "debug : %{loc1}%"
+
+command /fence:
+	trigger:
+		spawn a zombie at player
+		#set {loc1} to locaton at 1,1,1 #targeted block
+		set {loc5} to block 2 up player
+		#set targeted block to argument
+		set block at {loc5} to oak_fence
+		leash last spawned entity to block at {loc5}
+		#leash player to last spawned entity
+		message "debug : %{loc5}%"
+		
+command /kelt:
+	trigger:
+		set {loc6} to block 2 up target entity of player
+
+		set {b1} to block at {loc6} 
+
+		message "debug1 : %{b1}%"
+		
+		set block at {loc6} to oak_fence
+		leash targeted entity to block at {loc6}
+		wait 100 tick
+		set block at {loc6} to air
+		message "debug2 : %{b1}%"
+		set block at {loc6} to {b1}
+
+command /target:
+	trigger:
+		set {loc2} to location at target block of player
+		subtract 10 from {loc2}'s y-coordinate
+		spawn a Zombie at {loc2}
+
+command /sand:
+	trigger:
+		set {loc3} to location at target block of player
+		add 1 to {loc3}'s y-coordinate
+		spawn a zombie at {loc3}
+		add 2 to {loc3}'s y-coordinate
+		leash last spawned entity to {loc3}
+		send "%{loc3}%"
+
+command /boat:
+	trigger:
+		set {loc4} to location at target block of player
+		add 1 to {loc4}'s y-coordinate
+		spawn a boat at {loc4}
+		leash last spawned entity to player
+		leash player to last spawned entity
+
+command /xxxxx [<integer>]:
+	trigger:
+		set {v.c} to arg 1
+		while {v.c} > 0:
+			show action bar "<green>%{v.c}-1% <black>/ <red>%arg 1%" to player
+			shoot an arrow #with nbt {damage:5}
+			add "{pickup:0b}" to nbt of last spawned arrow
+			subtract 1 from {v.c}
+			wait 5 tick
+		if {v.c} = 0:
+			show action bar "<red>Empty!! <red>0 <black>/ <red>%arg 1% <red>Empty!!" to player
+
+command /xxxx [<integer>]:
+	trigger:
+		set {v.c} to arg 1
+		while {v.c} > 0:
+			show action bar "<green>%{v.c}-1% <black>/ <red>%arg 1%" to player
+			shoot an arrow #with nbt {damage:5}
+			add "{pickup:0b}" to nbt of last spawned arrow
+			subtract 1 from {v.c}
+			wait 4 tick
+		if {v.c} = 0:
+			show action bar "<red>Empty!! <red>0 <black>/ <red>%arg 1% <red>Empty!!" to player
+
+command /xxx [<integer>]:
+	trigger:
+		set {v.c} to arg 1
+		while {v.c} > 0:
+			show action bar "<green>%{v.c}-1% <black>/ <red>%arg 1%" to player
+			shoot an arrow #with nbt {damage:5}
+			add "{pickup:0b}" to nbt of last spawned arrow
+			subtract 1 from {v.c}
+			wait 3 tick
+		if {v.c} = 0:
+			show action bar "<red>Empty!! <red>0 <black>/ <red>%arg 1% <red>Empty!!" to player
+
+command /xx [<integer>]:
+	trigger:
+		set {v.c} to arg 1
+		while {v.c} > 0:
+			show action bar "<green>%{v.c}-1% <black>/ <red>%arg 1%" to player
+			shoot an arrow #with nbt {damage:5}
+			add "{pickup:0b}" to nbt of last spawned arrow
+			subtract 1 from {v.c}
+			wait 2 tick
+		if {v.c} = 0:
+			show action bar "<red>Empty!! <red>0 <black>/ <red>%arg 1% <red>Empty!!" to player
+
+command /x [<integer>]:
+	trigger:
+		set {v.c} to arg 1
+		while {v.c} > 0:
+			show action bar "<green>%{v.c}-1% <black>/ <red>%arg 1%" to player
+			shoot an arrow #with nbt {damage:5}
+			add "{pickup:0b}" to nbt of last spawned arrow
+			subtract 1 from {v.c}
+			wait 1 tick
+		if {v.c} = 0:
+			show action bar "<red>Empty!! <red>0 <black>/ <red>%arg 1% <red>Empty!!" to player
+
+command /shot tnt:
+	trigger:
+		shoot an tnt
+
+command /shoot:
+	trigger:
+		shoot an fire ball
+
+#command /set path goal:
+#	trigger:
+#		spawn a zombie at target block's location
+#		add pathfind goal target nearest sheep to last spawned entity
+
+command /push:
+	trigger:
+		push player infront
+
+command /pushback or /pushb or /pb:
+	trigger:
+		push player behind
+
+#on swap hand items:
+#	cancel event
+#	push target of player behind
+
+#on player toggle sneak:
+#	cancel event
+#	push player behind
+
+
+
+
+		
+
+
+
+
+

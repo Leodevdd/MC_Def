@@ -1,0 +1,2 @@
+on server list ping:
+	set motd to "&6주핵 서버 &a&o1.19.4&r%nl%&5&e%now%"

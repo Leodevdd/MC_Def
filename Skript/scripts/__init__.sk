@@ -1,0 +1,6 @@
+on load:
+	execute command "world load world_test"
+	execute command "world load world_lemonfox"
+	execute command "sk reload teleport.sk"
+	#execute command "sk reload oreGenerate.sk"
+	#execute command "sk reload mobManager.sk"

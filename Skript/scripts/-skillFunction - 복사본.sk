@@ -1,0 +1,182 @@
+
+on load:
+	set {coolTime.%player%::dash} to false
+	set {coolTime.%player%::dash.count} to 0
+	set {coolTime.%player%::gunPowder} to false
+	set {coolTime.%player%::gunPowder.count} to 0
+
+
+# Cooltime 함수 ------------------------------------------------------------------------
+# coolTime(40, "dash", player)
+# 
+# {coolTime.%player%::dash} is false
+# 스킬 기능 ~~
+# coolTime(40, "dash", player)
+# 이렇게 시작과 끝에 써주면 쿨타임이 적용된다.
+
+function coolTime(coolTime: number, skill: text, pl: player):
+	set {coolTime.%{_pl}%::%{_skill}%} to true
+	set {coolTime.%{_pl}%::%{_skill}%.count} to {_coolTime}
+	while {coolTime.%{_pl}%::%{_skill}%.count} > 1:
+		subtract 1 from {coolTime.%{_pl}%::%{_skill}%.count}
+		wait 1 tick
+	set {coolTime.%{_pl}%::%{_skill}%} to false
+
+
+# 벨로시티 조정 테스트 코드
+# 별 의미 없음
+on leftclick with feather:
+	cancel event
+	set {_velo} to player's velocity
+	broadcast "-------------------"
+	broadcast "d velo : %{_velo}%"
+	
+	set {_flag} to false
+
+	if {_velo}'s x is more than 0.8:
+		set {_flag} to true
+	if {_velo}'s x is smaller than -0.8:
+		set {_flag} to true
+
+	if {_velo}'s y is more than 0.8:
+		set {_flag} to true
+	if {_velo}'s y is smaller than -0.8:
+		set {_flag} to true
+	
+	if {_velo}'s z is more than 0.8:
+		set {_flag} to true
+	if {_velo}'s z is smaller than -0.8:
+		set {_flag} to true
+
+	if {_flag} is true:
+		broadcast "속도 제한"
+		set {_velo}'s x to {_velo}'s x * 1.2
+		set {_velo}'s y to {_velo}'s y * 1.2
+		set {_velo}'s z to {_velo}'s z * 1.2
+		broadcast "after velo : %{_velo}%"
+		set player's velocity to {_velo}
+
+
+# 깃털 우클릭 대쉬
+on rightclick with feather:
+
+	if {coolTime.%player%::dash} is true:
+		set {_tickToSecond} to {coolTime.%player%::dash.count} * 0.05
+		#broadcast "dash CoolTime : %{_tickToSecond}%"
+		stop trigger
+
+
+	set {_loc} to location of player
+	set {_pitch} to pitch of {_loc} # 상하 시야각
+	set {_yaw} to yaw of {_loc} # 좌우 시야각
+
+	set {_vectorFace} to vector from yaw {_yaw} and pitch {_pitch}
+	set {_vectorVertical} to vector from yaw {_yaw} and pitch {_pitch} - 40 #90 is max radius
+
+	loop 36 times:
+		add {_loc} ~ {_vectorVertical} to {_particleLocation::*}
+		#add 0.1 to {_loc}'s y-coordinate
+		rotate {_vectorVertical} around {_vectorFace} by -10
+
+	set {_delay} to 0
+	#while {_delay} < 1:
+	loop {_particleLocation::*}:
+		draw 1 dust_color_transition using dustTransition(white, white, 1) at loop-value with force
+			#draw 1 bubble pop at loop-value with force
+			#play 1 dolphin with offset of 0.05, 0.05, 0.05 and speed 0 at loop-value
+			#play 1 CLOUD with offset of 0.05, 0.05, 0.05 and speed 0 at loop-value
+			
+			#execute console command "execute at @e[x=%loop-value's x-coordinate%, y=%loop-value's y-coordinate%, z=%loop-value's z-coordinate%]  run particle minecraft:dust_color_transition 1.000 1.000 1.000 1 0.569 0.957 1.000 ~ ~ ~ 0 0 0 0 0 force"
+			#execute console command "execute at @e[x=%victim's x-coordinate%, y=%victim's y-coordinate%, z=%victim's z-coordinate%, dx=0] run particle minecraft:sweep_attack ~ ~1 ~ 0.1 0.1 0.1 0 1 normal"
+
+	#add 1 to {_delay}
+	#wait 1 tick
+
+	push player forwards at speed 1
+	if player is sneaking:
+		push player upwards at speed 1
+
+	if player's gamemode is survival:
+		subtract 0.5 from the player's food level
+	#broadcast "food level : %player's food level%"
+	execute console command "execute at %player% run playsound minecraft:entity.player.attack.sweep master @a"
+	#~ ~ ~ 1 1.5 1"
+
+	coolTime(40, "dash", player)
+	add 40 to tool cooldown of player
+	#위 함수에 추가하려 했으나 reflect코드로 작성된 기능이라 그런지 player를 살아있는 개체로 받아들이지 못하는 오류 발생.
+	#또한 스킬이 한가지만 있는 경우가 아닐 때도 있으니 따로 쓰는 걸로 결정.
+
+
+# 커맨드 블럭 연계
+command /testShot:
+	trigger:
+		execute console command "tag %player% add projectileShot"
+
+
+# 화약 우클릭
+on rightclick with gunpowder:
+	player is sneaking
+	#target is not arrow
+	#target is alive
+
+	{coolTime.%player%::gunPowder} is not true
+
+	coolTime(10, "gunPowder", player)
+	add 10 to tool cooldown of player
+
+	#execute console command "effect give %player% minecraft:slowness 1 10 true"
+	play sound "entity_zombie_attack_iron_door" at volume 1 at pitch 2 at player
+	play 10 CLOUD with speed 1 at player
+	wait 10 ticks
+	player is sneaking
+	coolTime(10, "gunPowder", player)
+	add 10 to tool cooldown of player
+	play sound "entity_zombie_attack_iron_door" at volume 1 at pitch 2 at player
+	play 10 CLOUD with speed 1 at player
+	wait 10 ticks
+	player is sneaking
+	coolTime(20, "gunPowder", player)
+	add 20 to tool cooldown of player
+	play sound "entity_zombie_attack_iron_door" at player
+	play sound "entity_zombie_attack_iron_door" at volume 1 at pitch 2 at player
+	push player backwards at speed 1
+	play 100 CLOUD with speed 1 at player
+
+
+	# target으로만 하면 대상이 블럭일 때 고장나서 targeted entity와 targeted block을 구분해줬음
+	if target of player is entity:
+		set {_target} to targeted entity of player
+	else:
+		set {_target} to targeted block of player
+
+	set {_v} to vector from player to {_target}
+	set vector length of {_v} to 0.1
+	#0.1 = 밑에 loop (~~) / (시간) times 와 동일하면 정상.
+	#0 = 플레이어 제자리에서 파티클 머뭄
+	#1 = 플레이어로부터 겁나 관통함
+
+	set {_loc} to location of player
+	add 1 to {_loc}'s y-coordinate
+
+	#왜인지 모를 오류 때문에 target을 정확히 {_target} 안에 넣었음에도 문제가 발생함.
+	#문제: 벽으로 발사 ok. 엔티티에 커서 대고 발사 ok. 벽에 커서 두고 발동시켜서 발사할 때 엔티티에 커서 두면 이펙트가 엔티티를 관통함.
+	#검수를 계속 해보았으나 위치를 잘못준게 아니라 시스템상 잘못된 것으로 판명.
+	#그래서 아래처럼 targeted (block/entity)를 나눴더니 해결
+	if target is not alive:
+		loop (distance between {_loc} and targeted block) / 0.1 times:
+			draw 1 dust_color_transition using dustTransition(red, orange, 20) at {_loc} with force
+			set {_loc} to {_loc} ~ {_v}
+
+	else:
+		loop (distance between {_loc} and targeted entity) / 0.1 times:
+			draw 1 dust_color_transition using dustTransition(red, orange, 20) at {_loc} with force
+			set {_loc} to {_loc} ~ {_v}
+
+
+	targeted entity is alive
+	force player to damage targeted entity by 20
+
+	#execute console command "execute at %player% run playsound minecraft:entity.player.attack.sweep master @a"
+	execute console command "execute at %player% run playsound minecraft:entity.zombie.attack.iron.door master @a"
+

@@ -1,0 +1,11 @@
+on held item change:
+	#broadcast "item: %held item%"
+	if held item is gold nugget or gold ingot:
+		play sound "block.chain.place" with volume 1 and pitch 2.0 at player
+		play sound "block.chain.place" with volume 1 and pitch 1.5 at player
+		wait 1 tick
+		play sound "block.chain.place" with volume 1 and pitch 0.9 at player
+
+	else if held item's name contains "diamond sword":
+		broadcast "test"
+		play sound "entity.player.attack.sweep" with volume 1 at player

@@ -1,0 +1,81 @@
+on every 5 ticks: #in "world":
+	loop all living entities:
+		if "%region at loop-entity%" contains "life":
+
+			#이렇게 작성하면 if문만 탈출함
+			loop-entity is not a player # 플레이어가 아니면: and 검문소라고 생각하면 된다.
+			loop-entity is not a iron golem
+			loop-entity is not a armor stand
+			loop-entity is not a wolf
+
+
+			kill loop-entity
+			set {coreLife} to {coreLife} -1
+			broadcast "Life : %{coreLife}% Entity: %loop-entity%"
+
+			#비콘 디액티브 사운드
+			execute console command "execute at @a run playsound block.beacon.deactivate master @a ~ ~ ~ 10 1 1"
+			
+
+			#execute console command "summon item_display 408 112 39 {item:{id:wooden_sword, Count:1b}}"
+			#execute console command "summon item_display ~ ~2 ~ {item:{id:'iron_sword', Count:1b}}"
+			#execute console command "execute at [x=413, y=110, z=34] run playsound minecraft:entity.player.attack.sweep master @a"
+
+
+# Pathfind
+every 20 ticks in "world":
+	loop all living entities:
+		loop-entity is not a player
+
+		if "%region at loop-entity%" contains "castle_square_gate":
+			set path target with speed 1.0 of loop-entity to location 413, 115, 34 #라이프
+			set path target with speed 1.0 of loop-entity to {_pathPoint}
+		else if "%region at loop-entity%" contains "castle_square":
+			set path target with speed 1.0 of loop-entity to location 413, 115, 34 #라이프
+
+		else if "%region at loop-entity%" contains "cave_3":
+			set path target with speed 1.0 of loop-entity to location 370, 111, 78
+		else if "%region at loop-entity%" contains "cave_2_2":
+			set path target with speed 1.0 of loop-entity to location 358, 110, 4
+		else if "%region at loop-entity%" contains "cave_2":
+			set path target with speed 1.0 of loop-entity to location 355, 107, -31
+		else if "%region at loop-entity%" contains "cave_1":
+			set path target with speed 1.0 of loop-entity to location 316, 107, -28
+		else if "%region at loop-entity%" contains "cave_spawn":
+			set path target with speed 1.0 of loop-entity to location 307, 107, -13
+
+					
+		else if "%region at loop-entity%" contains "castle":
+			set path target with speed 1.0 of loop-entity to location 413, 115, 34 #라이프
+		#else:
+			
+			#broadcast "구역 밖 몬스터"
+
+
+# Pathfind: world_test
+every 20 ticks in "world": #world_test
+	loop all living entities:
+		loop-entity is not a player
+
+		if "%region at loop-entity%" contains "test_map":
+			set path target with speed 1.0 of loop-entity to location 136.5, 6, 19.5 #라이프
+
+every 20 ticks in "world_lemonfox": #world_test
+	loop all living entities:
+		loop-entity is not a player
+		loop-entity is not a iron golem
+
+		if "%region at loop-entity%" contains "bridge_gate":
+			set path target with speed 1.0 of loop-entity to location 65, 100, -53 #다리-게이트
+
+		else if "%region at loop-entity%" contains "cross_bridge":
+			set path target with speed 1.0 of loop-entity to location 72, 100, -9.5 #다리 앞
+
+		else if "%region at loop-entity%" contains "cave_cross":
+			set path target with speed 1.0 of loop-entity to location 56, 92, 30 #교차로
+
+		else:
+			set path target with speed 1.0 of loop-entity to location 65.5, 100, -56.5 #라이프
+
+		#if "%region at loop-entity%" contains "test_map":
+		#	set path target with speed 1.0 of loop-entity to location 136.5, 6, 19.5 #라이프

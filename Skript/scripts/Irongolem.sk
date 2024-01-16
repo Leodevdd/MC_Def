@@ -1,0 +1,35 @@
+on right click on an iron golem:
+	if player is sneaking:
+		cancel event
+
+	make player ride iron golem
+
+on right click:
+	player is riding a iron golem
+	tool of player is a stick
+	broadcast "forward! golem!"
+
+	set {golem_goal} to location of targeted block
+
+every 5 ticks in "world_lemonfox":
+	loop all iron golems:
+		set path target with speed 3.0 of loop-entity to {golem_goal}
+
+
+
+	#if event-entity's name is "Maximus":
+	#	broadcast "ride on"
+	#	set {_loc} to event-entity's location
+	#	add 2 to {_loc}'s y-coordinate
+	#	
+	#	set {ridingGolem} to event-entity
+	#	set {ridingPlayer} to player
+
+#on sneak toggle:
+#	set {ridingPlayer} to nothing
+
+#on every tick:
+#	if {ridingPlayer} is player:
+#		teleport {ridingPlayer} to {ridingGolemLoc}
+	
+	

@@ -1,0 +1,75 @@
+on explode:
+	set {loctnt} to location at event-entity
+	broadcast "<red>explode! <white>loc : %{loctnt}%"
+	cancel event
+
+on place tnt:
+	cancel event
+	broadcast "<red>%player% : 직접 tnt설치"
+	teleport player to location at 0, -100, 0
+	kill player
+
+on item damage:
+	cancel the event
+
+on damage:
+	wait 1 tick
+	set victim's invulnerability ticks to 0
+
+on combust:
+    #if event-entity is a zombie:
+    cancel the event
+
+on damage of mob:
+	if attacker is not a player:
+		cancel event
+
+command /bsk:
+	trigger:
+		set player's attack speed attribute to 10
+
+command /shiled:
+	trigger:
+		if {classShiledMan::%player%} is true:
+			set {classShiledMan::%player%} to false
+			broadcast "%player% isn't a shiled man anymore"
+		else:
+			set {classShiledMan::%player%} to true
+			broadcast "%player% is a shiled man"
+
+on damage of spider:
+	if {classShiledMan::%attacker%} is true:
+		set victim's knockback resistance attribute to 0
+		wait 1 tick
+		set victim's knockback resistance attribute to 1
+	else:
+		set victim's knockback resistance attribute to 1
+
+on death of spider:
+	cancel event
+	spawn spider at victim's location
+	if chance of 25%:
+		drop string
+
+on death of cow:
+	cancel event
+	give attacker gold nugget
+	spawn cow at victim's location
+
+on damage of cow:
+	set victim's knockback resistance attribute to 1
+
+#on right click:
+#	broadcast "%target%"
+
+
+#command //set 46:
+#	trigger:
+#		broadcast "<red>%player% : 월드에딧으로 tnt설치"
+#		teleport player to location at 0, -100, 0
+#		kill player
+
+command /click test:
+	trigger:
+		send "<ttp:go to dev><cmd:/warp d>[warp]<reset> click" to all players
+

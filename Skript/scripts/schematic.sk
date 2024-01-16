@@ -1,0 +1,109 @@
+# 8 96 10
+# 10 92 8
+on load:
+	#set {loc_a} to location 8, 96, 10 in "world_lemonfox"
+	#set {loc_b} to location 10, 92, 8 in "world_lemonfox"
+	#set {loc_a} to location 18, 92, 13 in "world_lemonfox"
+	#set {loc_b} to location 20, 92, 11 in "world_lemonfox"
+	set {loc_a} to location 25, 108, 31 in "world_lemonfox"
+	set {loc_b} to location 33, 102, 26 in "world_lemonfox"
+
+command /lptest:
+	trigger:
+		set {_numA} to 10
+		set {_numB} to 20
+		loop numbers from {_numA} to {_numB}:
+			broadcast "%loop-value%"		
+
+command /resetblocks:
+	trigger:
+		delete {sb::*}
+		execute console command "/checkblocks"
+
+
+command /saveblocks:
+	trigger:
+		delete {sb::*}
+		set {_minX} to min({loc_a}'s x-coordinate, {loc_b}'s x-coordinate)
+		set {_maxX} to max({loc_a}'s x-coordinate, {loc_b}'s x-coordinate)
+		set {_minY} to min({loc_a}'s y-coordinate, {loc_b}'s y-coordinate)
+		set {_maxY} to max({loc_a}'s y-coordinate, {loc_b}'s y-coordinate)
+		set {_minZ} to min({loc_a}'s z-coordinate, {loc_b}'s z-coordinate)
+		set {_maxZ} to max({loc_a}'s z-coordinate, {loc_b}'s z-coordinate)
+
+		loop numbers from {_minX} to {_maxX}:
+			set {_x} to loop-number-1
+			loop numbers from {_minY} to {_maxY}:
+				set {_y} to loop-number-2
+				loop numbers from {_minZ} to {_maxZ}:
+					set {_z} to loop-number-3
+					set {_currentLoc} to location {_x}, {_y}, {_z} in world of {loc_a}
+					set {_currentBlock} to type of block at {_currentLoc}
+					{_currentBlock} is not air
+
+					set {sb::%{_currentLoc}%.loc} to {_currentLoc}
+					set {sb::%{_currentLoc}%.block} to {_currentBlock}
+		execute console command "/checkblocks"
+
+command /clearblocks:
+	trigger:
+		set {_minX} to min({loc_a}'s x-coordinate, {loc_b}'s x-coordinate)
+		set {_maxX} to max({loc_a}'s x-coordinate, {loc_b}'s x-coordinate)
+		set {_minY} to min({loc_a}'s y-coordinate, {loc_b}'s y-coordinate)
+		set {_maxY} to max({loc_a}'s y-coordinate, {loc_b}'s y-coordinate)
+		set {_minZ} to min({loc_a}'s z-coordinate, {loc_b}'s z-coordinate)
+		set {_maxZ} to max({loc_a}'s z-coordinate, {loc_b}'s z-coordinate)
+
+		loop numbers from {_minX} to {_maxX}:
+			set {_x} to loop-number-1
+			loop numbers from {_minY} to {_maxY}:
+				set {_y} to loop-number-2
+				loop numbers from {_minZ} to {_maxZ}:
+					set {_z} to loop-number-3
+					set {_currentLoc} to location {_x}, {_y}, {_z} in world of {loc_a}
+					set block at {_currentLoc} to air
+
+		add 15 to {loc_a}'s z-coordinate
+		add 15 to {loc_b}'s z-coordinate
+		set {_minX} to min({loc_a}'s x-coordinate, {loc_b}'s x-coordinate)
+		set {_maxX} to max({loc_a}'s x-coordinate, {loc_b}'s x-coordinate)
+		set {_minY} to min({loc_a}'s y-coordinate, {loc_b}'s y-coordinate)
+		set {_maxY} to max({loc_a}'s y-coordinate, {loc_b}'s y-coordinate)
+		set {_minZ} to min({loc_a}'s z-coordinate, {loc_b}'s z-coordinate)
+		set {_maxZ} to max({loc_a}'s z-coordinate, {loc_b}'s z-coordinate)
+
+		loop numbers from {_minX} to {_maxX}:
+			set {_x} to loop-number-1
+			loop numbers from {_minY} to {_maxY}:
+				set {_y} to loop-number-2
+				loop numbers from {_minZ} to {_maxZ}:
+					set {_z} to loop-number-3
+					set {_currentLoc} to location {_x}, {_y}, {_z} in world of {loc_a}
+					set block at {_currentLoc} to air
+		broadcast "cleared area"
+
+command /setblocks:
+	trigger:
+		set {_num} to 0
+		set {_tickPerBlocks} to cntBlocks() / 10
+		broadcast "a tick per blocks : %{_tickPerBlocks}%"
+		loop {sb::*}:
+			set {_loc} to {sb::%loop-value%.loc}
+			add 15 to {_loc}'s z-coordinate
+			set block at {_loc} to {sb::%loop-value%.block}
+			add 1 to {_num}
+			
+			if mod({_num}, round({_tickPerBlocks})) is 0:
+				play sound "block.stone.place" with volume 1 at player
+				wait 1 tick
+
+function cntBlocks() :: number:
+	set {_num} to 0
+	loop {sb::*}:
+		add 1 to {_num}
+	return {_num} / 2
+
+command /checkblocks:
+	trigger:
+		set {_cnt} to cntBlocks()
+		broadcast "%{_cnt}% blocks."

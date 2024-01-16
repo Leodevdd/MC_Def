@@ -1,0 +1,112 @@
+on enter "old_to_map":
+	#teleport player to location 102, 94, 106 in "world"
+	execute console command "execute at %player% run playsound minecraft:entity.enderman.teleport master @a"
+	set {_loc} to location(68.5, 100, 46, world "world")
+	teleport player to {_loc}
+	execute console command "execute at %player% run playsound minecraft:entity.enderman.teleport master @a"
+
+on enter "map_to_old":
+	#teleport player to location 102, 94, 106 in "world"
+	execute console command "execute at %player% run playsound minecraft:entity.enderman.teleport master @a"
+	set {_loc} to location(-1101, 37, -767, world "world")
+	teleport player to {_loc}
+	execute console command "execute at %player% run playsound minecraft:entity.enderman.teleport master @a"
+
+on enter "devToMap":
+	execute console command "execute at %player% run playsound minecraft:entity.enderman.teleport master @a"
+	teleport player to location 50, 100, 46 in "world"
+	execute console command "execute at %player% run playsound minecraft:entity.enderman.teleport master @a"
+
+on enter "mapToNewmap":
+	execute console command "execute at %player% run playsound minecraft:entity.enderman.teleport master @a"
+	set {_loc2} to location(408.5, 105, 78, world "world", 180)
+	teleport player to {_loc2}
+	execute console command "execute at %player% run playsound minecraft:entity.enderman.teleport master @a"
+
+on enter "newmapToMap":
+	execute console command "execute at %player% run playsound minecraft:entity.enderman.teleport master @a"
+	teleport player to location 56.5, 100, 46 in "world"
+	execute console command "execute at %player% run playsound minecraft:entity.enderman.teleport master @a"
+
+on enter "world_test_to_world":
+	execute console command "execute at %player% run playsound minecraft:entity.enderman.teleport master @a"
+	teleport player to location 60.5, 100, 46 in "world"
+	execute console command "execute at %player% run playsound minecraft:entity.enderman.teleport master @a"
+
+on enter "world_to_world_test":
+	execute console command "execute at %player% run playsound minecraft:entity.enderman.teleport master @a"
+	teleport player to location 8.5, 0, 4 in "world_test"
+	execute console command "execute at %player% run playsound minecraft:entity.enderman.teleport master @a"
+
+on enter "worldToLemon":
+	execute console command "execute at %player% run playsound minecraft:entity.enderman.teleport master @a"
+	teleport player to location(63, 102, -6.5, world "world_lemonfox", 270)
+	execute console command "execute at %player% run playsound minecraft:entity.enderman.teleport master @a"
+
+on enter "lemonToWorld":
+	execute console command "execute at %player% run playsound minecraft:entity.enderman.teleport master @a"
+	teleport player to location 64.5, 100, 46 in "world"
+	execute console command "execute at %player% run playsound minecraft:entity.enderman.teleport master @a"
+
+on enter "sewer_enter":
+	teleport player to location 59.5, 50, -52.5 in "world_lemonfox"
+	apply blindness to player for 3.0 second
+	apply slowness 99 to player for 2.0 second
+	play sound "minecraft:block.stone.step" with volume 1 to the player
+	wait 0.65 seconds
+	#play sound "minecraft:entity.player.swim" with volume 1 to the player
+	play sound "minecraft:block.stone.step" with volume 1 to the player
+	wait 0.65 seconds
+	play sound "minecraft:block.stone.step" with volume 1 to the player
+	wait 0.65 seconds
+	play sound "minecraft:block.stone.step" with volume 1 to the player
+	
+	
+
+	
+	#play sound "minecraft:block.stone.step" with volume 0.5 to the player
+	#execute console command "execute at %player% run playsound minecraft:entity.enderman.teleport master @a"
+	
+
+on enter "sewer_to_enter":
+	teleport player to location 41, 104, -79.5 in "world_lemonfox"
+	apply blindness to player for 1 second
+	
+
+on enter "changeBlock":
+	loop blocks in radius 7 around player:
+		"%region at loop-value%" contain "changeBlock":
+			if loop-value is not air:
+				if chance of 14%:
+					set loop-value to red terracotta
+				else if chance of 14%:
+					set loop-value to orange terracotta
+				else if chance of 14%:
+					set loop-value to yellow terracotta
+				else if chance of 14%:
+					set loop-value to green terracotta
+				else if chance of 14%:
+					set loop-value to light blue terracotta
+				else if chance of 14%:
+					set loop-value to blue terracotta
+				else if chance of 14%:
+					set loop-value to purple terracotta
+
+on exit "changeBlock":
+	loop blocks in radius 7 around player:
+		"%region at loop-value%" contain "changeBlock":
+			if loop-value is not air:
+				if chance of 14%:
+					set loop-value to red terracotta
+				else if chance of 14%:
+					set loop-value to orange terracotta
+				else if chance of 14%:
+					set loop-value to yellow terracotta
+				else if chance of 14%:
+					set loop-value to green terracotta
+				else if chance of 14%:
+					set loop-value to light blue terracotta
+				else if chance of 14%:
+					set loop-value to blue terracotta
+				else if chance of 14%:
+					set loop-value to purple terracotta

@@ -1,0 +1,28 @@
+
+command /ffight:
+	trigger:
+		if {fireFighting} is false:
+			set {fireFighting} to true
+			broadcast "set fireFighting to &2true"
+		else:
+			set {fireFighting} to false
+			broadcast "set fireFighting to &4false"
+
+on explode:
+	broadcast "&2WorldGuard &f: Prevented explosion"
+	#cancel event
+
+on teleport:
+	if event-entity is a enderman:
+		broadcast "enderman teleports"
+		cancel event
+
+on silverfish enter:
+	cancel event
+
+
+
+#on block flow:
+#	if event-block is water:
+#		cancel event
+	

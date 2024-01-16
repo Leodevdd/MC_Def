@@ -1,0 +1,171 @@
+on quit:
+	delete {SWORDMANPASSIVE.%player's uuid%}
+	delete {SWORDMANPASSIVE.%player's uuid%}
+	delete {SWORDMANPASSIVETIME.%player's uuid%}
+	delete {SWORDMANPASSIVENUMBER.%player's uuid%}
+	delete {SWORDMANMAINSKILLCOOLTIME.%player's uuid%}
+	delete {SWORDMANMAINSKILLRESETCOOLTIME.%player's uuid%}
+	delete {SWORDMANJUMPSKILLCOOLTIME.%player's uuid%}
+	delete {SWORDMANBACKJUMPSKILLCOOLTIME.%player's uuid%}
+	delete {SWORDMANULTIMATESKILLCOOLTIME.%player's uuid%}
+	delete {SWORDMANULTIMATESKILLRESETCOOLTIME.%player's uuid%}
+	delete {SWORDMANULTIMATESKILLDROPPINGDAMAGE.%player's uuid%}
+	delete {SWORDMANULTIMATESKILLEXPLOSIONDAMAGE.%player's uuid%}
+
+on damage:
+	if attacker's tool is shovel:
+		#if victim is player:
+		#push victim (direction from victim to attacker) at speed 1
+		delete {SWORDMANMAINSKILLRESETCOOLTIME.%attacker's uuid%}
+		if {SWORDMANULTIMATESKILLRESETCOOLTIME.%attacker's uuid%} is set:
+			remove 40 from {SWORDMANULTIMATESKILLRESETCOOLTIME.%attacker's uuid%}
+		if {SWORDMANPASSIVETIME.%attacker's uuid%} is set:
+			add 1 to {SWORDMANPASSIVENUMBER.%attacker's uuid%}
+		if {SWORDMANPASSIVETIME.%attacker's uuid%} is not set:
+			add 40 to {SWORDMANPASSIVETIME.%attacker's uuid%}
+			add 1 to {SWORDMANPASSIVENUMBER.%attacker's uuid%}
+			while {SWORDMANPASSIVETIME.%attacker's uuid%} is set:
+				wait 1 tick
+				remove 1 from {SWORDMANPASSIVETIME.%attacker's uuid%}
+				if {SWORDMANPASSIVENUMBER.%attacker's uuid%} is 2:
+					#loop 1 time:
+						#wait 4 tick
+						#push victim in direction of attacker at speed 0.2
+					execute console command "execute at @e[x=%victim's x-coordinate%, y=%victim's y-coordinate%, z=%victim's z-coordinate%, dx=0] run particle minecraft:sweep_attack ~ ~1 ~ 0.1 0.1 0.1 0 1 normal"
+					execute console command "execute at @e[x=%victim's x-coordinate%, y=%victim's y-coordinate%, z=%victim's z-coordinate%, dx=0] run playsound minecraft:entity.player.attack.sweep master @a"
+					damage victim by damage * 2 hearts
+					
+					delete {SWORDMANPASSIVE.%attacker's uuid%}
+					delete {SWORDMANPASSIVETIME.%attacker's uuid%}
+					delete {SWORDMANPASSIVENUMBER.%attacker's uuid%}
+				if {SWORDMANPASSIVETIME.%attacker's uuid%} is 0:
+					delete {SWORDMANPASSIVE.%attacker's uuid%}
+					delete {SWORDMANPASSIVETIME.%attacker's uuid%}
+					delete {SWORDMANPASSIVENUMBER.%attacker's uuid%}
+					stop
+					
+on drop:
+	if player is sneaking:
+		stop trigger
+		
+	if event-item is sword:
+		if player is sneaking:
+			stop trigger
+			
+		cancel event
+		if {SWORDMANMAINSKILLCOOLTIME.%Player's uuid%} is not set:
+			set {SWORDMANMAINSKILLCOOLTIME.%Player's uuid%} to true
+			set {SWORDMANMAINSKILLRESETCOOLTIME.%Player's uuid%} to true
+			#if block 1 down player is not air:
+			if player is on ground:
+				execute console command "execute at %player% run particle minecraft:sweep_attack ~ ~0.5 ~ 0.01 0.01 0.01 0 1"
+				execute console command "execute at %player% run playsound minecraft:entity.player.attack.sweep master @a"
+				loop 30 time:
+					push player backwards at speed 0.1
+					push player downwards at speed 1
+				loop 5 time:
+					loop all entities in radius 2 of player:
+						if loop-entity is not player:
+							push loop-entity (direction from loop-entity to player) at speed 1
+					push player downwards at speed 1
+					execute console command "execute at %player% run particle minecraft:sweep_attack ~ ~0.5 ~ 0.01 0.01 0.01 0 1"
+					execute console command "execute at %player% run playsound minecraft:entity.player.attack.sweep master @a"
+					wait 1 tick
+			else:
+				push player downwards at speed 1
+				execute console command "execute at %player% run particle minecraft:sweep_attack ~ ~0.5 ~ 0.01 0.01 0.01 0 1"
+				execute console command "execute at %player% run playsound minecraft:entity.player.attack.sweep master @a"
+				loop 30 time:
+					push player forwards at speed 0.1
+					push player downwards at speed 1
+					execute console command "execute at %player% run particle minecraft:sweep_attack ~ ~0.5 ~ 0.01 0.01 0.01 0 1"
+					#execute console command "execute at %player% run playsound minecraft:entity.player.attack.sweep master @a"
+				loop 5 time:
+					push player downwards at speed 1
+					execute console command "execute at %player% run particle minecraft:sweep_attack ~ ~0.5 ~ 0.01 0.01 0.01 0 1"
+					execute console command "execute at %player% run playsound minecraft:entity.player.attack.sweep master @a"
+					wait 1 tick
+					loop all entities in radius 2 of player:
+						if loop-entity is not player:
+							push loop-entity upwards at speed 0.5
+			loop 40 time:
+				if {SWORDMANMAINSKILLRESETCOOLTIME.%player's uuid%} is not set:
+					delete {SWORDMANMAINSKILLCOOLTIME.%player's uuid%}
+					delete {SWORDMANMAINSKILLRESETCOOLTIME.%player's uuid%}
+					stop
+				wait 1 tick
+			delete {SWORDMANMAINSKILLCOOLTIME.%player's uuid%}
+			delete {SWORDMANMAINSKILLRESETCOOLTIME.%player's uuid%}
+			
+on rightclick on entity:
+	if player's tool is sword:
+		push player (direction from player to entity) at speed 1
+		push player downwards at speed 1
+		execute console command "execute at %player% run playsound minecraft:entity.player.attack.strong master @a"
+		loop 5 time:
+			execute console command "execute at %player% run particle minecraft:sweep_attack ~ ~0.5 ~ 0.01 0.01 0.01 0 1"
+			wait 1 tick
+					
+on jump:
+	if player's tool is sword:
+		if player is sneaking:
+			if {SWORDMANMAINSKILLCOOLTIME.%Player's uuid%} is not set:
+				if {SWORDMANJUMPSKILLCOOLTIME.%Player's uuid%} is not set:
+					set {SWORDMANJUMPSKILLCOOLTIME.%Player's uuid%} to true
+					push player forwards at speed 1
+					push player upwards at speed 1
+					execute console command "execute at %player% run particle minecraft:explosion ~ ~ ~ 0.01 0.01 0.01 0 1"
+					execute console command "execute at %player% run playsound minecraft:entity.player.attack.strong master @a"
+					wait 5 tick
+					set {SWORDMANBACKJUMPSKILLCOOLTIME.%player's uuid%} to true
+					wait 1 seconds
+					delete {SWORDMANBACKJUMPSKILLCOOLTIME.%player's uuid%}
+					wait 4 seconds
+					delete {SWORDMANJUMPSKILLCOOLTIME.%player's uuid%}
+				
+on jump:
+	if player's tool is sword:
+		if {SWORDMANJUMPSKILLCOOLTIME.%Player's uuid%} is set:
+			if {SWORDMANBACKJUMPSKILLCOOLTIME.%Player's uuid%} is set:
+				push player backwards at speed 1
+				push player upwards at speed 1
+				execute console command "execute at %player% run particle minecraft:explosion ~ ~ ~ 0.01 0.01 0.01 0 1"
+				execute console command "execute at %player% run playsound minecraft:entity.player.attack.strong master @a"
+				delete {SWORDMANBACKJUMPSKILLCOOLTIME.%player's uuid%}
+				
+on swap item:
+	if player's tool is sword:
+		cancel event
+		if {SWORDMANULTIMATESKILLCOOLTIME.%Player's uuid%} is not set:
+			set {SWORDMANULTIMATESKILLCOOLTIME.%player's uuid%} to true
+			set {SWORDMANULTIMATESKILLRESETCOOLTIME.%player's uuid%} to 300
+			loop all entities in radius 8 of player:
+				if loop-entity is not player:
+					push loop-entity (direction from loop-entity to player) at speed 1
+			loop 2 time:
+				push player upwards at speed 1
+			wait 10 tick
+			set {SWORDMANULTIMATESKILLDROPPINGDAMAGE.%player's uuid%} and {SWORDMANULTIMATESKILLEXPLOSIONDAMAGE.%player's uuid%} to true
+			loop 10 time:
+				push player downwards at speed 1
+			wait 3 seconds
+			delete {SWORDMANULTIMATESKILLDROPPINGDAMAGE.%player's uuid%} and {SWORDMANULTIMATESKILLEXPLOSIONDAMAGE.%player's uuid%}
+			while {SWORDMANULTIMATESKILLRESETCOOLTIME.%player's uuid%} is set:
+				if {SWORDMANULTIMATESKILLRESETCOOLTIME.%player's uuid%} <= 0:
+					delete {SWORDMANULTIMATESKILLCOOLTIME.%player's uuid%} and {SWORDMANULTIMATESKILLRESETCOOLTIME.%player's uuid%}
+					stop
+				wait 1 tick
+				remove 1 from {SWORDMANULTIMATESKILLRESETCOOLTIME.%player's uuid%}
+			delete {SWORDMANULTIMATESKILLCOOLTIME.%player's uuid%} and {SWORDMANULTIMATESKILLRESETCOOLTIME.%player's uuid%}
+						
+on damage:
+	if victim's tool is sword:
+		if {SWORDMANULTIMATESKILLDROPPINGDAMAGE.%victim's uuid%} is set:
+			if damage cause is fall:
+				cancel event
+				create a safe explosion of force 2 at victim
+				delete {SWORDMANULTIMATESKILLDROPPINGDAMAGE.%victim's uuid%}
+		if {SWORDMANULTIMATESKILLEXPLOSIONDAMAGE.%victim's uuid%} is set:
+			if damage cause is block explosion:
+				cancel event
+				delete {SWORDMANULTIMATESKILLEXPLOSIONDAMAGE.%victim's uuid%}

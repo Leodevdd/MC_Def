@@ -1,0 +1,19 @@
+on first join:
+	set join message to "&7[&a+&7] &f<%player%> &7&l님이 회사에 &a&l처음 출근&7&l하셨습니다"
+	
+on join:
+	set join message to "&7[&a+&7] &f<%player%> &7&l님이 &a&l출근&7&l하셨습니다"
+	
+on quit:
+	set quit message to "&7[&c-&7] &f<%player%> &7&l님이 &c퇴근&7&l하셨습니다"
+
+on join:
+	set player's tablist header to "%nl%    &eTesting &9Defense &5Project    %nl%"
+	set player's tablist footer to "%nl%&e20%now%%nl%"
+	
+on every 10 seconds:
+	loop all players:
+		set loop-player's tablist header to "%nl%    &eTesting &9Defense &5Project    %nl%"
+		set loop-player's tablist footer to "%nl%&e20%now%"
+
+ 

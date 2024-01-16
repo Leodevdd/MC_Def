@@ -1,0 +1,157 @@
+
+#공기방울로 치명타 조정 (꽉 차 있을 때만 치명타 가능)
+#on damage:
+#	if attacker is a player:
+#		if hit is critical:
+#			if attacker's remaining air is more than 14 seconds:
+#				set attacker's remaining air to 8 second
+#			else:
+#				set damage to attacker's damage
+
+#on load:
+	#set {customItems::harvestingHoe} to wooden hoe named "수확의 낫" with lore "로어 테스트" with nbt compound from "{HideFlags}" with damage 1
+	#set {_nbt} to nbt compound from "{HideFlags:63}"
+	#add nbt compound of {_nbt} to {customItems::harvestingHoe}
+	
+
+
+
+
+#베조아르
+on damage:
+	if event-damagecause is poison:
+		if victim has slime ball named "베조아르":
+			cancel event
+
+#거미 낙뎀 방지
+on damage:
+	victim is spider
+	event-damagecause is fall
+	cancel event
+			
+
+#폭발 복구 데이터팩-템 드랍 대신 설치
+on explode:
+	broadcast "event-entity: %event-entity%"
+
+#on drop:
+	#set {_eie} to event-entity's location
+	#broadcast "item loc : %{_eie}%"
+
+# 사망 메세지
+on death:
+	if victim is a player:
+		broadcast "&7&l%victim%&r(이)가 사망했습니다: %damage cause%"
+
+command /wsword:
+	trigger:
+		give player {customItems::harvestingHoe}
+		broadcast "%nbt compound of {customItems::harvestingHoe}%"
+
+
+#on armor change:
+	#if new item is leather boots:
+		#broadcast "test"
+	#else if old item is leather boots:
+
+
+
+on projectile hit:
+	if shooter is not a player:
+		if shooter is a entity:
+			if victim is not a player:
+				if shooter is not a snow golem:
+					cancel event
+
+	#if shooter is a player:
+	#	execute console command "execute at @e[x=%victim's x-coordinate%, y=%victim's y-coordinate%, z=%victim's z-coordinate%, dx=0] run particle minecraft:sweep_attack ~ ~1 ~ 0.1 0.1 0.1 0 1 normal"
+	#	execute console command "execute at @e[x=%victim's x-coordinate%, y=%victim's y-coordinate%, z=%victim's z-coordinate%, dx=0] run playsound item.armor.equip_elytra master @a"
+
+
+#on consume:
+	#broadcast "consume: %event-item%"
+	#if event-item is a potion of health:
+	#	broadcast "test: cldb"
+	#	cancel event
+	#	heal player by player's max health / 2
+
+
+on item damage:
+	cancel event
+
+# 회복이 캔슬되어도 배고픔은 줄어듦
+on heal:
+	if entity is on fire:
+		cancel event
+
+	else if heal reason is satiated:
+		if {healed.%player%} is true:
+			if {healedCount.%player%} is less than 2:
+				add 1 to {healedCount.%player%}
+				cancel event
+			else:
+				set {healedCount.%player%} to 0
+				set {healed.%player%} to false
+
+		
+		#set {healed.%player%} to true
+
+#불이 붙는 것 (번지는 것)
+on ignition:
+	if {fireFighting} is true:
+		cancel event
+
+#블럭 불타서 없어지는 것
+on burn:
+	#broadcast "&2WorldGuard &f: Prevented block gets burned"
+	#broadcast "location : %event-block's location%"
+	#set block at event-location to water
+	cancel the event
+
+#on combust:
+	#broadcast "test"
+
+
+command /fast:
+	trigger:
+		if "test" is "test":
+			broadcast "tested"
+		loop all zombies:
+			if loop-value's name is "test":
+				broadcast "found"
+				set loop-value's movement speed attribute to 0.3
+
+command /attackspeed:
+	trigger:
+		set player's attack speed attribute to 6
+		broadcast "set attack speed to 6"
+
+command /das:
+	trigger:
+		set player's attack speed attribute to 4 #default
+		broadcast "set attack speed to 4 (default)"
+
+command /gm:
+	trigger:
+		if player's game mode is survival:
+			set the player's game mode to creative
+		else:
+			set the player's game mode to survival
+
+on drop:
+	if event-item is wooden axe:
+		if player is sneaking:
+			stop trigger
+		cancel event
+		make player execute command "/gm"
+
+command /addhp:
+	trigger:
+		add 1 to player's max health
+		message "You have %player's health% HP left."
+
+command /dhp:
+	trigger:
+		set player's max health to 10
+
+		message "You have %player's health% HP left."

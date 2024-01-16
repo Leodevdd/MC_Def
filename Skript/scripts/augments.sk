@@ -1,0 +1,166 @@
+# 롤체식 증강 시스템
+	
+
+on load:
+	set {_colorCode} to "&1 &2 &3 &4 &5 &6 &7 &8 &9 &a &b &c &d &e &f"
+	set {_fontCode} to "&k난독화&r &l볼드&r &m취소선&r &n밑줄&r &o기울임&r (& r) &r색, 글씨체 초기화"
+	#broadcast "%{_fontCode}%"
+	set {_n} to nbt compound from "{HideFlags:255}"
+
+	delete {perks::*}
+
+	set {perks::quickRecovery} to campfire named "&r&e돈, &c사랑, &8그리고 &6명예 &d[ H ]&r" with nbt {_n}
+	set line 1 of lore of {perks::quickRecovery} to "&e금 주괴 66개&8를 획득합니다.&r"
+	set line 2 of lore of {perks::quickRecovery} to "&c재생&8을 영원히 얻습니다.&r"
+	set line 3 of lore of {perks::quickRecovery} to "&6금 갑옷 세트&8를 획득합니다.&r"
+	set line 5 of lore of {perks::quickRecovery} to "나, 이런 사람이야"
+
+	set {perks::potionAllergy} to glass bottle named "&5&m물약&r 알레르기 &4■&r" with nbt {_n} 
+	set line 1 of lore of {perks::potionAllergy} to "&5물약&8에 의한 효과를 무효화하고 그 지속 시간만큼 무작위 디버프를 얻습니다."
+	set line 3 of lore of {perks::potionAllergy} to "보충역 대상입니다." 
+
+	set {perks::resistancePotion} to poisonous potato named "&2&l독 &9내성 &a■&r" with nbt {_n} 
+	set line 3 of lore of {perks::resistancePotion} to "독 내성 부가 설명" 
+
+	set {perks::rottenEater} to rotten flesh named "&c괴식가 &7=&r" with nbt {_n} 
+	set line 3 of lore of {perks::rottenEater} to "-부가 설명-"
+
+	set {perks::shield} to golden apple named "&6축복 받은 열매 &a■■&r" with nbt {_n} 
+	set line 1 of lore of {perks::shield} to "&6재생 체력&8이 &62&8 증가합니다."
+	set line 3 of lore of {perks::shield} to "-"
+
+	set {perks::potionFairy} to honey bottle named "&6&l포션만 먹는 요정 &a■&r" with nbt {_n} 
+	set line 1 of lore of {perks::potionFairy} to "&8포션 섭취시 배고픔도 회복됩니다.&r"
+	#set line 2 of lore of {perks::potionFairy} to ""
+	set line 3 of lore of {perks::potionFairy} to "-"
+
+	set {perks::strengthFullHP} to cooked beef named "&4&l육식 용사 &a■&r" with nbt {_n} 
+	set line 1 of lore of {perks::strengthFullHP} to "&c최대 체력&8일 때, &4힘&8을 얻습니다.&r"
+	set line 2 of lore of {perks::strengthFullHP} to "&6식성: &4육식&8&r"
+	#set line 2 of lore of {perks::potionFairy} to ""
+	set line 4 of lore of {perks::strengthFullHP} to "-"
+
+	set {perks::gold} to gold ingot named "&e가문의 가보 &a■&r" with nbt {_n} 
+	set line 1 of lore of {perks::gold} to "&e금 주괴 22개&8를 획득합니다.&r"
+	#set line 2 of lore of {perks::potionFairy} to ""
+	set line 3 of lore of {perks::gold} to "당근했습니다."
+
+	set {perks::noHelmet} to golden helmet named "&e나를 봐! &4■&r" with nbt {_n} 
+	set line 1 of lore of {perks::noHelmet} to "&8투구를 착용할 수 없음.&r"
+	#set line 2 of lore of {perks::potionFairy} to ""
+	set line 3 of lore of {perks::noHelmet} to "-"
+
+	set {perks::noRecovery} to soul campfire named "- &4■&r" with nbt {_n} 
+	set line 1 of lore of {perks::noRecovery} to "&8자연 회복을 할 수 없음.&r"
+	#set line 2 of lore of {perks::potionFairy} to ""
+	set line 3 of lore of {perks::noRecovery} to "-부가 설명-"
+
+	set {perks::noCritical} to wooden sword named " &4■&r" with nbt {_n} 
+	set line 1 of lore of {perks::noCritical} to "&8치명타 공격을 할 수 없음.&r"
+	#set line 2 of lore of {perks::potionFairy} to ""
+	set line 3 of lore of {perks::noCritical} to "-부가 설명-"
+
+	set {perks::noFallDMG} to feather named "가벼운 몸 &a■&r" with nbt {_n} 
+	set line 1 of lore of {perks::noFallDMG} to "&8낙하 피해를 입지 않습니다.&r"
+	#set line 2 of lore of {perks::potionFairy} to ""
+	set line 3 of lore of {perks::noFallDMG} to "한마디로 뼈가 텅텅 비었다는 거죠."
+
+	set {perks::infirmity} to bone named "&f&o병약 체질 &4■&r" with nbt {_n} 
+	set line 1 of lore of {perks::infirmity} to "&c최대 체력이 4 (2칸) &8감소합니다.&r"
+	#set line 2 of lore of {perks::potionFairy} to ""
+	set line 3 of lore of {perks::infirmity} to "-"
+
+	set {perks::bulk} to beetroot named "&4인자강 &c■&r" with nbt {_n} 
+	set line 1 of lore of {perks::bulk} to "&a최대 체력이 4 (2칸) &8증가합니다.&r"
+	#set line 2 of lore of {perks::potionFairy} to ""
+	set line 3 of lore of {perks::bulk} to "-"
+
+	set {perks::test} to bread named "&f빵&r" with nbt {_n} 
+	set line 1 of lore of {perks::test} to "&6배고픔: &a■■■&r"
+	#set line 2 of lore of {perks::potionFairy} to ""
+
+
+
+on rightclick with pufferfish:
+	cancel event
+	make player execute command "//paste"
+
+
+
+on inventory click:
+	if name of event-inventory contain "augments":
+		cancel event
+		#if index of event-slot = 0:
+		#	send "You clicked on the slot 0"
+
+		if clicked item is beetroot:
+			broadcast "빠른 치유 선택"
+
+		#else if clicked item is glass bottle:
+			#
+		#else if clicked item is spider eye:
+			#
+		else if clicked item is golden apple:
+			give player clicked item
+			set {perks.%player%::shield} to true
+			close player's inventory
+			set {_tmp} to "test"
+			#broadcast "<ttp:%{_tmp}%>%player% &6[재생 쉴드]&r 선택<reset>"
+			broadcast "%player% &6[재생 쉴드]&r 선택<reset>"
+			#set player's absorption hearts to 4
+
+
+		else if clicked item is barrier:
+			close player's inventory
+
+	if name of event-inventory contain "특성 도감":
+		cancel event
+		if clicked item is barrier:
+			close player's inventory
+
+on rightclick:
+	# 축복/저주 선택 화면
+	if event-item is amethyst shard:
+		set {_gui} to a new chest inventory with 3 row with name "&3&lChoose a augments&r"
+		
+		#1번 퍽 설정, 중복 방지 리스트에 저장
+		set {_perk} to a random element out of {perks::*}
+		set {_preventOverlapPerk::*} to {_perk}
+		set slot 11 of {_gui} to a random element out of {_perk}
+
+		#중복 방지 리스트와 비교하며 2번 퍽 설정
+		set {_isitOK} to false
+		while {_isitOK} is false:
+			set {_perk} to a random element out of {perks::*}
+			if {_preventOverlapPerk::*} does not contain {_perk}:
+				add {_perk} to {_preventOverlapPerk::*}
+				set {_isitOK} to true
+
+		set slot 13 of {_gui} to {_perk}
+
+		#똑같이 3번 퍽 설정
+		set {_isitOK} to false
+		while {_isitOK} is false:
+			set {_perk} to a random element out of {perks::*}
+			if {_preventOverlapPerk::*} does not contain {_perk}:
+				set {_isitOK} to true
+
+		set slot 15 of {_gui} to {_perk}
+		
+		#나가기
+		#set slot 26 of {_gui} to barrier named "&4Quit" with lore "&7quit the shop"
+
+		open {_gui} to player
+
+	# 축복/저주 도감
+	if event-item is paper:
+		set {_gui} to a new chest inventory with 3 row with name "&3&l특성 도감&r"
+		
+		set {_index} to 0
+		loop {perks::*}:
+			set slot {_index} of {_gui} to loop-value
+			add 1 to {_index}
+
+		#set slot 26 of {_gui} to barrier named "&4Quit" with lore "&7quit the shop"
+
+		open {_gui} to player

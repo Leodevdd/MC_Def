@@ -1,0 +1,11 @@
+on right click:
+	#broadcast "%tool of player%"
+	#execute console command "/item replace entity %player% armor.head with %tool of player%"
+
+	if targeted entity is a living entity:
+		set targeted entity's helmet to tool of player
+		broadcast "changed %targeted entity%'s head"
+	else:
+		#set player's helmet to tool of player
+		#broadcast "changed your head"
+	

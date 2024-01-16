@@ -1,0 +1,48 @@
+on join:
+	set {double_shot_flag.%player%} to false
+	set {double_shot.%player%} to false
+	set {double_shot_twiceinput.%player%} to false
+
+on right click:
+	player's tool is a bow
+
+	# twice input = entity에 우클릭시 두 번씩 입력되는 것 방지.
+	{double_shot_twiceinput.%player%} is false
+	set {double_shot_twiceinput.%player%} to true
+	wait 1 tick
+	set {double_shot_twiceinput.%player%} to false
+
+	# 더블 샷 트리거 꼬임 방지 초기화
+	if {double_shot.%player%} is true:
+		set {double_shot.%player%} to false
+
+	# 다음 우클릭에 더블 샷 발동 (따닥)
+	if {double_shot_flag.%player%} is false:
+		set {double_shot_flag.%player%} to true
+		wait 5 ticks
+		set {double_shot_flag.%player%} to false
+	# 더블 샷 발동 조건 만족 (아직 발사 아님)
+	else: 
+		play sound "item.crossbow.loading_start" with volume 1 and pitch 1.5 at player
+		play sound "item.crossbow.loading_start" with volume 1 and pitch 0.5 at player
+		wait 2 ticks
+		play sound "item.crossbow.loading_start" with volume 1 and pitch 1.5 at player
+		set {double_shot.%player%} to true
+
+
+on shoot:
+	{double_shot.%shooter%} is true
+	set {double_shot.%shooter%} to false
+	#shoot an arrow at speed 5 from the shooter
+	set projectile critical mode of event-projectile to true
+	wait 2 ticks
+
+	if number of arrow in the shooter's inventory is more than 0:
+		make shooter shoot an arrow at speed 3
+		play sound "entity.arrow.shoot" with volume 1 and pitch 1 at shooter
+		remove 1 arrow from shooter's inventory
+	else:
+		broadcast "no arrow"
+
+
+

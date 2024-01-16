@@ -1,0 +1,37 @@
+
+
+
+# Start the wave loop
+function waveStart():
+	# Define the waves and their contents
+	set {waves::*} to {"zombie 15", "zombie 15, skeleton 5"}
+
+	# Set the time interval between waves
+	set {wave-interval} to 30
+
+	# Set the time interval between small waves within a wave
+	set {small-wave-interval} to 6
+
+	set {i} to 1
+	loop {waves::*}:
+	    
+		
+        # Parse the wave contents
+		set {_wave-contents} to loop-value split by ", "
+        
+        # Iterate through each small wave within the wave
+		repeat with {_i} from 1 to {_wave-contents's length}:
+            # Parse the small wave contents
+			set {_small-wave-contents} to {_wave-contents{_i}-1}
+			set {_small-wave-count} to {_wave-contents{_i}-2}
+            
+            # Spawn the small wave
+			repeat {_small-wave-count} times:
+			spawn {_small-wave-contents} at random location in radius 10 of location 0, 64, 0
+			wait {_small-wave-interval} seconds
+        
+        # Wait for the next wave
+		wait {wave-interval} seconds
+
+
+

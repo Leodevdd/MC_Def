@@ -1,0 +1,425 @@
+#smoke, potion break, ender signal, mobspawner flames, arrow particles, jumping rabbit, hurt, wolf smoke, wolf hearts, wolf shaking,
+#sheep eating, iron golem offering rose, villager hearts, angry villager entity, happy villager entity, witch magic,
+#zombie turning to a villager, firework explosion, love hearts, squid rotation reset, entity poof, guardian target, 
+#block with shield, shield break, armor stand hit, hurt by thorns, iron golem sheathing rose, resurrection by totem, 
+#hurt by drowning, hurt by explosion, explosion, large explosion, huge explosion, firework's spark, water bubble, water splash
+#, water wake, suspended, void fog, critical hit, magical critical hit, smoke particle, large smoke, spell, spell, potion swirl,
+#transparent potion swirl, witch spell, water drip, lava drip, angry villager, happy villager, small smoke, note, portal, 
+#flying glyph, flame, lava pop, cloud, coloured dust, snowball break, snow shovel, slime, heart, item crack, block break, 
+#block dust, water drop, mob appearance, dragon breath, end rod, damage indicator, sweep attack, falling dust, totem, spit, 
+#squid ink, bubble pop, current down, bubble column up, nautilus, dolphin, sneeze, campfire cosy smoke, campfire signal smoke, 
+#composter, flash, falling lava, landing lava, falling water, dripping honey, falling honey, landing honey, falling nectar, 
+#soul fire flame, ash, crimson spore, warped spore, soul, dripping obsidian tear, falling obsidian tear, landing obsidian tear, 
+#reverse portal, white ash, falling spore blossom, spore blossom air, small flame, snowflake, dripping dripstone lava, 
+#falling dripstone lava, dripping dripstone water, falling dripstone water, glow squid ink, glow, wax on, wax off, 
+#electric spark, scrape, sonic boom, sculk soul, sculk charge, sculk charge pop, shriek, dripping cherry leaves, 
+#falling cherry leaves, landing cherry leaves
+
+function randomRange(rr : number) :: number:
+    set {_tt} to 0
+    subtract {_rr} from {_tt} 
+    return a random number between {_tt} and {_rr}
+
+
+
+function meteor(targetCoord : location):
+    #Setting meteor start coordinate
+    set {_meteorStartCoord} to {_targetCoord}
+    add randomRange(10) to {_meteorStartCoord}'s x-coordinate
+    add randomRange(10) to {_meteorStartCoord}'s z-coordinate
+    add 20 to {_meteorStartCoord}'s y-coordinate
+
+
+    set {_meteorVector} to vector from {_meteorStartCoord} to {_targetCoord}
+    set vector length of {_meteorVector} to 1
+
+
+    set {_meteorMagicCircleCoord} to {_meteorStartCoord}
+    loop 20 times:
+        drawCircle({_meteorMagicCircleCoord}, 3,0,0,0)
+        drawCircle({_meteorMagicCircleCoord}, 3.5,0,0,0)
+        wait 2 tick
+    
+    loop (distance between {_meteorStartCoord} and {_targetCoord}) / 2 times:
+        drawCircle({_meteorMagicCircleCoord}, 3,0,0,0)
+        drawCircle({_meteorMagicCircleCoord}, 3.5,0,0,0)
+        set {_targetX} to {_meteorStartCoord}'s x-coordinate
+        set {_targetY} to {_meteorStartCoord}'s y-coordinate
+        set {_targetZ} to {_meteorStartCoord}'s z-coordinate
+        
+        execute console command "particle minecraft:enchant %{_targetX}% %{_targetY}% %{_targetZ}% 0.3 0.3 0.3 0.001 10 force"
+        execute console command "particle minecraft:instant_effect %{_targetX}% %{_targetY}% %{_targetZ}% 0.1 0.1 0.1 0.001 1 force"
+        execute console command "particle minecraft:dust 1 0 0 1 %{_targetX}% %{_targetY}% %{_targetZ}% 0.2 0.2 0.2 0.001 10 force"
+        execute console command "particle minecraft:dust 0 0 0 1 %{_targetX}% %{_targetY}% %{_targetZ}% 0.2 0.2 0.2 0.001 5 force"
+        execute console command "particle minecraft:flame %{_targetX}% %{_targetY}% %{_targetZ}% 0.2 0.2 0.2 0.001 5 force"
+        #execute console command "particle minecraft:explosion %{_targetX}% %{_targetY}% %{_targetZ}% 0.1 0.1 0.1 0.01 1 force"
+        
+        set {_meteorStartCoord} to {_meteorStartCoord} ~ {_meteorVector}
+
+
+        wait 1 tick
+        set {_targetX} to {_meteorStartCoord}'s x-coordinate
+        set {_targetY} to {_meteorStartCoord}'s y-coordinate
+        set {_targetZ} to {_meteorStartCoord}'s z-coordinate
+        execute console command "particle minecraft:enchant %{_targetX}% %{_targetY}% %{_targetZ}% 0.3 0.3 0.3 0.001 10 force"
+        execute console command "particle minecraft:instant_effect %{_targetX}% %{_targetY}% %{_targetZ}% 0.1 0.1 0.1 0.001 1 force"
+        execute console command "particle minecraft:dust 1 0 0 1 %{_targetX}% %{_targetY}% %{_targetZ}% 0.2 0.2 0.2 0.001 10 force"
+        execute console command "particle minecraft:dust 0 0 0 1 %{_targetX}% %{_targetY}% %{_targetZ}% 0.2 0.2 0.2 0.001 5 force"
+        execute console command "particle minecraft:flame %{_targetX}% %{_targetY}% %{_targetZ}% 0.2 0.2 0.2 0.001 5 force"
+        #execute console command "particle minecraft:explosion %{_targetX}% %{_targetY}% %{_targetZ}% 0.1 0.1 0.1 0.01 1 force"
+        
+        set {_meteorStartCoord} to {_meteorStartCoord} ~ {_meteorVector}
+        
+    execute console command "playsound minecraft:entity.generic.explode master @a[distance=..50] ~ ~ ~ 0.1 0.1 0.1"
+    execute console command "particle minecraft:explosion %{_targetX}% %{_targetY}% %{_targetZ}% 0.1 0.1 0.1 2 1 force"
+    execute console command "particle minecraft:instant_effect %{_targetX}% %{_targetY}% %{_targetZ}% 1 1 1 1 30 force"
+        
+    loop 20 times:
+        drawCircle({_meteorMagicCircleCoord}, 3,0,0,0)
+        drawCircle({_meteorMagicCircleCoord}, 3.5,0,0,0)
+        execute console command "particle minecraft:dust 1 0 0 1 %{_targetX}% %{_targetY}% %{_targetZ}% 1 0.001 1 1 1 force"
+        execute console command "particle minecraft:dust 0 0 0 1 %{_targetX}% %{_targetY}% %{_targetZ}% 1 0.001 1 1 1 force"
+        execute console command "particle minecraft:flame %{_targetX}% %{_targetY}% %{_targetZ}% 1 0.001 1 0.001 5 force"
+        wait 2 tick
+  
+
+function meteorStrike(targetCoord : location, meteorRange : number, meteorCount : number):
+    loop {_meteorCount} time:
+        set {_targetCoord2} to {_targetCoord}
+        add randomRange({_meteorRange}) to {_targetCoord2}'s x-coordinate
+        add randomRange({_meteorRange}) to {_targetCoord2}'s z-coordinate
+        meteor({_targetCoord2})
+        wait 10 tick
+
+
+
+on drop:
+    if event-item is nether star:
+        cancel event
+        set {_targetCoord} to location of target block
+        meteorStrike({_targetCoord},5,5)
+
+
+#마법사 레이저 동일 대상 중첩 공격시 데미지 증가
+
+
+
+every 1 ticks in "world":
+    loop all players:
+        set {_playerID} to uuid of loop-player
+        if {kayden::%uuid of loop-player%.LaserUsed} is more than 0: # if stop Channeling Laser reset Laser Damage
+            subtract 1 from {kayden::%uuid of loop-player%.LaserUsed}
+            if {kayden::%uuid of loop-player%.LaserUsed} is 0 :
+                set {kayden::%uuid of loop-player%.LastLaserDamage} to 0
+                set {kayden::%uuid of loop-player%.TotalLaserDamage} to 0
+
+function laserParticle(playerEntity : location, targetEntity : location):
+    set {_targetVector} to vector from {_playerEntity} to {_targetEntity}
+    set vector length of {_targetVector} to 0.1
+
+    set {_playerCoord} to location of {_playerEntity}
+    add 1 to {_playerCoord}'s y-coordinate
+
+    loop (distance between {_playerCoord} and {_targetEntity}) / 0.1 times:
+        set {_targetX} to {_playerCoord}'s x-coordinate
+        set {_targetY} to {_playerCoord}'s y-coordinate
+        set {_targetZ} to {_playerCoord}'s z-coordinate
+        execute console command "particle minecraft:instant_effect %{_targetX}% %{_targetY}% %{_targetZ}% 0.01 0.01 0.01 0.001 1 force"
+        #execute console command "particle minecraft:enchant %{_targetX}% %{_targetY}% %{_targetZ}% 0.001 0.001 0.001 0.001 3 force"
+        set {_playerCoord} to {_playerCoord} ~ {_targetVector}
+    #execute console command "particle minecraft:end_rod %{_targetX}% %{_targetY}% %{_targetZ}% 0.01 0.01 0.01 0.01 2 force"
+    #execute console command "particle minecraft:instant_effect %{_targetX}% %{_targetY}% %{_targetZ}% 0.5 0.5 0.5 1 2 force"
+    
+
+on right click :
+    if event-item is nether star:
+        #Set Damage and ManaCost of Skill
+        set {_DamageTick} to 0.15
+        set {_DamageMax} to 5
+        set {_ManaCostTick} to 0.5
+
+
+
+    
+        if player is sneaking:      
+            set {_targetEntity} to target entity
+            set {_targetBlock} to location of target block
+            if {_targetEntity} is set: #Target Setted
+                #message "Target Setted to <red>%{_targetEntity}%<reset>"
+                laserParticle(location of player,location of {_targetEntity})
+                execute console command "effect give %player% minecraft:slowness 1 10 true"
+                set {_targetID} to {_targetEntity}'s uuid
+                if {_targetID} is {kayden::%uuid of player%.LastLaserTarget}: #if Last target is same as before Add Laser Damage
+                    add {_DamageTick} to {kayden::%uuid of player%.LastLaserDamage}
+                    broadcast "%{kayden::%uuid of player%.LastLaserDamage}% %{_DamageMax}%"
+                    if {kayden::%uuid of player%.LastLaserDamage} is more than {_DamageMax}:#Limit Max damage
+                        set {kayden::%uuid of player%.LastLaserDamage} to {_DamageMax}
+                    damage targeted entity by {kayden::%uuid of player%.LastLaserDamage}
+                    add {kayden::%uuid of player%.LastLaserDamage} to {kayden::%uuid of player%.TotalLaserDamage}
+
+                    set {kayden::%uuid of player%.LaserUsed} to 5
+
+                else: #if not Reset Damage
+                    set {kayden::%uuid of player%.LastLaserDamage} to 0
+                    set {kayden::%uuid of player%.TotalLaserDamage} to 0
+                set {kayden::%uuid of player%.LastLaserTarget} to {_targetID}
+                #broadcast "Damage %{kayden::%uuid of player%.LastLaserDamage}%"
+                #broadcast "Total Damage %{kayden::%uuid of player%.TotalLaserDamage}%"
+
+            else: #Target Missed
+                laserParticle(location of player,{_targetBlock})
+                set {kayden::%uuid of player%.LastLaserDamage} to 0
+                set {kayden::%uuid of player%.TotalLaserDamage} to 0
+                execute console command "effect give %player% minecraft:slowness 1 1 true"
+
+
+#파동탄? 넉백 위주 CC 웨이브 조절용?
+
+function shockWave(targetCoord : location):
+    set {_targetX} to {_targetCoord}'s x-coordinate
+    set {_targetY} to {_targetCoord}'s y-coordinate
+    set {_targetZ} to {_targetCoord}'s z-coordinate
+    add 1 to {_targetY}
+
+    execute console command "particle minecraft:sonic_boom %{_targetX}% %{_targetY}% %{_targetZ}% 0.5 0.5 0.5 1 3 force"
+    execute console command "playsound minecraft:entity.illusioner.cast_spell master @a %{_targetX}% %{_targetY}% %{_targetZ}% 1 0.8 1"
+
+    wait 8 tick
+    execute console command "playsound minecraft:entity.warden.attack_impact master @a %{_targetX}% %{_targetY}% %{_targetZ}% 1 2 1"
+    loop all entities in radius 5 of {_targetCoord}:
+        push loop-entity (direction from {_targetCoord} to loop-entity) at speed 1.5
+    
+
+
+on right click :
+    if event-item is nether star:
+        if player is not sneaking:
+            set {_targetEntity} to target entity
+            set {_targetBlock} to location of target block
+            if {_targetEntity} is set: #Target Setted
+                #
+                shockWave(location of {_targetEntity})
+            else if {_targetBlock} is set:
+                #
+                shockWave({_targetBlock})
+            #else:
+                #
+
+#전사-------------------------------------------------------------------------------------------------------------------------
+
+every 1 ticks in "world":
+    loop all players:
+        if {kayden::%uuid of loop-player%.ComboAttack} is set :
+            if {kayden::%uuid of loop-player%.ComboAttack} is more than 0: # if stop Channeling Laser reset Laser Damage
+                subtract 1 from {kayden::%uuid of loop-player%.ComboAttack}
+                #broadcast "%{kayden::%uuid of loop-player%.ComboAttack}%"
+        if {kayden::%uuid of loop-player%.ShieldParry} is set :
+            if {kayden::%uuid of loop-player%.ShieldParry} is more than 0: # if stop Channeling Laser reset Laser Damage
+                subtract 1 from {kayden::%uuid of loop-player%.ShieldParry}
+                #broadcast "%{kayden::%uuid of loop-player%.ShieldOn}%"
+
+#방패 parring 우클릭 시 5틱 내에 방어 시 추가효과
+on rightclick:
+    if event-item is shield:
+        set {kayden::%uuid of player%.ShieldParry} to 100
+        #broadcast "%{kayden::%uuid of player%.ShieldOn}%"
+        if player is sneaking:
+            push player forwards at speed 2
+            push player downwards at speed 0.5
+            play sound "minecraft:block.slime_block.step" with volume 1 at player's location to all players
+            #execute console command "execute at %player% run playsound minecraft:entity.player.attack.strong master @a ~ ~ ~ 1 0.1 1"
+            #execute console command "execute at %player% run particle minecraft:enchanted_hit ~ ~1 ~ 1 1 1 1 20 force"
+            #minecraft:enchanted_hit
+            loop all entities in radius 5 of player:
+                if loop-entity is not player :
+                    push loop-entity (direction from player to loop-entity) at speed 3
+
+
+
+
+on damage:
+    #기초 콤보 공격 15 틱 이내에 공격 시 추가 딜 50%
+    #if attacker's tool is sword:
+        #if {kayden::%uuid of attacker%.ComboAttack} is set:
+        #    if {kayden::%uuid of attacker%.ComboAttack} is more than 0:
+        #        damage victim by damage * 0.5 hearts
+        #set {kayden::%uuid of attacker%.ComboAttack} to 14
+
+    if victim is holding shield in off hand:
+        #broadcast "Parry"
+        if {kayden::%uuid of victim%.ShieldParry} is set:
+            if {kayden::%uuid of victim%.ShieldParry} is more than 0:
+                damage attacker by damage * 0.5 hearts
+                push attacker (direction from victim to attacker) at speed 1
+                set {kayden::%uuid of victim%.ShieldParry} to 0
+
+    
+        
+
+
+
+#-------------------------------------------------------------------------------------------------------------------------
+
+#---------------------------------------------------------------------
+every 5 ticks in "world":
+    loop all entities:
+        if loop-entity is a allay:
+            if {kayden::%uuid of loop-entity%.TargetPosition} is not set:#Target Move position not set
+                set {_moveVector} to vector from location of {kayden::%uuid of loop-entity%.Owner} to location of loop-entity
+                if vector length of {_moveVector} is more than 6 :
+                    #Follow Owner
+                    set {kayden::%uuid of loop-entity%.TargetPosition} to location of {kayden::%uuid of loop-entity%.Owner}
+                    add randomRange(2) to {kayden::%uuid of loop-entity%.TargetPosition}'s x-coordinate
+                    add randomRange(2) to {kayden::%uuid of loop-entity%.TargetPosition}'s z-coordinate
+                    add 3 to {kayden::%uuid of loop-entity%.TargetPosition}'s y-coordinate
+            else :
+                #Get Vector of Current Pos to Target Pos
+                set {_currentCoord} to location of loop-entity
+                set {_moveVector} to vector from {kayden::%uuid of loop-entity%.TargetPosition} to location of {kayden::%uuid of loop-entity%.Owner}
+                if vector length of {_moveVector} is more than 8 :
+                    delete {kayden::%uuid of loop-entity%.TargetPosition}
+                    stop trigger
+                set {_moveVector} to vector from {_currentCoord} to {kayden::%uuid of loop-entity%.TargetPosition}
+                if vector length of {_moveVector} is more than 7:
+                    set vector length of {_moveVector} to 1
+                else if vector length of {_moveVector} is more than 6:
+                    set vector length of {_moveVector} to 1
+                else if vector length of {_moveVector} is more than 5:
+                    set vector length of {_moveVector} to 0.8
+                else if vector length of {_moveVector} is more than 4:
+                    set vector length of {_moveVector} to 0.6
+                else if vector length of {_moveVector} is more than 3:
+                    set vector length of {_moveVector} to 0.4
+                else if vector length of {_moveVector} is more than 2:
+                    set vector length of {_moveVector} to 0.2
+                else :
+                    set vector length of {_moveVector} to 0.1
+
+                set {_currentCoord} to {_currentCoord} ~ {_moveVector}
+                teleport loop-entity to {_currentCoord}
+                set {_moveVector} to vector from {_currentCoord} to {kayden::%uuid of loop-entity%.TargetPosition}
+                facing2(loop-entity, location of {kayden::%uuid of loop-entity%.Owner})
+                if vector length of {_moveVector} is less than 0.1:
+                    delete {kayden::%uuid of loop-entity%.TargetPosition}
+                    
+                #loop-entity to position of {kayden::%uuid of loop-entity%.Owner}
+            #else:
+            arrowShoot(loop-entity)
+            
+function arrowShoot(allayCurrent:entity):
+    loop all entities in radius 15 of {_allayCurrent}:
+        if loop-entity is not a player :
+            if loop-entity is not a allay:
+                set {_coord2} to location of {_allayCurrent}
+                subtract 1 from {_coord2}'s y-coordinate
+                laserParticle({_coord2},location of loop-entity)
+                force {_allayCurrent} to damage loop-entity by 1
+                stop trigger
+
+
+function facing2(e: entity, l: location):
+
+    set {_loc} to location of {_e}
+
+    set {_x} to x location of {_l} - x location of {_loc}
+
+    set {_y} to y location of {_l} - y location of {_loc}
+
+    set {_z} to z location of {_l} - z location of {_loc}
+
+    set {_yaw.tan} to atan2({_x}, {_z})
+
+    set yaw of {_loc} to {_yaw.tan} - 90
+
+    set {_pit.dis} to ({_x} ^ 2 + {_z} ^ 2) ^ (1 / 2)
+
+    set {_pit.tan} to atan2({_pit.dis}, {_y})
+
+    set pitch of {_loc} to {_pit.tan} * -1
+
+    teleport {_e} at {_loc}
+
+
+#알레이
+function summonAllay(playerEntity : entity):
+    spawn allay at location of {_playerEntity}
+    set {kayden::%uuid of last spawned allay%.Owner} to {_playerEntity}
+    set {_summonedAllay} to last spawned allay
+    set {_summonedAllay}'s max health to 100
+    heal {_summonedAllay}
+    set {_summonedAllay}'s weapon to bow
+        
+on drop:
+    if event-item is light blue dye:
+        cancel event
+        summonAllay(player)
+
+
+#궁수
+on drop:
+    if event-item is crossbow:
+        cancel event
+        execute console command "effect give %player% minecraft:slowness 2 10 true"
+        #execute console command "execute at %player% run playsound minecraft:item.crossbow.loading_start master @a ~ ~ ~ 1 0.5 1"
+        execute console command "execute at %player% run playsound minecraft:item.crossbow.loading_middle master @a ~ ~ ~ 1 0.5 1"
+        wait 35 tick
+        execute console command "execute at %player% run playsound minecraft:item.crossbow.loading_end master @a ~ ~ ~ 1 0.5 1"
+        wait 5 tick
+        shoot an arrow with speed 10
+        execute console command "execute at %player% run playsound minecraft:item.crossbow.shoot master @a ~ ~ ~ 1 0.5 1"
+        execute console command "execute as %player% at @s anchored eyes run particle minecraft:enchanted_hit ^ ^ ^1 0.2 0.2 0.2 1 5 force"
+        execute console command "execute as %player% at @s anchored eyes run particle minecraft:enchanted_hit ^ ^ ^2 0.2 0.2 0.2 1 5 force"
+        execute console command "execute as %player% at @s anchored eyes run particle minecraft:crit ^ ^ ^1 0.2 0.2 0.2 1 5 force"
+        execute console command "execute as %player% at @s anchored eyes run particle minecraft:crit ^ ^ ^2 0.2 0.2 0.2 1 5 force"
+        wait 3 tick
+        execute console command "execute at %player% run playsound minecraft:item.trident.hit master @a ~ ~ ~ 1 0.1 1"
+        set {_targetBlock} to location of target block
+
+#-----------------------------------------------------------------------------------------------------------------
+
+on drop:
+    if event-item is glass:
+        cancel event
+        spawn iron golem at location of player
+        set last spawned iron golem's max health to 1000
+        heal last spawned iron golem
+
+#호미 도트 딜
+on damage:
+    if attacker's tool is hoe:
+        wait 10 tick
+        damage victim by damage * 0.5 hearts
+        wait 10 tick
+        damage victim by damage * 0.5 hearts
+        wait 10 tick
+        damage victim by damage * 0.5 hearts
+        wait 10 tick
+        damage victim by damage * 0.5 hearts
+
+#-----------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------
+#지원 포격
+on drop:
+    if event-item is spyglass:
+        cancel event
+        #broadcast "fire test"
+        #show large explosion at the target block in radius of 5
+        #show 20 huge explosion at the target block in radius of 5
+        set {_targetCoord} to location of target block
+        set {_targetX} to {_targetCoord}'s x-coordinate
+        set {_targetY} to {_targetCoord}'s y-coordinate
+        set {_targetZ} to {_targetCoord}'s z-coordinate
+        set {_targetYUp} to {_targetY}
+        add 20 to {_targetYUp}
+        loop 10 time:
+            execute console command "particle minecraft:dust 1 0 0 1 %{_targetX}% %{_targetYUp}% %{_targetZ}% 0.0001 20 0.0001 1 100 force"
+            wait 2 tick
+        loop 10 time:
+            execute console command "particle minecraft:instant_effect %{_targetX}% %{_targetYUp}% %{_targetZ}% 0.2 2 0.2 1 20 force"
+            add -2 to {_targetYUp}
+            wait 2 tick
+        execute console command "particle minecraft:explosion %{_targetX}% %{_targetY}% %{_targetZ}% 1 1 1 0.1 10 force"
+        
+        execute console command "playsound minecraft:entity.generic.explode master @a %{_targetX}% %{_targetY}% %{_targetZ}% 1 0.8 1"
+        #execute console command "playsound minecraft:entity.firework_rocket.large_blast_far master @a[distance=..50] ~ ~ ~ 1 0.5 1"
+  

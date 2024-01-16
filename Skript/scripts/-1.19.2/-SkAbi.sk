@@ -1,0 +1,3 @@
+command /abi:
+	trigger:
+		start game

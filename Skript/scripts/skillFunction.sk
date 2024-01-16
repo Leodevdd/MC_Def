@@ -1,0 +1,171 @@
+
+on load:
+	set {coolTime.%player%::dash} to false
+	set {coolTime.%player%::dash.count} to 0
+	set {coolTime.%player%::gunPowder} to false
+	set {coolTime.%player%::gunPowder.count} to 0
+
+
+# Cooltime 함수 ------------------------------------------------------------------------
+# coolTime(40, "dash", player)
+# 
+# {coolTime.%player%::dash} is false
+# 스킬 기능 ~~
+# coolTime(40, "dash", player)
+# 이렇게 시작과 끝에 써주면 쿨타임이 적용된다.
+
+function coolTime(coolTime: number, skill: text, pl: player):
+	set {coolTime.%{_pl}%::%{_skill}%} to true
+	set {coolTime.%{_pl}%::%{_skill}%.count} to {_coolTime}
+	while {coolTime.%{_pl}%::%{_skill}%.count} > 1:
+		subtract 1 from {coolTime.%{_pl}%::%{_skill}%.count}
+		wait 1 tick
+	set {coolTime.%{_pl}%::%{_skill}%} to false
+
+
+# 벨로시티 조정 테스트 코드
+# 별 의미 없음
+on leftclick with feather:
+	cancel event
+	set {_velo} to player's velocity
+	#broadcast "-------------------"
+	#broadcast "d velo : %{_velo}%"
+	
+	set {_flag} to false
+	if {_flag} is true:
+		broadcast "속도 제한"
+		set {_velo}'s x to {_velo}'s x * 1.2
+		set {_velo}'s y to {_velo}'s y * 1.2
+		set {_velo}'s z to {_velo}'s z * 1.2
+		broadcast "after velo : %{_velo}%"
+		set player's velocity to {_velo}
+
+
+# 깃털 우클릭 대쉬
+on rightclick with feather:
+
+	if {coolTime.%player%::dash} is true:
+		set {_tickToSecond} to {coolTime.%player%::dash.count} * 0.05
+		#broadcast "dash CoolTime : %{_tickToSecond}%"
+		stop trigger
+
+
+	set {_loc} to location of player
+	set {_pitch} to pitch of {_loc} # 상하 시야각
+	set {_yaw} to yaw of {_loc} # 좌우 시야각
+
+	set {_vectorFace} to vector from yaw {_yaw} and pitch {_pitch}
+	set {_vectorVertical} to vector from yaw {_yaw} and pitch {_pitch} - 40 #90 is max radius
+
+	loop 36 times:
+		add {_loc} ~ {_vectorVertical} to {_particleLocation::*}
+		#add 0.1 to {_loc}'s y-coordinate
+		rotate {_vectorVertical} around {_vectorFace} by -10
+
+	set {_delay} to 0
+	#while {_delay} < 1:
+	loop {_particleLocation::*}:
+		draw 1 dust_color_transition using dustTransition(white, white, 1) at loop-value with force
+			#draw 1 bubble pop at loop-value with force
+			#play 1 dolphin with offset of 0.05, 0.05, 0.05 and speed 0 at loop-value
+			#play 1 CLOUD with offset of 0.05, 0.05, 0.05 and speed 0 at loop-value
+			
+			#execute console command "execute at @e[x=%loop-value's x-coordinate%, y=%loop-value's y-coordinate%, z=%loop-value's z-coordinate%]  run particle minecraft:dust_color_transition 1.000 1.000 1.000 1 0.569 0.957 1.000 ~ ~ ~ 0 0 0 0 0 force"
+			#execute console command "execute at @e[x=%victim's x-coordinate%, y=%victim's y-coordinate%, z=%victim's z-coordinate%, dx=0] run particle minecraft:sweep_attack ~ ~1 ~ 0.1 0.1 0.1 0 1 normal"
+
+	#add 1 to {_delay}
+	#wait 1 tick
+
+	push player forwards at speed 1
+	if player is sneaking:
+		push player upwards at speed 1
+
+	if player's gamemode is survival:
+		subtract 0.5 from the player's food level
+	#broadcast "food level : %player's food level%"
+	execute console command "execute at %player% run playsound minecraft:entity.player.attack.sweep master @a"
+	#~ ~ ~ 1 1.5 1"
+
+	coolTime(40, "dash", player)
+	add 40 to tool cooldown of player
+	#위 함수에 추가하려 했으나 reflect코드로 작성된 기능이라 그런지 player를 살아있는 개체로 받아들이지 못하는 오류 발생.
+	#또한 스킬이 한가지만 있는 경우가 아닐 때도 있으니 따로 쓰는 걸로 결정.
+
+
+# 화약 우클릭
+on rightclick with gunpowder:
+	player is sneaking
+	#target is not arrow
+	#target is alive
+
+	{coolTime.%player%::gunPowder} is not true
+
+	coolTime(10, "gunPowder", player)
+	add 10 to tool cooldown of player
+
+	#execute console command "effect give %player% minecraft:slowness 1 10 true"
+	play sound "entity_zombie_attack_iron_door" at volume 1 at pitch 2 at player
+	play 10 CLOUD with speed 1 at player
+	wait 10 ticks
+	player is sneaking
+	coolTime(10, "gunPowder", player)
+	add 10 to tool cooldown of player
+	play sound "entity_zombie_attack_iron_door" at volume 1 at pitch 2 at player
+	play 10 CLOUD with speed 1 at player
+	wait 10 ticks
+	player is sneaking
+	coolTime(20, "gunPowder", player)
+	add 20 to tool cooldown of player
+	play sound "entity_zombie_attack_iron_door" at player
+	play sound "entity_zombie_attack_iron_door" at volume 1 at pitch 2 at player
+	push player backwards at speed 1
+	play 100 CLOUD with speed 1 at player
+
+	set {_loc} to location of player
+	set {_pitch} to pitch of {_loc} # 상하 시야각
+	set {_yaw} to yaw of {_loc} # 좌우 시야각
+	set {_vectorFace} to vector from yaw {_yaw} and pitch {_pitch}
+	add 0.8 to {_loc}'s y-coordinate
+
+	# 반복 횟수 = 사정거리
+	loop 30 times:
+		draw 1 dust_color_transition using dustTransition(red, orange, 20) at {_loc} with force
+		set {_loc} to {_loc} ~ {_vectorFace}
+		set {_hitbox} to {_loc}
+		add -0.8 to {_hitbox}'s y-coordinate
+		loop all entities in radius 1 of {_hitbox}:
+			loop-value-2 is not player
+			force player to damage loop-value-2 by 20
+			#force loop-value-2 to damage player by 1
+			damage player by 1
+			#exit 2 loops #이거 넣으면 관통안됨
+
+	#execute console command "execute at %player% run playsound minecraft:entity.player.attack.sweep master @a"
+	execute console command "execute at %player% run playsound minecraft:entity.zombie.attack.iron.door master @a"
+
+
+
+#--알레이 타워 테스트
+command /tower:
+	trigger:
+		spawn allay at player with nbt compound from "{NoAI:1b}"
+		set {_t} to text component from "Check out my cool website"
+		set hover event of {_t} to a new hover event showing "Clicky clicky to go to spawn!"
+		set click event of {_t} to a new click event to open url "https://my.cool.website"
+		send component {_t} to player
+
+every 20 ticks in "world_lemonfox": #world_test
+	loop all allays:
+		loop all living entities in radius 10 of loop-value:
+			loop-value-2 is not player
+			loop-value-2 is not allay
+			#damage loop-value-2 by 1
+
+			#broadcast "tset"
+
+#function nearestEntity(loc: location) :: entity:
+#	set {_nearest} to first element of all entities in world of {_loc}
+#	loop all entities in world of {_loc}:
+#		if distance between loop-entity and {_loc} is less than distance between {_loc} and {_nearest}:
+#			set {_nearest} to loop-entity
+#	return {_nearest}

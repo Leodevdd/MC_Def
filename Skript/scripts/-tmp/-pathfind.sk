@@ -1,0 +1,65 @@
+on every 5 ticks: #in "world":
+	loop all living entities:
+		if "%region at loop-entity%" contains "life":
+
+			#이렇게 작성하면 if문만 탈출함
+			loop-entity is not a player
+			loop-entity is not a iron golem
+			loop-entity is not a armor stand
+			loop-entity is not a wolf
+
+
+			kill loop-entity
+			set {coreLife} to {coreLife} -1
+			broadcast "Life : %{coreLife}%"
+
+			#비콘 디액티브 사운드
+			execute console command "execute at @a run playsound block.beacon.deactivate master @a ~ ~ ~ 10 1 1"
+			#execute console command "execute at [x=413, y=110, z=34] run playsound minecraft:entity.player.attack.sweep master @a"
+
+
+on rightclick:
+	if event-item is tropical fish:
+		set player's food level to 10
+		set player's saturation to 0
+		broadcast "fish test: pathfind.sk"
+
+#
+#	Core : 50 105 50
+#
+#	Tunnel A spawn : 98 105 94 (91-97)
+#	Tunnel A first path : 4 105 94
+#	Tunnel A second path : 7 105 50
+#
+#	Tunnel B spawn : 3 105 7 (3-10)
+#	Tunnel B first path : 96 105 7
+#	Tunnel B second path : 92 105 50
+#
+
+# Pathfind
+every 20 ticks in "world":
+	loop all living entities:
+		if loop-entity is not a player:
+			if loop-entity is not a villager:
+				if loop-entity is not a wolf:
+
+					# Target nearest player
+					#set {_nearPlayer} to nearest player in radius 5 around loop-entity's location
+					#if {_nearPlayer} is player:
+						#set target of loop-entity to {_nearPlayer}
+						#set {_pathPoint} to location at {_nearPlayer}
+
+					if loop-entity is in the region "tunnelAfirstpath":
+						set {_pathPoint} to location 4, 105, 94
+					else if loop-entity is in the region "tunnelAsecondpath":
+						set {_pathPoint} to location 7, 105, 50
+					else if loop-entity is in the region "tunnelBfirstpath":
+						set {_pathPoint} to location 96, 105, 7
+					else if loop-entity is in the region "tunnelBsecondpath":
+						set {_pathPoint} to location 92, 105, 50				
+					else if loop-entity is in the region "map":
+						set {_pathPoint} to location 50, 105, 50
+					#else:
+					#	broadcast "no affliation"
+					
+					set path target with speed 1.0 of loop-entity to {_pathPoint}

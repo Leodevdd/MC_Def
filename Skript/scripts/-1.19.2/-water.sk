@@ -1,0 +1,29 @@
+on dolphin move:
+	#set {_surroundWater} to block at event-location
+	set {_x} to event-location's x coordinate
+	set {_y} to event-location's y coordinate
+	set {_z} to event-location's z coordinate
+
+	set {_i} to -1
+	set {_j} to -1
+	set {_k} to -1
+
+	loop 3 times:
+		set {_j} to -1
+
+		loop 3 times:
+			set {_k} to -1
+
+			loop 3 times:
+				add location {_x} + {_i}, {_y} + {_j}, {_z} + {_k} to {_surroundWater::*}
+				add 1 to {_k}
+
+			add 1 to {_j}
+
+		add 1 to {_i}
+
+	loop {_surroundWater::*}:
+		if block at loop-value is air:
+			set block at loop-value to water
+
+

@@ -1,0 +1,407 @@
+# This file is not intended to be manually modified! If you want to manually edit this file anyways, ensure that the server is not running currently and that you have prepared a backup of this file.
+
+data-version: 3|2|3337
+'25':
+  uniqueId: adc675f6-03e4-4f28-8abe-2d2ccf0e828d
+  world: world
+  x: 378
+  y: 105
+  z: 42
+  yaw: 78.64137
+  type: admin
+  name: ''
+  object:
+    type: villager
+    baby: false
+    profession: FARMER
+    villagerType: DESERT
+    villagerLevel: 1
+  recipes:
+    '1':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: APPLE
+        amount: 10
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+    '2':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: BREAD
+        amount: 5
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+    '3':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: COOKED_BEEF
+        amount: 3
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+    '4':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLDEN_CARROT
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+  snapshots: []
+'26':
+  uniqueId: 7ea82e93-5305-48a1-bf5b-040e4f8dfa6d
+  world: world
+  x: 378
+  y: 105
+  z: 45
+  yaw: 80.02053
+  type: admin
+  name: ''
+  object:
+    type: villager
+    baby: false
+    profession: ARMORER
+    villagerType: SNOW
+    villagerLevel: 5
+  recipes:
+    '1':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: IRON_HELMET
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+        amount: 2
+    '2':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: IRON_CHESTPLATE
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+        amount: 6
+    '3':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: IRON_LEGGINGS
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+        amount: 5
+    '4':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: IRON_BOOTS
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+        amount: 2
+  snapshots: []
+'27':
+  uniqueId: 1011faba-8fd9-46e9-96f3-d5b40635a514
+  world: world
+  x: 378
+  y: 105
+  z: 48
+  yaw: 97.09464
+  type: admin
+  name: ''
+  object:
+    type: villager
+    baby: false
+    profession: WEAPONSMITH
+    villagerType: SAVANNA
+    villagerLevel: 4
+  recipes:
+    '1':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: WOODEN_SWORD
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+        amount: 5
+    '2':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: STONE_SWORD
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+        amount: 12
+    '3':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: IRON_SWORD
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+        amount: 24
+  snapshots: []
+'28':
+  uniqueId: ba94e606-e7ba-4a17-8a03-ffa4be5990ba
+  world: world_lemonfox
+  x: 17
+  y: 93
+  z: 2
+  yaw: 98.81355
+  type: admin
+  name: ''
+  object:
+    type: villager
+    baby: false
+    profession: MASON
+    villagerType: SAVANNA
+    villagerLevel: 1
+  recipes:
+    '1':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLDEN_PICKAXE
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+    '2':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: STONE_PICKAXE
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+        amount: 5
+    '3':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: IRON_PICKAXE
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+        amount: 10
+  snapshots: []
+'33':
+  uniqueId: 313cb29d-c30d-4894-96b1-02fe5a34d1c5
+  world: world_lemonfox
+  x: 65
+  y: 96
+  z: -47
+  yaw: 164.2039
+  type: admin
+  name: ''
+  object:
+    type: villager
+    baby: false
+    profession: FARMER
+    villagerType: JUNGLE
+    villagerLevel: 1
+  recipes:
+    '1':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: APPLE
+        amount: 7
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+    '2':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: BREAD
+        amount: 4
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+    '3':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: COOKED_BEEF
+        amount: 2
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+  snapshots: []
+'35':
+  uniqueId: e278693b-511c-4c8f-aaee-7e97b2035f0a
+  world: world_lemonfox
+  x: 74
+  y: 96
+  z: -48
+  yaw: 104.45881
+  type: admin
+  name: ''
+  object:
+    type: villager
+    baby: false
+    profession: ARMORER
+    villagerType: PLAINS
+    villagerLevel: 1
+  recipes:
+    '1':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: LEATHER_HELMET
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+        amount: 2
+    '2':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: LEATHER_CHESTPLATE
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+        amount: 4
+    '3':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: CHAINMAIL_HELMET
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+        amount: 3
+    '4':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: CHAINMAIL_CHESTPLATE
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+        amount: 7
+  snapshots: []
+'36':
+  uniqueId: 953575a2-1b46-448d-ad40-4420e7ea314e
+  world: world_lemonfox
+  x: 71
+  y: 96
+  z: -54
+  yaw: 102.01306
+  type: admin
+  name: ''
+  object:
+    type: villager
+    baby: false
+    profession: WEAPONSMITH
+    villagerType: SNOW
+    villagerLevel: 1
+  recipes:
+    '1':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: WOODEN_SWORD
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+        amount: 5
+    '2':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: WOODEN_AXE
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+        amount: 7
+    '3':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: STONE_SWORD
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+        amount: 10
+    '4':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: STONE_AXE
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_INGOT
+        amount: 12
+  snapshots: []
+'37':
+  uniqueId: 1cd222ec-66e4-4dd7-b3e8-4bebe4c050dd
+  world: world_lemonfox
+  x: 70
+  y: 95
+  z: -59
+  yaw: 57.246883
+  type: admin
+  name: ''
+  object:
+    type: villager
+    baby: false
+    profession: MASON
+    villagerType: JUNGLE
+    villagerLevel: 2
+  recipes:
+    '1':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_NUGGET
+        amount: 2
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: RAW_IRON
+    '2':
+      resultItem:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: GOLD_NUGGET
+      item1:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3337
+        type: COAL
+        amount: 2
+  snapshots: []

@@ -1,0 +1,8 @@
+command /prefix [<offlineplayer>] [<text>]:
+	trigger:
+		set {prefix::%arg 1%} to "&3[%arg 2%&3]&f"
+		broadcast "prefix test"
+
+on chat:
+	if {prefix::%player%} is set:
+		set message format to "%{prefix::%player%}% %message format%"
