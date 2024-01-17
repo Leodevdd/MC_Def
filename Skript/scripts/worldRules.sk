@@ -14,7 +14,49 @@
 	#add nbt compound of {_nbt} to {customItems::harvestingHoe}
 	
 
+# 치명타 관리
+on damage:
+	if event-damagecause is projectile:
+		#stop trigger
 
+	# force damage 구문으로부터 on damage 이벤트 재호출 방지
+	if {prevAttack.%attacker%} is true:
+		set {prevAttack.%attacker%} to false
+		stop trigger
+
+	# 치명타인 경우: cancel event
+	# -> 치명타 이펙트 및 사운드 제거
+	if hit is critical:
+		cancel event
+		set {prevAttack.%attacker%} to true
+
+		# 치명타_치명타
+		if chance of 40%:
+			broadcast "치명타_치명타!"
+			# damage * 2 = on damage문에서 damage가 절반으로 나옴. 이유는 모름.
+			# / 3 * 2 = 치명타 피해량(3/3) = 기본 피해량(2/3)
+			force attacker to damage victim by damage*2/3*2*2
+			play sound "entity.player.attack.crit" with volume 1 at victim
+			play mob spawner flames at victim
+		# 치명타_일반 공격
+		else:
+			force attacker to damage victim by damage*2/3*2
+
+	# 일반 공격_치명타
+	else if chance of 40%:
+		broadcast "_치명타!"
+		set damage to damage * 2
+		play sound "entity.player.attack.crit" with volume 1 at victim
+		play mob spawner flames at victim
+
+on shoot:
+	
+	#wait 3 tick
+	#make shooter shoot an arrow with event-projectile's velocity
+
+	# 화살 치명타 무효화
+	if projectile critical mode of event-projectile is true:
+		set projectile critical mode of event-projectile to false
 
 
 #베조아르

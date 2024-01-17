@@ -1,5 +1,5 @@
 on right click with bow:
 	set {_direction} to direction from targeted entity to player
-	#push targeted entity {_direction} with speed 3
-	push targeted entity upwards with speed 1
-	broadcast "3"
+	#push targeted entity {_direction} with speed 1
+	#push targeted entity upwards with speed 1
+	#broadcast "3"

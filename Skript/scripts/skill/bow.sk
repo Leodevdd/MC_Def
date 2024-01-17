@@ -34,11 +34,18 @@ on shoot:
 	{double_shot.%shooter%} is true
 	set {double_shot.%shooter%} to false
 	#shoot an arrow at speed 5 from the shooter
-	set projectile critical mode of event-projectile to true
+	#set projectile critical mode of event-projectile to true
 	wait 2 ticks
-
+	if shooter's gamemode is creative:
+		give 1 arrow to shooter
 	if number of arrow in the shooter's inventory is more than 0:
-		make shooter shoot an arrow at speed 3
+		set {_loc} to shooter's location
+		add 1.5 to {_loc}'s y-coordinate
+		summon an arrow at {_loc}
+		set {_arrow} to spawned arrow
+		set {_vector} to event-projectile's velocity
+		set velocity of {_arrow} to {_vector}
+
 		play sound "entity.arrow.shoot" with volume 1 and pitch 1 at shooter
 		remove 1 arrow from shooter's inventory
 	else:
