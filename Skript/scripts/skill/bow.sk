@@ -6,6 +6,8 @@ on join:
 on right click:
 	player's tool is a bow
 
+	number of arrow in the player's inventory is more than 1
+
 	# twice input = entity에 우클릭시 두 번씩 입력되는 것 방지.
 	{double_shot_twiceinput.%player%} is false
 	set {double_shot_twiceinput.%player%} to true
@@ -33,11 +35,8 @@ on right click:
 on shoot:
 	{double_shot.%shooter%} is true
 	set {double_shot.%shooter%} to false
-	#shoot an arrow at speed 5 from the shooter
-	#set projectile critical mode of event-projectile to true
 	wait 2 ticks
-	if shooter's gamemode is creative:
-		give 1 arrow to shooter
+
 	if number of arrow in the shooter's inventory is more than 0:
 		set {_loc} to shooter's location
 		add 1.5 to {_loc}'s y-coordinate

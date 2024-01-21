@@ -18,3 +18,20 @@ command /changeName:
 command /witch:
 	trigger:
 		spawn a witch at player
+
+command /doubleflyspeed:
+	trigger:
+		broadcast "%player's walk speed%"
+		broadcast "%player's fly speed%"
+
+		set player's fly speed to 0.2
+
+command /leveltest:
+	trigger:
+		broadcast "%level progress of player%"
+		increase level progress of player by 0.1
+
+command /crit [<integer>]:
+	trigger:
+		broadcast "set critical chance to %arg-1%"
+		set {critchance.%player%} to arg-1

@@ -94,7 +94,8 @@ command /setblocks:
 			add 1 to {_num}
 			
 			if mod({_num}, round({_tickPerBlocks})) is 0:
-				play sound "block.stone.place" with volume 1 at player
+				play sound "block.stone.place" with volume 1 at {_loc}
+				play mob spawner flames at {_loc}
 				wait 1 tick
 
 function cntBlocks() :: number:

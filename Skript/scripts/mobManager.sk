@@ -62,11 +62,6 @@ on spawn:
 		drawRings particle "redstone", RGB 80, 255, 255, center event-entity, id "event-entity's uuid", rainbowMode false, randomRotation false, animated false, radius 4, ringCount 1, ringDensity 10, visibleRange 32, pulseDelay 2
 		broadcast "&5[%event-entity's name%]&r spawned"
 
-# 개체 무적시간 설정
-on spawn:
-	set damage delay of last spawned entity to 0 ticks #event-entity로 하면 원인 모를 에러가 콘솔에 뜸.
-	set {dmgDelay.%event-entity's uuid%.tick} to 10 # default 무적 시간
-
 # 개체 성체, 장비 예외 처리
 on spawn:
 	if event-entity is a baby entity:

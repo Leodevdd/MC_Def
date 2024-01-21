@@ -28,6 +28,9 @@ function ExprCooldown_expressions(obj:objects) :: objects:
 command /cooldown:
     trigger:
         loop 30 times:
-            add 6 to tool cooldown of player
+            if player has the off hand tool:
+                add 6 to off hand tool cooldown of player
+            else:
+                add 6 to tool cooldown of player
             wait 5 tick
             send "쿨다운: %tool cooldown of player%" to player

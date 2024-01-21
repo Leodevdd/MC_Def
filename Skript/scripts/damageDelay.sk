@@ -67,16 +67,15 @@ on damage:
 		set victim's invulnerability ticks to 0 #the victim will be able to be hit once per tick
 		stop trigger
 
-	# 데미지 딜레이 무시 공격 (해당 공격은 무적 시간을 생성하지 않음)
+	# 데미지 딜레이 무시 공격 (해당 공격은 피격 지연 시간을 생성하지 않음)
 	if {damageDelayPass.%attacker's uuid%::%victim's uuid%} is true:
 		set {damageDelayPass.%attacker's uuid%::%victim's uuid%} to false
 		wait 1 tick
 		set victim's invulnerability ticks to 0
 		stop trigger
 
-
-	# 개체별 피격 무적 시간은 그대로 놔두고 다른 개체가 무적이 된 개체를 때릴 수 있게
-	# 즉, 동시에 때릴 수 있게 함
+	# 피격 지연 시간은 그대로 놔두고 다른 공격자가 피격 지연 된 개체를 때릴 수 있게 함.
+	# 즉, 다수의 플레이어가 한 개체를 동시에 때릴 수 있게 함.
 
 	# 공격자:피해자 최초 설정
 	if {damageDelay.%attacker's uuid%::%victim's uuid%} is not set:
@@ -86,16 +85,14 @@ on damage:
 	if {damageDelay.%attacker's uuid%::%victim's uuid%} is false:
 		wait 1 tick
 		set victim's invulnerability ticks to 0
-
 		set {damageDelay.%attacker's uuid%::%victim's uuid%} to true
 
-		# 피해자 피격시간 최초 설정
+		# 피해자 피격 지연 시간 최초 설정
 		if {damageDelay.%victim's uuid%.tick} is not set:
 			set {damageDelay.%victim's uuid%.tick} to 10 # default 무적시간
 
-		# 피격시간 만큼 기다리고 = 개체당 무적시간
+		# 피격시간 만큼 기다리고 = 피격 지연 시간
 		wait "%{damageDelay.%victim's uuid%.tick}% ticks" parsed as timespan
-
 		# 공격자->피해자 다시 때릴 수 있음
 		set {damageDelay.%attacker's uuid%::%victim's uuid%} to false
 
