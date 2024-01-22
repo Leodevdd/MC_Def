@@ -9,6 +9,8 @@ on load:
 
 	delete {perks::*}
 
+	set {gui::close} to barrier named "닫기" with nbt {_n}
+
 	set {perks::quickRecovery} to campfire named "&r&e돈, &c사랑, &8그리고 &6명예 &d[ H ]&r" with nbt {_n}
 	set line 1 of lore of {perks::quickRecovery} to "&e금 주괴 66개&8를 획득합니다.&r"
 	set line 2 of lore of {perks::quickRecovery} to "&c재생&8을 영원히 얻습니다.&r"
@@ -88,8 +90,11 @@ on rightclick with pufferfish:
 
 
 on inventory click:
+	broadcast "slot: %index of event-slot%"
 	if name of event-inventory contain "augments":
 		cancel event
+
+		
 		#if index of event-slot = 0:
 		#	send "You clicked on the slot 0"
 
@@ -146,6 +151,8 @@ on rightclick:
 				set {_isitOK} to true
 
 		set slot 15 of {_gui} to {_perk}
+
+		set slot 26 of {_gui} to {gui::close}
 		
 		#나가기
 		#set slot 26 of {_gui} to barrier named "&4Quit" with lore "&7quit the shop"
