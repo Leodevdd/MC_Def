@@ -182,7 +182,10 @@ on death:
 			message "&e+1G" to attacker
 
 	#else if victim is a spider:
-	
+	play sound "block.chain.place" with volume 1 and pitch 2.0 at attacker
+	wait 5 tick
+	play sound "block.chain.place" with volume 1 and pitch 2.0 at attacker
+
 	while number of gold nuggets in the attacker's inventory is more than 9:
 		remove 9 gold nuggets from attacker's inventory
 		give attacker 1 gold ingot

@@ -6,6 +6,11 @@ on join:
 
 # 치명타 관리
 on damage:
+	# 피격 지연 상태 예외처리
+	if {damageDelay.%attacker's uuid%::%victim's uuid%} is true:
+		stop trigger
+
+
 	if event-damagecause is projectile:
 		if hit is critical:
 			set damage to damage # 활 데미지 공식을 더 알아볼 필요가 있음. 값이 6 ~ 10.9로 튐

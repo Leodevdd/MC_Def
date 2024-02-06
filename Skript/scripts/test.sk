@@ -14,7 +14,6 @@ command /changeName:
 		else:
 			broadcast "nope: %name of tool of player%"
 
-
 command /witch:
 	trigger:
 		spawn a witch at player
@@ -35,3 +34,7 @@ command /crit [<integer>]:
 	trigger:
 		broadcast "set critical chance to %arg-1%"
 		set {critchance.%player%} to arg-1
+
+command /getSword:
+	trigger:
+		give player {customItems::harvestingHoe}

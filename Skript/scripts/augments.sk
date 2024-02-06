@@ -90,7 +90,8 @@ on rightclick with pufferfish:
 
 
 on inventory click:
-	broadcast "slot: %index of event-slot%"
+	#broadcast "index of slot: %index of event-slot%"
+	#broadcast "slot: %event-slot%"
 	if name of event-inventory contain "augments":
 		cancel event
 
