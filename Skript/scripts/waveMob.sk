@@ -70,7 +70,7 @@ function wave(waveCount : number):
 		spawnMobs(a zombie, 24)
 		spawnMobs(a husk, 4)
 		#spawnMobs(skeleton, 3)
-		spawnMobs(skeleton, 10)
+		spawnMobs(a skeleton, 10)
 	else if {_waveCount} is 4:
 		spawnMobs(a zombie, 20) 
 		spawnMobs(a drowned, 10)

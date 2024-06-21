@@ -1,3 +1,17 @@
+on unload:
+	delete {guided_arrow::*}
+
+on tool change:
+	if new tool is a bow:
+		broadcast "bow true"
+		set {%player%_bow} to true
+		set {%player%_crossbow} to false
+	else if new tool is a crossbow:
+		broadcast "crossbow true"
+		set {%player%_crossbow} to true
+		set {%player%_bow} to false
+		
+
 on join:
 	set {double_shot_flag.%player%} to false
 	set {double_shot.%player%} to false
@@ -46,9 +60,93 @@ on shoot:
 		set velocity of {_arrow} to {_vector}
 
 		play sound "entity.arrow.shoot" with volume 1 and pitch 1 at shooter
-		remove 1 arrow from shooter's inventory
+		if shooter's gamemode is survival:
+			remove 1 arrow from shooter's inventory
 	else:
 		broadcast "no arrow"
 
+on drop:
+	event-item is a bow
+	cancel event
+	set {bow_flag} to true
+	wait 2 seconds
+	set {bow_flag} to false
+
+on load:
+    suppress variable save warning
+
+on shoot:
+	# test
+	#{bow_flag}
+	shooter is a player
+	set {guided_arrow::%event-projectile's uuid%} to event-projectile
+
+	wait 1 tick
+
+	broadcast "%{guided_arrow::%event-projectile's uuid%}%"
+	broadcast "velo: %normal length of {guided_arrow::%event-projectile's uuid%}'s velocity%"
+	if {%shooter%_crossbow} is true:
+		
+		set normal length of {guided_arrow::%event-projectile's uuid%}'s velocity to normal length of {guided_arrow::%event-projectile's uuid%}'s velocity * 1.5
+		broadcast "velo: %normal length of {guided_arrow::%event-projectile's uuid%}'s velocity%"	
+
+	set {guided_arrow::%event-projectile's uuid%_velo} to normal length of {guided_arrow::%event-projectile's uuid%}'s velocity
+	set {guided_arrow::%event-projectile's uuid%_lifespan} to 60
+	broadcast "guided velo: %{guided_arrow::%event-projectile's uuid%_velo}%"
+	#set normal length of {guided_arrow}'s velocity to 2
+
+on projectile hit:
+	loop {guided_arrow::*}:
+		event-projectile is loop-value
+		delete {guided_arrow::%loop-value's uuid%}
+
+#on every 3 ticks:
+#	loop all living entities in radius 4 of {guided_arrow}:
+#		loop-entity is not player
+#		broadcast "test"
+
+command /spawnZ:
+	trigger:
+		spawn zombie at player
+		set {zombie} to last spawned entity
+
+on every 1 ticks:
+	loop {guided_arrow::*}:
+		{guided_arrow::%loop-value's uuid%_lifespan} is set
+		if {guided_arrow::%loop-value's uuid%_lifespan} is more than 0:
+			subtract 1 from {guided_arrow::%loop-value's uuid%_lifespan}
+			broadcast "%{guided_arrow::%loop-value's uuid%_lifespan}%"
+		else:
+			broadcast "else: %{guided_arrow::%loop-value's uuid%_lifespan}%"
+			delete {guided_arrow::%loop-value's uuid%}
+			#broadcast "test"
+
+		set {_entity} to nearest living entity to loop-value
+		{_entity} is not type of player
+		{_entity} is not type of villager
+		distance between loop-value and {_entity} is less than 5
+		#broadcast "==================="
+		#broadcast "test: %{guided_arrow::%loop-value's uuid%_velo}%"
+
+		set loop-value's velocity to new Vector 0, 0, 0
+		#push {guided_arrow} forwards at speed 1
+		push loop-value (direction from loop-value to {_entity}) at speed {guided_arrow::%loop-value's uuid%_velo}
+		show spit on loop-value
+
+command /kaisa:
+	trigger:
+		loop 16 times:
+			set {_loc} to player's location
+			add 2 to {_loc}'s y-coordinate
+			summon an arrow at {_loc}
+			set {_arrow} to spawned arrow
+			set {_target} to targeted block's location
+			add randomNum() to {_target}'s x-coordinate
+			add randomNum() to {_target}'s y-coordinate
+			add randomNum() to {_target}'s z-coordinate
+			push {_arrow} (direction from {_arrow} to {_target}) at speed 1.5
+
+			wait 1 tick
+			set {guided_arrow::%event-projectile's uuid%} to {_arrow}
 
 

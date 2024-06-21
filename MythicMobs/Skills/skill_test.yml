@@ -1,0 +1,9 @@
+ThrowPoisonPotion:
+  Cooldown: 2
+  Skills:
+    - shootpotion{type=POISON;duration=60;level=1;v=1.5} ~onSpawn
+
+DropToInventory:
+  Skills:
+    #- chance{c=50}:
+    #- give{item=DIAMOND;amount=1} @target

@@ -157,8 +157,8 @@ command /tower:
 every 20 ticks in "world_lemonfox": #world_test
 	loop all allays:
 		loop all living entities in radius 10 of loop-value:
-			loop-value-2 is not player
-			loop-value-2 is not allay
+			loop-value-2 is not a player
+			loop-value-2 is not a allay
 			#damage loop-value-2 by 1
 
 			#broadcast "tset"

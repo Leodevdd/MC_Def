@@ -23,7 +23,7 @@ on damage:
 
 #거미 낙뎀 방지
 on damage:
-	victim is spider
+	victim is a spider
 	event-damagecause is fall
 	cancel event
 			

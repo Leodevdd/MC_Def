@@ -1,0 +1,20 @@
+
+
+
+# 사거리 증가 공격
+on left click:
+	#set {_dmg_of_player} to 
+	#set {_dmg} to 10 * attack cooldown of player
+	
+	#broadcast "left click event"
+	#broadcast "tool's lore: %tool's damage value%"
+	#player's main hand is a netherite sword with lore "Damage: 20.0":
+	#broadcast getItemAttribute((tool), "attack_damage")
+
+	# smaller than 6 = default attack range
+	if distance between target and player is smaller than 7:
+		force player to damage target by {_dmg}
+		
+		
+
+

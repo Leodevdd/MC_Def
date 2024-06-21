@@ -38,3 +38,24 @@ command /crit [<integer>]:
 command /getSword:
 	trigger:
 		give player {customItems::harvestingHoe}
+
+every 1 tick:
+	loop all players:
+		loop all dropped items in radius 5 of loop-player:
+			set {_item} to loop-value-2
+			set {_player} to loop-player
+
+			set {_itemLoc} to location of {_item}
+			set {_playerLoc} to location of {_player}
+			#add  to {_playerLoc}'s y-coordinate
+			push loop-value-2 (direction from {_itemLoc} to {_playerLoc}) at speed 0.05
+
+			#set {_vector} to vector from {_itemLoc} to {_playerLoc}
+			#push loop-value-2 {_vector} at speed 0.05
+
+#on pick up of iron ingot:
+	#cancel event
+
+every 1 tick:
+	loop all players:
+		send action bar "&2&e%saturation of loop-player%" to loop-player

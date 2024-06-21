@@ -1,0 +1,32 @@
+
+# Skript part:
+function example_targeter(skilldata: skilldata) :: locations:
+	set {_location} to location of caster of {_skilldata}
+	set {_location} to location of caster of {_skilldata}
+	set {_location} to location of caster of {_skilldata}
+	set {_location} to location of caster of {_skilldata}
+	return {_t::*}
+
+function example_skill(skilldata: SKILLDATA, location: location, entity: entity) :: boolean:
+	set {_caster} to caster of {_skilldata}
+	set {_cause} to cause of {_skilldata}
+	set {_trigger} to trigger of {_skilldata}
+	set {_entities::*} to entitytargets of {_skilldata}
+	set {_locations::*} to locationtargets of {_skilldata}
+	set {_origin} to origin of {_skilldata}
+	#set {_afterdeath} to executeafterdeath of {_skilldata}
+	set {_power} to power of {_skilldata}
+	broadcast "%{_caster}% :: %{_cause}% :: %{_trigger}% :: %{_entities::*}% :: %{_locations::*}% :: %{_origin}% :: %{_afterdeath}% :: %{_power}%"
+	return true
+	
+function example_skill_condition(entity: entity) :: boolean:
+	broadcast "entity: %{_entity}%"
+	return true
+	
+function compare_skill_condition(caster: entity, target: entity) :: boolean:
+	broadcast "caster: %{_caster}% :: target: %{_target}%"
+	return true
+	
+function compare_location_condition(caster: location, target: location) :: boolean:
+	broadcast "caster's location: %{_caster}% :: target's location: %{_target}%"
+	return true

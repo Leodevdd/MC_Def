@@ -5,6 +5,12 @@ on load:
 	set {_n} to nbt compound from "{HideFlags:255}"
 
 function starterKit(pl: player):
+	
+	set saturation of {_pl} to 20
+	set hunger meter of {_pl} to 20
+	#set health of {_pl} to 20
+	heal {_pl}
+
 	loop 7 times:
 		wait 1 second
 		give {_pl} 1 gold ingot
@@ -26,7 +32,7 @@ command /gamestart:
 		teleport player to location 66, 96, -53 in "world_lemonfox"
 		apply blindness to player for 8.0 second
 		apply slowness 99 to player for 7.0 second
-		send title "&lThe Waves &ris coming." with subtitle "&cHave fun, &dStay safe!" to player for 5 seconds
+		send title "&lThe Waves &rare coming." with subtitle "&cHave fun, &dStay safe!" to player for 5 seconds
 		wait 5 seconds
 		send title "" with subtitle "You have &l&4only 60 seconds &rnow." to player for 3 seconds
 		wait 3 seconds

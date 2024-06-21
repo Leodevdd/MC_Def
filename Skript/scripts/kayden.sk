@@ -104,7 +104,7 @@ on drop:
 
 
 
-every 1 ticks in "world":
+every 1 ticks in "world_lemonfox":
     loop all players:
         set {_playerID} to uuid of loop-player
         if {kayden::%uuid of loop-player%.LaserUsed} is more than 0: # if stop Channeling Laser reset Laser Damage
@@ -207,7 +207,7 @@ on right click :
 
 #전사-------------------------------------------------------------------------------------------------------------------------
 
-every 1 ticks in "world":
+every 1 ticks in "world_lemonfox":
     loop all players:
         if {kayden::%uuid of loop-player%.ComboAttack} is set :
             if {kayden::%uuid of loop-player%.ComboAttack} is more than 0: # if stop Channeling Laser reset Laser Damage
@@ -261,7 +261,7 @@ on damage:
 #-------------------------------------------------------------------------------------------------------------------------
 
 #---------------------------------------------------------------------
-every 5 ticks in "world":
+every 5 ticks in "world_lemonfox":
     loop all entities:
         if loop-entity is a allay:
             if {kayden::%uuid of loop-entity%.TargetPosition} is not set:#Target Move position not set

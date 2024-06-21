@@ -1,0 +1,29 @@
+PoisonZombie:
+  Type: ZOMBIE
+  Display: 'Poison Zombie'
+  Health: 50
+  Damage: 5
+  Skills:
+    - skill{s=ThrowPoisonPotion} @Target ~onTimer:20
+    - message{m=Target Changed} @World ~onChangeTarget
+  Options:
+    PreventOtherDrops: true
+
+# MythicMob yml:
+SpamMonkey:
+  Type: zombie
+  Display: SkMonkey
+  Skills:
+  - skill{s=skript_skillcondition_example} @Target ~onTimer:20
+  - skill{s=ThrowPoisonPotion} @Target ~onTimer:20
+  
+skript_skillcondition_example:
+    Conditions:
+    - skfunction{name=example_skill_condition}
+    TargetConditions:
+    - skfunction{name=example_skill_condition}
+    - skfunction{name=compare_skill_condition}
+    - skfunction{name=compare_location_condition}
+    Skills:
+    - message{msg="example_skill_condition is true"} @world
+  
