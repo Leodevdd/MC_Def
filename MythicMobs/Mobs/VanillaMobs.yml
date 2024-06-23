@@ -3,12 +3,96 @@
 #  
 
 Zombie:
+  Health: 13
+  Options:
+    Despawn: NEVER
+    PreventRandomEquipment: true
+    PreventSunburn: true
+    PreventOtherDrops: true
+    
+Spider:
+  Health: 7
+  Options:
+    Despawn: NEVER
+    PreventRandomEquipment: true
+    PreventOtherDrops: true
+    MovementSpeed: 0.35
+
+Husk:
+  Health: 50
+  Options:
+    Despawn: NEVER
+    PreventRandomEquipment: true
+    PreventSunburn: true
+    PreventOtherDrops: true
+    KnockbackResistance: 0.8
+
+Drowned:
   Health: 16
   Options:
     Despawn: NEVER
     PreventRandomEquipment: true
     PreventSunburn: true
-    Baby: false
+    PreventOtherDrops: true
+    KnockbackResistance: 0.8
+  AIGoalSelectors:
+  - clear
+  - meleeattack
+  - lookatplayers
+  - movetowardstarget
+  AITargetSelectors:
+  - clear
+  - players
+
+Skeleton:
+  Health: 6
+  Damage: 1
+  Options:
+    Despawn: NEVER
+    PreventRandomEquipment: true
+    PreventSunburn: true
+    PreventOtherDrops: true
+  AIGoalSelectors:
+  - clear
+  #- rangedAttack{speed=1;smax=60;amin=20;radius=15}
+  - bowattack{speed=1;amin=20;radius=15}
+  - meleeattack
+  - lookatplayers
+  - movetowardstarget
+  AITargetSelectors:
+  - clear
+  - players
+
+Stray:
+  Health: 200
+  Options:
+    Despawn: NEVER
+    PreventSunburn: true
+    PreventOtherDrops: true
+  AIGoalSelectors:
+  - clear
+  #- rangedAttack{speed=1;smax=60;amin=20;radius=15}
+  - bowattack{speed=1;amin=20;radius=15}
+  - meleeattack
+  - lookatplayers
+  - movetowardstarget
+  AITargetSelectors:
+  - clear
+  - players
+  BossBar:
+    Enabled: true
+    Title: 'Test'
+    Range: 100
+    Color: RED
+    Style: SOLID
+
+
+Wolf:
+  Health: 10
+  Options:
+    #Despawn: NEVER
+    PreventRandomEquipment: true
+    MovementSpeed: 0.5
 
 
 

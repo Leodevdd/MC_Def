@@ -1,0 +1,47 @@
+on first join:
+	set {%player%.evasion} to 0
+	set {%player%.evasion_sum} to 0
+
+on armor change:
+	set {%player%.evasion} to 0
+
+	if player's helmet is a leather helmet:
+		add 0.1 to {%player%.evasion}
+	if player's chestplate is a leather chestplate:
+		add 0.1 to {%player%.evasion}
+	if player's leggings is a leather leggings:
+		add 1 to {%player%.evasion}
+	if player's boots is a leather boots:
+		add 1 to {%player%.evasion}
+
+	if player's helmet is a iron helmet:
+		set {perks.%player%::shield} to true
+	else:
+		set {perks.%player%::shield} to false
+
+	send "회피 계수: %{%player%.evasion}%"
+	#send "재생 체력: 미구현"
+
+every 1 tick:
+	
+
+
+on damage:
+	victim is a player
+	attacker is a living entity
+	if chance of {%victim%.evasion_sum}%:
+		set {%victim%.evasion_sum} to 0
+		cancel event
+		if chance of 50%:
+			push victim left at speed 1
+		else:
+			push victim right at speed 1
+		execute console command "execute at %victim% run playsound minecraft:entity.player.attack.sweep master @a"
+
+
+every 1 ticks:
+	loop all players:
+		add {%loop-player%.evasion} to {%loop-player%.evasion_sum}
+		if {%loop-player%.evasion_sum} is more than 100:
+			set {%loop-player%.evasion_sum} to 100
+		send action bar "&2&e%{%loop-player%.evasion_sum}%%%" to loop-player

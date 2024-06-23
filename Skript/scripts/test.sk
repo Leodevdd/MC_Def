@@ -55,7 +55,7 @@ every 1 tick:
 
 #on pick up of iron ingot:
 	#cancel event
-
-every 1 tick:
-	loop all players:
-		send action bar "&2&e%saturation of loop-player%" to loop-player
+	
+command /getUUID:
+	trigger:
+		send "%player's UUID%" to player

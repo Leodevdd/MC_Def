@@ -3,6 +3,7 @@ on load:
 	set {_fontCode} to "&k난독화&r &l볼드&r &m취소선&r &n밑줄&r &o기울임&r (& r) &r색, 글씨체 초기화"
 	#broadcast "%{_fontCode}%"
 	set {_n} to nbt compound from "{HideFlags:255}"
+	set {gamestart_count} to 0
 
 function starterKit(pl: player):
 	
@@ -18,27 +19,36 @@ function starterKit(pl: player):
 
 command /gamestart:
 	trigger:
-		set {disableJump::%player%} to true
-		clear player's inventory
-		set player's gamemode to survival
-		starterKit(player)
-
 		execute console command "/stopwave"
+		execute console command "/killall"
 
 		loop all players:
+			set loop-player's gamemode to survival
+			clear loop-player's inventory
+			starterKit(loop-player)
+			set {disableJump::%loop-player%} to true
 			set {perks.%loop-player%::shield} to false
-		heal player
+			set {critchance.%loop-player%} to 1
+			heal loop-player
 
-		teleport player to location 66, 96, -53 in "world_lemonfox"
-		apply blindness to player for 8.0 second
-		apply slowness 99 to player for 7.0 second
-		send title "&lThe Waves &rare coming." with subtitle "&cHave fun, &dStay safe!" to player for 5 seconds
-		wait 5 seconds
-		send title "" with subtitle "You have &l&4only 60 seconds &rnow." to player for 3 seconds
-		wait 3 seconds
-		set {disableJump::%player%} to false
+			if {gamestart_count} is 0:
+				teleport loop-player to location 66, 96, -53 in "world_lemonfox"
+				add 1 to {gamestart_count}
+			else if {gamestart_count} is 1:
+				teleport loop-player to location 64.5, 96, -53 in "world_lemonfox"
+				add 1 to {gamestart_count}
+			else if {gamestart_count} is 2:
+				teleport loop-player to location 65.5, 97, -55 in "world_lemonfox"
+				set {gamestart_count} to 0
 
-		
+			apply blindness to loop-player for 8.0 second
+			apply slowness 99 to loop-player for 7.0 second
+			send title "&lThe Waves &rare coming." with subtitle "&cHave fun, &dStay safe!" to player for 5 seconds
+			wait 5 seconds
+			send title "" with subtitle "&l&4베타 &r0.1v" to player for 3 seconds
+			wait 3 seconds
+			set {disableJump::%loop-player%} to false
+
 		execute console command "/w 1"
 		set block at location -17, 91, 18 to redstone block
 		#wait 1 tick

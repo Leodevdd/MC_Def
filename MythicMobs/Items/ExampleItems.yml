@@ -45,3 +45,16 @@ BanditTunic:
   - '&6the corpse of a bandit.'
   Options:
     Color: 255,40,40
+
+ClothSlippers:
+  Id: 301
+  Data: 0
+  Display: '&fCloth Slippers'
+  Lore:
+  - ''
+  - 'So Soft!'
+  - ''
+  Enchantments:
+  - DURABILITY:1
+  Options:
+    Color: 200,200,200

@@ -21,7 +21,7 @@ SkeletalKnight:
   - damage 0.5
   Options:
     MovementSpeed: 0.2
-SkeletonKing:
+SkeletonKing_ex:
   Type: WITHER_SKELETON
   Display: '&6Skeleton King'
   Health: 5

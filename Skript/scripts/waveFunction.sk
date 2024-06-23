@@ -5,8 +5,8 @@ function randomNum() :: number:
 	return a random number between -4 and 4
 	broadcast "Error: waveFunction_randomNum()"
 
-# spawnMobs(zombie, 10) 좀비 10마리를 30초 동안 나눠서 소환
-function spawnMobs(mob: object, mobNum: number): 
+# spawnMobs(zombie, 10) 좀비 10마리를 60초 동안 나눠서 소환
+function spawnMobs(mob: string, mobNum: number): 
 	#waveTime(60)초 동안 일정한 간격으로 보내기 위한 과정: waveTime(60) / 몹 수
 	set {_eachTime} to round down {waveTime} / {_mobNum}
 
@@ -18,8 +18,10 @@ function spawnMobs(mob: object, mobNum: number):
 		
 		set {_tmpSPA} to {spA}
 		add randomNum() to {_tmpSPA}'s x-coordinate
-		spawn {_mob} at {_tmpSPA}
 
+		#spawn {_mob} at {_tmpSPA}
+		execute console command "/mm m spawn %{_mob}% 1 world_lemonfox,%{_tmpSPA}'s x-coordinate%,%{_tmpSPA}'s y-coordinate%,%{_tmpSPA}'s z-coordinate%,270,0"
+ 
 		wait "%{_eachTime}% seconds" parsed as timespan
 
 

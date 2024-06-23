@@ -1,0 +1,82 @@
+# 개체 성체, 장비 예외 처리
+on spawn:
+	if event-entity is a baby entity:
+		set event-entity to an adult
+
+# 드라운드 재생
+on every 1 ticks:
+	loop all drowneds:
+		#apply instant damage 1 to loop-entity
+		#wait 1 ticks
+		#remove instant damage from loop-entity
+		loop-entity is not on fire
+		heal loop-entity by 0.04
+	loop all iron golems:
+		heal loop-entity by 0.02
+
+
+
+# ========================================= 골드 =========================================
+on pick up of gold nugget:
+	play sound "block.chain.place" with volume 1 and pitch 2.0 at player
+	wait 1 tick
+	while number of gold nuggets in the player's inventory is more than 9:
+		remove 9 gold nuggets from player's inventory
+		give player 1 gold ingot
+		wait 5 tick
+		
+
+on load:
+	set {gold_nugget} to gold nugget
+
+function giveGold(pl: player, value: number, per: number):
+	set {_sum} to 0
+	loop {_value} times:
+		if chance of {_per}%:
+			add 1 to {_sum}
+
+	{_sum} is more than 0
+	message "&e+%{_sum}% gold nuggets" to {_pl}
+	play sound "block.chain.place" with volume 1 and pitch 2.0 at {_pl}
+	loop {_sum} times:
+		give {_pl} 1 gold nugget
+	wait 5 ticks
+	play sound "block.chain.place" with volume 1 and pitch 2.0 at {_pl}
+
+
+#처치시 골드 지급
+on death:
+	cancel drops of items
+	cancel experience drops
+	#if attacker is not a player:
+	#	broadcast "on death: attacker is not a player"
+		#플레이어 킬이 아니면 근처 플레이어에게 지급
+	#	stop trigger
+	attacker is a player
+
+	if victim is a zombie: # 10 * 30%
+		giveGold(attacker, 3, 50)
+
+	else if victim is a spider: # 80% 1
+		giveGold(attacker, 10, 15)
+
+	else if victim is a skeleton:
+		giveGold(attacker, 3, 33)
+
+	else if victim is a husk:
+		giveGold(attacker, 6, 66)
+
+	else if victim is a drowned: # 1-3
+		giveGold(attacker, 3, 66)
+
+	#else if victim is a spider:
+	play sound "block.chain.place" with volume 1 and pitch 2.0 at attacker
+	wait 5 tick
+	play sound "block.chain.place" with volume 1 and pitch 2.0 at attacker
+
+	while number of gold nuggets in the attacker's inventory is more than 9:
+		remove 9 gold nuggets from attacker's inventory
+		give attacker 1 gold ingot
+		play sound "block.chain.place" with volume 1 and pitch 2.0 at attacker
+		wait 5 tick
+		play sound "block.chain.place" with volume 1 and pitch 2.0 at attacker

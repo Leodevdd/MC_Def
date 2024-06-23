@@ -56,32 +56,39 @@
 # pillager 5+
 # ~~
 
+# Skeleton(default) 0.5
+# Zombie 1
+# Spider 1
+# Drowned 2
+# Husk 3
+
 function wave(waveCount : number):
 	if {_waveCount} is 1:
-		spawnMobs(a zombie, 30)
-		#spawnMobs(a spider, 30)
-		#spawnMobs(a husk, 10)
+		spawnMobs("zombie", 15)
+		spawnMobs("skeleton", 35)
 	else if {_waveCount} is 2:
-		spawnMobs(a zombie, 25)
-		spawnMobs(a spider, 5)
+		spawnMobs("zombie", 20)
+		spawnMobs("skeleton", 25)
+		spawnMobs("spider", 5)
 		#spawnMobs(spider, 10)
 		#spawnMobs({zombie}, 10)
 	else if {_waveCount} is 3:
-		spawnMobs(a zombie, 24)
-		spawnMobs(a husk, 4)
-		#spawnMobs(skeleton, 3)
-		spawnMobs(a skeleton, 10)
+		spawnMobs("zombie", 15)
+		spawnMobs("skeleton", 20)
+		spawnMobs("husk", 3)
 	else if {_waveCount} is 4:
-		spawnMobs(a zombie, 20) 
-		spawnMobs(a drowned, 10)
-		spawnMobs(a skeleton, 1)
+		spawnMobs("zombie", 5) 
+		#spawnMobs(a husk, 2)
+		#spawnMobs(a skeleton, 20)
 	else if {_waveCount} is 5:
-		spawnMobs(a zombie, 30)
+		spawnMobs("skeleton", 5)
 		wait 5 seconds
-		spawnMobs(a witch, 1)
+		spawnMobs("SkeletonKing", 1)
+		broadcast "stray spawned"
 	else if {_waveCount} is 6:
-		spawnMobs(a husk, 10)
-		spawnMobs(a stray, 10)
+		broadcast "== BETA Wave end =="
+		#spawnMobs(a husk, 5)
+		#spawnMobs(a stray, 10)
 		#spawnMobs(a zombie, 20)
 		#set {stopWave} to true
 		#stop trigger

@@ -8,10 +8,7 @@
 #			else:
 #				set damage to attacker's damage
 
-#on load:
-	#set {customItems::harvestingHoe} to wooden hoe named "수확의 낫" with lore "로어 테스트" with nbt compound from "{HideFlags}" with damage 1
-	#set {_nbt} to nbt compound from "{HideFlags:63}"
-	#add nbt compound of {_nbt} to {customItems::harvestingHoe}
+
 
 
 
@@ -75,7 +72,41 @@ on projectile hit:
 
 
 on item damage:
+	if event-entity is a skeleton:
+		broadcast "test item damage"
+	if type of item is helmet, chestplate, leggings, or boots:
+		cancel event
+	if durability of item is less than 2:
+		cancel event
+
+on damage:
+	if durability of attacker's held item is 1:
+		#broadcast "%durability of attacker's held item%"
+		set damage to damage/2
+		execute console command "execute at %attacker% run playsound minecraft:entity.item.break master @a"
+
+# 플레이어가 마을 주민을 우클릭할 때 이벤트
+on right click on anvil:
+	player's game mode is survival
 	cancel event
+	if durability of player's held item is not max durability of player's held item:
+		set durability of player's held item to max durability of player's held item
+		# 플레이어에게 수리 완료 메시지 전송
+		send "수리 완료: &a%player's held item%" to player
+		set {_repaired} to true
+	
+	if {_repaired} is true:
+		set {_x} to location of event-block's x-coordinate
+		set {_y} to location of event-block's y-coordinate
+		set {_z} to location of event-block's z-coordinate
+		execute console command "execute at %player% run playsound minecraft:block.anvil.use neutral @a"
+		set {_repaired} to false
+	else:
+		execute console command "execute at %player% run playsound minecraft:block.anvil.land neutral @a"
+				
+on anvil damage:
+	broadcast "anvil damaged"
+
 
 # 회복이 캔슬되어도 배고픔은 줄어듦
 on heal:
@@ -87,6 +118,7 @@ on heal:
 			if {healedCount.%player%} is less than 2:
 				add 1 to {healedCount.%player%}
 				cancel event
+				broadcast "cancel heal"
 			else:
 				set {healedCount.%player%} to 0
 				set {healed.%player%} to false
@@ -153,3 +185,15 @@ command /dhp:
 		set player's max health to 10
 
 		message "You have %player's health% HP left."
+
+command /dura <integer>:
+	trigger:
+		#set max durability of player's tool to arg-1
+		broadcast "max dura: %max durability of player's tool%"
+		broadcast "max dura set to %arg-1%"
+
+#on load:
+	#set {customItems::harvestingHoe} to wooden hoe named "수확의 낫" with lore "로어 테스트" with nbt compound from "{HideFlags}" with damage 1
+	#set {_nbt} to nbt compound from "{HideFlags:63}"
+	#add nbt compound of {_nbt} to {customItems::harvestingHoe}
+

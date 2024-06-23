@@ -1,3 +1,6 @@
+on load:
+	execute command "sk reload pathfind.sk"
+
 on every 5 ticks: #in "world":
 	loop all living entities:
 		if "%region at loop-entity%" contains "life":
@@ -10,6 +13,23 @@ on every 5 ticks: #in "world":
 
 
 			kill loop-entity
+
+			if {coreLife} is less than 1:
+				loop all players:
+					set the loop-player's game mode to spectator
+					set {_loc} to location(70, 100, -51, world "world_lemonfox", 140, 40)
+					teleport loop-player to {_loc}
+					execute console command "execute at @a run playsound block.beacon.deactivate master @a ~ ~ ~ 10 1 1"
+					loop all living entities:
+						loop-value-2 is not a player
+						kill loop-value-2
+
+					wait 5 seconds
+					set the loop-player's game mode to creative
+						
+					execute console command "/stopwave"
+					stop trigger
+
 			set {coreLife} to {coreLife} -1
 			broadcast "Life : %{coreLife}% Entity: %loop-entity%"
 
